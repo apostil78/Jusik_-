@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>두리의 로또 추천기</title>
+  <title>시기의 로또 추천기</title>
   <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
@@ -83,8 +83,6 @@
     .n3 { background: #ffc107; }
     .n4 { background: #ff9800; }
     .n5 { background: #f44336; }
-    .qr-box { margin-top: 8px; }
-    .qr-img { width: 100px; height: 100px; margin-top: 5px; }
     @media (max-width: 500px) {
       .box { padding: 20px; }
       button { width: 100%; margin-bottom: 10px; }
@@ -93,7 +91,7 @@
 </head>
 <body>
   <div class="box">
-    <h2>🎯 두리의 정밀 로또 추천기</h2>
+    <h2>🎯 시기의 정밀 로또 추천기</h2>
     <div class="control-group">
       <label class="label" for="comboCount">추천 조합 수:</label>
       <select id="comboCount">
@@ -182,16 +180,8 @@
           numberRow.appendChild(ball);
         });
 
-        let qrBox = document.createElement("div");
-        qrBox.className = "qr-box";
-        let qrImg = document.createElement("img");
-        qrImg.className = "qr-img";
-        qrImg.src = `https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=${nums.join(',')}`;
-        qrBox.appendChild(qrImg);
-
         card.appendChild(title);
         card.appendChild(numberRow);
-        card.appendChild(qrBox);
         resultsDiv.appendChild(card);
       }
     }
