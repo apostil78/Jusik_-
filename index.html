@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>두리의 정밀 필터 로또 추천기</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 40px; background: #f5faff; }
+    .box { background: #fff; padding: 30px; border-radius: 10px; display: inline-block; box-shadow: 0 0 10px #ccc; }
+    .numbers { font-size: 20px; margin: 10px 0; font-weight: bold; color: #0033cc; }
+    button { padding: 10px 20px; font-size: 16px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 10px; }
+    button:hover { background: #0056b3; }
+    .draw-info { color: #555; font-size: 16px; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>🌟 로토 추천 번호 (정미러 필터 적용)</h2>
+    <div class="draw-info" id="drawInfo">최근 회차 정보를 불러오는 중...</div>
+    <button onclick="generateMultiple(5)">추천번호 5조합 받기</button>
+    <button onclick="window.print()">🔧 인쇄하기</button>
+    <div id="results"></div>
+  </div>
+
+  <script>
+    const hotBalls = [6, 9, 16, 21, 25, 29, 35, 36, 37, 44];
+    const coldBalls = [1, 2, 12, 13, 14, 17, 23, 28, 33, 38];
+
+    async function fetchLatestDraw() {
+      try {
+        const res = await fetch('https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=0');
+        const data = await res.json();
+        const nums = [data.drwtNo1, data.drwtNo2, data.drwtNo3, data.drwtNo4, data.drwtNo5, data.drwtNo6];
+        document.getElementById("drawInfo").innerText = `${data.drwNo}회 당첨번호: ` + nums.join(', ') + ` + 보너스: ${data.bnusNo}`;
+      } catch (err) {
+        document.getElementById("drawInfo").innerText = "최근 회차 정보를 불러오지 못했습니다.";
+      }
+    }
+
+    function countIncluded(target, arr) {
+      return arr.filter(n => target.includes(n)).length;
+    }
+
+    function countConsecutive(arr) {
+      let count = 0;
+      for (let i = 1; i < arr.length; i++) {
+        if (arr[i] === arr[i - 1] + 1) count++;
+      }
+      return count;
+    }
+
+    function generateFilteredLotto() {
+      let result = [];
+      while (true) {
+        let nums = [];
+        while (nums.length < 6) {
+          let n = Math.floor(Math.random() * 45) + 1;
+          if (!nums.includes(n)) nums.push(n);
+        }
+        nums.sort((a, b) => a - b);
+
+        let hotCount = countIncluded(nums, hotBalls);
+        let coldCount = countIncluded(nums, coldBalls);
+        let even = nums.filter(n => n % 2 === 0).length;
+        let odd = 6 - even;
+        let consecutive = countConsecutive(nums);
+
+        if (hotCount >= 2 && hotCount <= 3 &&
+            coldCount <= 1 &&
+            (even === 2 || even === 3 || even === 4) &&
+            consecutive <= 1) {
+          result = nums;
+          break;
+        }
+      }
+      return result;
+    }
+
+    function generateMultiple(count) {
+      const resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = "";
+      for (let i = 0; i < count; i++) {
+        let nums = generateFilteredLotto();
+        let div = document.createElement("div");
+        div.className = "numbers";
+        div.textContent = (i+1) + "번 조합: " + nums.join(" ");
+        resultsDiv.appendChild(div);
+      }
+    }
+
+    fetchLatestDraw();
+  </script>
+</body>
+</html>
