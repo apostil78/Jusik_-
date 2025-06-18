@@ -3,32 +3,96 @@
 <head>
   <meta charset="UTF-8">
   <title>두리의 로또 추천기</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body { font-family: sans-serif; text-align: center; padding: 40px; background: #f5faff; }
-    .box { background: #fff; padding: 30px; border-radius: 10px; display: inline-block; box-shadow: 0 0 10px #ccc; }
-    .numbers { font-size: 20px; margin: 10px 0; font-weight: bold; color: #0033cc; }
-    button, select { padding: 10px 15px; font-size: 16px; margin: 10px; border-radius: 5px; border: 1px solid #ccc; }
-    button { background: #007bff; color: white; border: none; cursor: pointer; }
-    button:hover { background: #0056b3; }
-    .label { font-size: 16px; margin-right: 10px; }
+    body {
+      font-family: 'Pretendard', sans-serif;
+      background: linear-gradient(135deg, #e3f2fd, #f1f8e9);
+      text-align: center;
+      margin: 0;
+      padding: 40px;
+    }
+    .box {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: auto;
+    }
+    h2 {
+      margin-bottom: 20px;
+      color: #2e7d32;
+    }
+    .control-group {
+      margin-bottom: 20px;
+    }
+    .label {
+      font-size: 16px;
+      margin-right: 10px;
+    }
+    input[type=range] {
+      width: 200px;
+    }
+    button {
+      background: #388e3c;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      margin: 10px 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #2e7d32;
+    }
+    .result-box {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .combo-card {
+      background: #fafafa;
+      border: 1px solid #c8e6c9;
+      border-radius: 10px;
+      padding: 10px 15px;
+      min-width: 200px;
+    }
+    .combo-card-title {
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #333;
+    }
+    .number-ball {
+      display: inline-block;
+      background: #4caf50;
+      color: white;
+      width: 32px;
+      height: 32px;
+      line-height: 32px;
+      border-radius: 50%;
+      font-weight: bold;
+      margin: 2px;
+    }
+    @media (max-width: 500px) {
+      .box { padding: 20px; }
+      button { width: 100%; margin-bottom: 10px; }
+    }
   </style>
 </head>
 <body>
   <div class="box">
-    <h2>🎯 로또 추천 번호 (정밀 필터 적용)</h2>
-    <label for="comboCount" class="label">추천 조합 수:</label>
-    <select id="comboCount">
-      <!-- 1~100 조합 선택 -->
-      <script>
-        for (let i = 1; i <= 100; i++) {
-          document.write(`<option value="${i}">${i} 조합</option>`);
-        }
-      </script>
-    </select>
-    <br>
+    <h2>🎯 두리의 정밀 로또 추천기</h2>
+    <div class="control-group">
+      <label class="label" for="comboCount">추천 조합 수: <span id="rangeValue">5</span>개</label>
+      <input type="range" id="comboCount" min="1" max="100" value="5" oninput="document.getElementById('rangeValue').innerText = this.value">
+    </div>
     <button onclick="generateMultiple()">추천번호 받기</button>
     <button onclick="window.print()">🖨 인쇄하기</button>
-    <div id="results"></div>
+    <div id="results" class="result-box"></div>
   </div>
 
   <script>
@@ -76,10 +140,24 @@
       resultsDiv.innerHTML = "";
       for (let i = 0; i < count; i++) {
         let nums = generateFilteredLotto();
-        let div = document.createElement("div");
-        div.className = "numbers";
-        div.textContent = (i+1) + "번 조합: " + nums.join(" ");
-        resultsDiv.appendChild(div);
+        let card = document.createElement("div");
+        card.className = "combo-card";
+
+        let title = document.createElement("div");
+        title.className = "combo-card-title";
+        title.textContent = `${i + 1}번 조합`;
+
+        let numberRow = document.createElement("div");
+        nums.forEach(n => {
+          let ball = document.createElement("span");
+          ball.className = "number-ball";
+          ball.textContent = n;
+          numberRow.appendChild(ball);
+        });
+
+        card.appendChild(title);
+        card.appendChild(numberRow);
+        resultsDiv.appendChild(card);
       }
     }
   </script>
