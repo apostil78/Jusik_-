@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>Jusik의 로또 추천기</title>
+  <title>시기의 로또 추천기</title>
   <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
@@ -31,8 +31,10 @@
       font-size: 16px;
       margin-right: 10px;
     }
-    input[type=range] {
-      width: 200px;
+    select {
+      padding: 8px 12px;
+      font-size: 16px;
+      border-radius: 5px;
     }
     button {
       background: #388e3c;
@@ -85,10 +87,16 @@
 </head>
 <body>
   <div class="box">
-    <h2>🎯 Jusik의 정밀 로또 추천기</h2>
+    <h2>🎯 시기의 정밀 로또 추천기</h2>
     <div class="control-group">
-      <label class="label" for="comboCount">추천 조합 수: <span id="rangeValue">5</span>개</label>
-      <input type="range" id="comboCount" min="1" max="100" value="5" oninput="document.getElementById('rangeValue').innerText = this.value">
+      <label class="label" for="comboCount">추천 조합 수:</label>
+      <select id="comboCount">
+        <script>
+          for (let i = 1; i <= 100; i++) {
+            document.write(`<option value="${i}">${i} 조합</option>`);
+          }
+        </script>
+      </select>
     </div>
     <button onclick="generateMultiple()">추천번호 받기</button>
     <button onclick="window.print()">🖨 인쇄하기</button>
