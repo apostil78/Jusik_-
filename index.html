@@ -2,58 +2,38 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>두리의 정밀 필터 로또 추천기</title>
+  <title>두리의 로또 추천기</title>
   <style>
     body { font-family: sans-serif; text-align: center; padding: 40px; background: #f5faff; }
     .box { background: #fff; padding: 30px; border-radius: 10px; display: inline-block; box-shadow: 0 0 10px #ccc; }
     .numbers { font-size: 20px; margin: 10px 0; font-weight: bold; color: #0033cc; }
-    .winners { font-size: 14px; color: #444; margin-top: 20px; white-space: pre-line; text-align: left; padding: 15px; border-top: 1px solid #ccc; }
-    button { padding: 10px 20px; font-size: 16px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 10px; }
+    button, select { padding: 10px 15px; font-size: 16px; margin: 10px; border-radius: 5px; border: 1px solid #ccc; }
+    button { background: #007bff; color: white; border: none; cursor: pointer; }
     button:hover { background: #0056b3; }
-    .draw-info { color: #555; font-size: 16px; margin-bottom: 10px; }
+    .label { font-size: 16px; margin-right: 10px; }
   </style>
 </head>
 <body>
   <div class="box">
-    <h2>🌟 로또 추천 번호 (정밀 필터 적용)</h2>
-    <div class="draw-info" id="drawInfo">최근 회차 정보를 불러오는 중...</div>
-    <button onclick="generateMultiple(5)">추천번호 5조합 받기</button>
-    <button onclick="window.print()">🔧 인쇄하기</button>
+    <h2>🎯 로또 추천 번호 (정밀 필터 적용)</h2>
+    <label for="comboCount" class="label">추천 조합 수:</label>
+    <select id="comboCount">
+      <!-- 1~100 조합 선택 -->
+      <script>
+        for (let i = 1; i <= 100; i++) {
+          document.write(`<option value="${i}">${i} 조합</option>`);
+        }
+      </script>
+    </select>
+    <br>
+    <button onclick="generateMultiple()">추천번호 받기</button>
+    <button onclick="window.print()">🖨 인쇄하기</button>
     <div id="results"></div>
-    <div class="winners" id="winnerStores">1등 당첨 판매점 정보를 불러오는 중...</div>
   </div>
 
   <script>
     const hotBalls = [6, 9, 16, 21, 25, 29, 35, 36, 37, 44];
     const coldBalls = [1, 2, 12, 13, 14, 17, 23, 28, 33, 38];
-
-    async function fetchLatestDraw() {
-      try {
-        const res = await fetch('https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=0');
-        const data = await res.json();
-        const nums = [data.drwtNo1, data.drwtNo2, data.drwtNo3, data.drwtNo4, data.drwtNo5, data.drwtNo6];
-        document.getElementById("drawInfo").innerText = `${data.drwNo}회 당첨번호: ` + nums.join(', ') + ` + 보너스: ${data.bnusNo}`;
-        fetchWinners(data.drwNo);
-      } catch (err) {
-        document.getElementById("drawInfo").innerText = "최근 회차 정보를 불러오지 못했습니다.";
-        document.getElementById("winnerStores").innerText = "1등 판매점 정보를 불러올 수 없습니다.";
-      }
-    }
-
-    async function fetchWinners(drwNo) {
-      try {
-        const res = await fetch(`https://www.dhlottery.co.kr/store.do?method=topStore&pageGubun=L645&drwNo=${drwNo}`);
-        const text = await res.text();
-        const matches = [...text.matchAll(/<td class="">(.*?)<\/td>/g)].map(m => m[1].replace(/<.*?>/g, ''));
-        let output = '📍 1등 당첨 판매점 목록:\n\n';
-        for (let i = 0; i < matches.length; i += 5) {
-          output += `- ${matches[i]} (${matches[i+1]} / ${matches[i+2]} / ${matches[i+3]})\n`;
-        }
-        document.getElementById("winnerStores").innerText = output;
-      } catch (e) {
-        document.getElementById("winnerStores").innerText = "1등 판매점 정보를 불러올 수 없습니다.";
-      }
-    }
 
     function countIncluded(target, arr) {
       return arr.filter(n => target.includes(n)).length;
@@ -90,7 +70,8 @@
       return result;
     }
 
-    function generateMultiple(count) {
+    function generateMultiple() {
+      const count = parseInt(document.getElementById("comboCount").value);
       const resultsDiv = document.getElementById("results");
       resultsDiv.innerHTML = "";
       for (let i = 0; i < count; i++) {
@@ -101,8 +82,6 @@
         resultsDiv.appendChild(div);
       }
     }
-
-    fetchLatestDraw();
   </script>
 </body>
 </html>
