@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>시기의 로또 추천기</title>
+  <title>두리의 로또 추천기</title>
   <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
@@ -21,8 +21,13 @@
       margin: auto;
     }
     h2 {
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       color: #2e7d32;
+    }
+    .recent-draw {
+      font-size: 16px;
+      margin-bottom: 20px;
+      color: #444;
     }
     .control-group {
       margin-bottom: 20px;
@@ -91,7 +96,9 @@
 </head>
 <body>
   <div class="box">
-    <h2>🎯 시기의 정밀 로또 추천기</h2>
+    <h2>🎯 두리의 정밀 로또 추천기</h2>
+    <div class="recent-draw" id="recentDraw">🔄 최신 회차 불러오는 중...</div>
+
     <div class="control-group">
       <label class="label" for="comboCount">추천 조합 수:</label>
       <select id="comboCount">
@@ -118,6 +125,22 @@
       if (n <= 30) return 'n3';
       if (n <= 40) return 'n4';
       return 'n5';
+    }
+
+    function fetchRecentDraw() {
+      const url = 'https://api.allorigins.win/get?url=' + encodeURIComponent('https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=0');
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          const result = JSON.parse(data.contents);
+          const numbers = [result.drwtNo1, result.drwtNo2, result.drwtNo3, result.drwtNo4, result.drwtNo5, result.drwtNo6];
+          const bonus = result.bnusNo;
+          const drawNo = result.drwNo;
+          document.getElementById("recentDraw").innerText = `🎯 ${drawNo}회 당첨번호: ${numbers.join(', ')} + ${bonus}`;
+        })
+        .catch(() => {
+          document.getElementById("recentDraw").innerText = "❌ 당첨번호 정보를 불러올 수 없습니다.";
+        });
     }
 
     function countIncluded(target, arr) {
@@ -221,7 +244,9 @@
       });
     }
 
+    fetchRecentDraw();
     displayHistory();
   </script>
 </body>
 </html>
+
