@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>두리의 로또 추천기</title>
+  <title>시기의 로또 추천기</title>
   <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
@@ -24,11 +24,13 @@
       margin-bottom: 10px;
       color: #2e7d32;
     }
-    .recent-draw {
+    .recent-draw, .store-list {
       font-size: 16px;
       margin-bottom: 20px;
       color: #444;
+      text-align: left;
     }
+    .store-list ul { padding-left: 20px; text-align: left; }
     .control-group {
       margin-bottom: 20px;
     }
@@ -96,8 +98,9 @@
 </head>
 <body>
   <div class="box">
-    <h2>🎯 두리의 정밀 로또 추천기</h2>
+    <h2>🎯 시기의 정밀 로또 추천기</h2>
     <div class="recent-draw" id="recentDraw">🔄 최신 회차 불러오는 중...</div>
+    <div class="store-list" id="storeList">🔄 당첨 판매점 로딩 중...</div>
 
     <div class="control-group">
       <label class="label" for="comboCount">추천 조합 수:</label>
@@ -115,6 +118,42 @@
   </div>
 
   <script>
+    const PROXY = 'https://api.allorigins.win/get?url=';
+    const API_DRAW = 'https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=0';
+    const API_STORE = 'https://www.dhlottery.co.kr/store.do?method=topStore&pageGubun=L645&drwNo=0';
+
+    function fetchRecentDraw() {
+      fetch(PROXY + encodeURIComponent(API_DRAW))
+        .then(r => r.json())
+        .then(x => {
+          const d = JSON.parse(x.contents);
+          const nums = [d.drwtNo1,d.drwtNo2,d.drwtNo3,d.drwtNo4,d.drwtNo5,d.drwtNo6];
+          document.getElementById("recentDraw").innerText = `🎯 ${d.drwNo}회 당첨번호: ${nums.join(', ')} + 보너스: ${d.bnusNo}`;
+        })
+        .catch(() => { document.getElementById("recentDraw").innerText = '❌ 당첨번호 불러오기 실패'; });
+    }
+
+    function fetchWinnerStores() {
+      fetch(PROXY + encodeURIComponent(API_STORE))
+        .then(r => r.json())
+        .then(x => {
+          const html = x.contents;
+          const items = [...html.matchAll(/<td class=".*?">(.*?)<\/td>/g)].map(m => m[1].replace(/<.*?>/g,''));
+          const listEl = document.getElementById("storeList");
+          listEl.innerHTML = '<strong>🏪 1등 판매점 목록:</strong><ul>';
+          for (let i = 0; i < items.length; i += 5) {
+            listEl.innerHTML += `<li>${items[i]} / ${items[i+3]} / ${items[i+4]}</li>`;
+          }
+          listEl.innerHTML += '</ul>';
+        })
+        .catch(() => { document.getElementById("storeList").innerText = '❌ 판매점 정보 불러오기 실패'; });
+    }
+
+    fetchRecentDraw();
+    fetchWinnerStores();
+    setInterval(fetchRecentDraw, 30 * 60 * 1000);
+    setInterval(fetchWinnerStores, 30 * 60 * 1000);
+
     const hotBalls = [6, 9, 16, 21, 25, 29, 35, 36, 37, 44];
     const coldBalls = [1, 2, 12, 13, 14, 17, 23, 28, 33, 38];
     let currentCombos = [];
@@ -125,22 +164,6 @@
       if (n <= 30) return 'n3';
       if (n <= 40) return 'n4';
       return 'n5';
-    }
-
-    function fetchRecentDraw() {
-      const url = 'https://api.allorigins.win/get?url=' + encodeURIComponent('https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=0');
-      fetch(url)
-        .then(res => res.json())
-        .then(data => {
-          const result = JSON.parse(data.contents);
-          const numbers = [result.drwtNo1, result.drwtNo2, result.drwtNo3, result.drwtNo4, result.drwtNo5, result.drwtNo6];
-          const bonus = result.bnusNo;
-          const drawNo = result.drwNo;
-          document.getElementById("recentDraw").innerText = `🎯 ${drawNo}회 당첨번호: ${numbers.join(', ')} + ${bonus}`;
-        })
-        .catch(() => {
-          document.getElementById("recentDraw").innerText = "❌ 당첨번호 정보를 불러올 수 없습니다.";
-        });
     }
 
     function countIncluded(target, arr) {
@@ -244,7 +267,6 @@
       });
     }
 
-    fetchRecentDraw();
     displayHistory();
   </script>
 </body>
