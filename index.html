@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>시기의 로또 추천기</title>
+  <title>두리의 로또 추천기</title>
   <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
@@ -98,7 +98,7 @@
 </head>
 <body>
   <div class="box">
-    <h2>🎯 시기의 정밀 로또 추천기</h2>
+    <h2>🎯 두리의 정밀 로또 추천기</h2>
     <div class="recent-draw" id="recentDraw">🔄 최신 회차 불러오는 중...</div>
     <div class="store-list" id="storeList">🔄 당첨 판매점 로딩 중...</div>
 
@@ -118,35 +118,34 @@
   </div>
 
   <script>
-    const PROXY = 'https://api.allorigins.win/get?url=';
+    const PROXY = 'https://api.allorigins.win/raw?url=';
     const API_DRAW = 'https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=0';
     const API_STORE = 'https://www.dhlottery.co.kr/store.do?method=topStore&pageGubun=L645&drwNo=0';
 
     function fetchRecentDraw() {
       fetch(PROXY + encodeURIComponent(API_DRAW))
-        .then(r => r.json())
-        .then(x => {
-          const d = JSON.parse(x.contents);
+        .then(r => r.text())
+        .then(txt => {
+          const d = JSON.parse(txt);
           const nums = [d.drwtNo1,d.drwtNo2,d.drwtNo3,d.drwtNo4,d.drwtNo5,d.drwtNo6];
           document.getElementById("recentDraw").innerText = `🎯 ${d.drwNo}회 당첨번호: ${nums.join(', ')} + 보너스: ${d.bnusNo}`;
         })
-        .catch(() => { document.getElementById("recentDraw").innerText = '❌ 당첨번호 불러오기 실패'; });
+        .catch(() => document.getElementById("recentDraw").innerText = '❌ 당첨번호 불러오기 실패');
     }
 
     function fetchWinnerStores() {
       fetch(PROXY + encodeURIComponent(API_STORE))
-        .then(r => r.json())
-        .then(x => {
-          const html = x.contents;
+        .then(r => r.text())
+        .then(html => {
           const items = [...html.matchAll(/<td class=".*?">(.*?)<\/td>/g)].map(m => m[1].replace(/<.*?>/g,''));
           const listEl = document.getElementById("storeList");
-          listEl.innerHTML = '<strong>🏪 1등 판매점 목록:</strong><ul>';
-          for (let i = 0; i < items.length; i += 5) {
-            listEl.innerHTML += `<li>${items[i]} / ${items[i+3]} / ${items[i+4]}</li>`;
+          let out = '<strong>🏪 1등 판매점 목록:</strong><ul>';
+          for (let i=0; i<items.length; i+=5) {
+            out += `<li>${items[i]} / ${items[i+3]} / ${items[i+4]}</li>`;
           }
-          listEl.innerHTML += '</ul>';
+          listEl.innerHTML = out + '</ul>';
         })
-        .catch(() => { document.getElementById("storeList").innerText = '❌ 판매점 정보 불러오기 실패'; });
+        .catch(() => document.getElementById("storeList").innerText = '❌ 판매점 정보 불러오기 실패');
     }
 
     fetchRecentDraw();
