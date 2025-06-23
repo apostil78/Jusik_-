@@ -42,6 +42,7 @@
       padding: 8px 12px;
       font-size: 16px;
       border-radius: 5px;
+      border: 1px solid #ddd;
     }
     button {
       background: #388e3c;
@@ -52,9 +53,14 @@
       border-radius: 5px;
       margin: 10px 5px;
       cursor: pointer;
+      transition: all 0.3s;
     }
     button:hover {
       background: #2e7d32;
+      transform: translateY(-2px);
+    }
+    button:active {
+      transform: translateY(0);
     }
     .result-box, .history-box {
       display: flex;
@@ -69,6 +75,11 @@
       border-radius: 10px;
       padding: 10px 15px;
       min-width: 240px;
+      transition: all 0.3s;
+    }
+    .combo-card:hover {
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transform: translateY(-3px);
     }
     .combo-card-title {
       font-weight: bold;
@@ -84,15 +95,44 @@
       font-weight: bold;
       margin: 2px;
       color: white;
+      transition: all 0.3s;
+    }
+    .number-ball:hover {
+      transform: scale(1.1);
     }
     .n1 { background: #2196f3; }
     .n2 { background: #4caf50; }
     .n3 { background: #ffc107; }
     .n4 { background: #ff9800; }
     .n5 { background: #f44336; }
+    .stats-box {
+      background: #f5f5f5;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+      text-align: left;
+    }
+    .stat-item {
+      margin-bottom: 8px;
+    }
+    .progress-bar {
+      height: 10px;
+      background: #e0e0e0;
+      border-radius: 5px;
+      margin-top: 5px;
+      overflow: hidden;
+    }
+    .progress {
+      height: 100%;
+      background: #388e3c;
+    }
+    .action-buttons {
+      margin-top: 20px;
+    }
     @media (max-width: 500px) {
       .box { padding: 20px; }
       button { width: 100%; margin-bottom: 10px; }
+      .combo-card { min-width: 100%; }
     }
   </style>
 </head>
@@ -108,25 +148,314 @@
         <script>for (let i = 1; i <= 100; i++) document.write(`<option value="${i}">${i} 조합</option>`);</script>
       </select>
     </div>
+    
+    <div class="control-group">
+      <label class="label" for="genMethod">생성 방식:</label>
+      <select id="genMethod">
+        <option value="random">완전 무작위</option>
+        <option value="balanced">균형 조합 (짝/홀 비율)</option>
+        <option value="statistical">통계 기반 (자주 나온 번호)</option>
+      </select>
+    </div>
+    
     <button onclick="generateMultiple()">추천번호 받기</button>
     <button onclick="saveCombinations()">✅ 최종 확정하기</button>
+    <button onclick="clearAll()">🗑 전체 삭제</button>
     <button onclick="window.print()">🖨 인쇄하기</button>
+    
+    <div id="stats" class="stats-box" style="display:none;">
+      <h3>📊 번호 통계</h3>
+      <div id="statContent"></div>
+    </div>
+    
     <h3>📌 추천 번호</h3>
     <div id="results" class="result-box"></div>
-    <h3>📅 확정된 내역</h3>
+    
+    <h3>📅 확정된 내역 <small id="historyCount">(0개)</small></h3>
     <div id="history" class="history-box"></div>
+    
+    <div class="action-buttons">
+      <button onclick="exportNumbers()">📤 내 번호 내보내기</button>
+      <button onclick="importNumbers()">📥 내 번호 가져오기</button>
+    </div>
   </div>
 
 <script>
 const PROXY = 'https://lotto-proxy.jshwang.workers.dev?url=';
+let savedCombinations = JSON.parse(localStorage.getItem('lottoCombinations')) || [];
 
-async function fetchLatestDrawNo() {
-  const res = await fetch(PROXY + encodeURIComponent('https://www.dhlottery.co.kr/gameResult.do?method=byWin'));
-  const html = await res.text();
-  const match = html.match(/<strong>(\d+)<\/strong>회/);
-  return match ? match[1] : null;
+// DOM 로드 완료 시 저장된 조합 불러오기
+document.addEventListener('DOMContentLoaded', () => {
+  loadSavedCombinations();
+});
+
+// 로또 번호 생성 함수
+function generateLottoNumbers(method = 'random') {
+  const numbers = [];
+  
+  if (method === 'random') {
+    // 완전 무작위 생성
+    while (numbers.length < 6) {
+      const num = Math.floor(Math.random() * 45) + 1;
+      if (!numbers.includes(num)) numbers.push(num);
+    }
+  } 
+  else if (method === 'balanced') {
+    // 짝/홀 균형 조합 (3:3 또는 4:2 비율)
+    const evenOddRatio = Math.random() > 0.5 ? [3, 3] : [4, 2];
+    const [evenCount, oddCount] = Math.random() > 0.5 ? evenOddRatio : evenOddRatio.reverse();
+    
+    // 짝수 생성
+    while (numbers.filter(n => n % 2 === 0).length < evenCount) {
+      const num = Math.floor(Math.random() * 22) * 2 + 2;
+      if (num <= 45 && !numbers.includes(num)) numbers.push(num);
+    }
+    
+    // 홀수 생성
+    while (numbers.filter(n => n % 2 === 1).length < oddCount) {
+      const num = Math.floor(Math.random() * 23) * 2 + 1;
+      if (num <= 45 && !numbers.includes(num)) numbers.push(num);
+    }
+  } 
+  else if (method === 'statistical') {
+    // 통계 기반 생성 (자주 나온 번호 위주)
+    const hotNumbers = [10, 23, 29, 33, 37, 40]; // 실제로는 API에서 가져와야 함
+    const coldNumbers = [3, 8, 13, 18, 25, 35]; // 실제로는 API에서 가져와야 함
+    
+    // 핫 넘버 3~4개, 콜드 넘버 2~3개 조합
+    const hotCount = Math.random() > 0.5 ? 4 : 3;
+    const coldCount = 6 - hotCount;
+    
+    // 핫 넘버 선택
+    const shuffledHot = [...hotNumbers].sort(() => 0.5 - Math.random());
+    for (let i = 0; i < hotCount; i++) {
+      numbers.push(shuffledHot[i]);
+    }
+    
+    // 콜드 넘버 선택
+    const shuffledCold = [...coldNumbers].sort(() => 0.5 - Math.random());
+    for (let i = 0; i < coldCount; i++) {
+      numbers.push(shuffledCold[i]);
+    }
+  }
+  
+  return numbers.sort((a, b) => a - b);
 }
 
+// 여러 조합 생성 함수
+function generateMultiple() {
+  const count = parseInt(document.getElementById('comboCount').value);
+  const method = document.getElementById('genMethod').value;
+  const resultsDiv = document.getElementById('results');
+  resultsDiv.innerHTML = '';
+  
+  for (let i = 0; i < count; i++) {
+    const numbers = generateLottoNumbers(method);
+    const ballElements = numbers.map(n => 
+      `<span class="number-ball n${Math.ceil(n/10)}">${n}</span>`
+    ).join('');
+    
+    resultsDiv.innerHTML += `
+      <div class="combo-card">
+        <div class="combo-card-title">추천 조합 ${i+1}</div>
+        ${ballElements}
+      </div>
+    `;
+  }
+  
+  // 통계 업데이트
+  updateStats();
+}
+
+// 조합 저장 함수
+function saveCombinations() {
+  const cards = document.querySelectorAll('#results .combo-card');
+  if (cards.length === 0) return alert('저장할 조합이 없습니다.');
+  
+  cards.forEach(card => {
+    const numbers = [];
+    card.querySelectorAll('.number-ball').forEach(ball => {
+      numbers.push(parseInt(ball.textContent));
+    });
+    
+    savedCombinations.push({
+      numbers: numbers,
+      timestamp: new Date().toISOString()
+    });
+  });
+  
+  localStorage.setItem('lottoCombinations', JSON.stringify(savedCombinations));
+  loadSavedCombinations();
+  alert(`${cards.length}개의 조합을 저장했습니다!`);
+}
+
+// 저장된 조합 불러오기
+function loadSavedCombinations() {
+  const historyDiv = document.getElementById('history');
+  historyDiv.innerHTML = '';
+  
+  savedCombinations.forEach((combo, index) => {
+    const ballElements = combo.numbers.map(n => 
+      `<span class="number-ball n${Math.ceil(n/10)}">${n}</span>`
+    ).join('');
+    
+    const date = new Date(combo.timestamp);
+    const dateStr = `${date.getMonth()+1}/${date.getDate()} ${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
+    
+    historyDiv.innerHTML += `
+      <div class="combo-card">
+        <div class="combo-card-title">저장된 조합 ${index+1} <small>(${dateStr})</small></div>
+        ${ballElements}
+        <button onclick="deleteCombination(${index})" style="margin-top:8px; padding:2px 8px; font-size:12px;">삭제</button>
+      </div>
+    `;
+  });
+  
+  document.getElementById('historyCount').textContent = `(${savedCombinations.length}개)`;
+  updateStats();
+}
+
+// 조합 삭제 함수
+function deleteCombination(index) {
+  if (confirm('이 조합을 삭제하시겠습니까?')) {
+    savedCombinations.splice(index, 1);
+    localStorage.setItem('lottoCombinations', JSON.stringify(savedCombinations));
+    loadSavedCombinations();
+  }
+}
+
+// 전체 삭제 함수
+function clearAll() {
+  if (confirm('모든 저장된 조합을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
+    savedCombinations = [];
+    localStorage.removeItem('lottoCombinations');
+    loadSavedCombinations();
+    document.getElementById('results').innerHTML = '';
+    document.getElementById('stats').style.display = 'none';
+  }
+}
+
+// 번호 통계 업데이트
+function updateStats() {
+  const allNumbers = [];
+  const numberCounts = Array(45).fill(0);
+  
+  // 현재 추천 번호와 저장된 번호 모두 포함
+  document.querySelectorAll('.number-ball').forEach(ball => {
+    const num = parseInt(ball.textContent);
+    allNumbers.push(num);
+    numberCounts[num-1]++;
+  });
+  
+  if (allNumbers.length === 0) {
+    document.getElementById('stats').style.display = 'none';
+    return;
+  }
+  
+  document.getElementById('stats').style.display = 'block';
+  let statHTML = '';
+  
+  // 전체 번호 분포
+  statHTML += '<div class="stat-item"><strong>전체 번호 분포</strong>';
+  for (let i = 0; i < 45; i += 10) {
+    const range = numberCounts.slice(i, i+10);
+    const sum = range.reduce((a, b) => a + b, 0);
+    const percent = (sum / allNumbers.length * 100).toFixed(1);
+    
+    statHTML += `
+      <div>${i+1}-${i+10}번: ${sum}회 (${percent}%)
+        <div class="progress-bar"><div class="progress" style="width:${percent}%"></div></div>
+      </div>
+    `;
+  }
+  statHTML += '</div>';
+  
+  // 가장 많이 나온 번호
+  const sortedNumbers = numberCounts
+    .map((count, index) => ({ number: index+1, count }))
+    .sort((a, b) => b.count - a.count);
+  
+  statHTML += '<div class="stat-item"><strong>TOP 10 번호</strong><div>';
+  sortedNumbers.slice(0, 10).forEach(item => {
+    const percent = (item.count / allNumbers.length * 100).toFixed(1);
+    statHTML += `
+      <span class="number-ball n${Math.ceil(item.number/10)}" style="margin-right:5px;">
+        ${item.number} (${item.count}회)
+      </span>
+    `;
+  });
+  statHTML += '</div></div>';
+  
+  document.getElementById('statContent').innerHTML = statHTML;
+}
+
+// 번호 내보내기
+function exportNumbers() {
+  if (savedCombinations.length === 0) return alert('내보낼 조합이 없습니다.');
+  
+  const data = {
+    combinations: savedCombinations,
+    exportedAt: new Date().toISOString()
+  };
+  
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `로또조합_${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// 번호 가져오기
+function importNumbers() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  
+  input.onchange = e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = event => {
+      try {
+        const data = JSON.parse(event.target.result);
+        if (!data.combinations || !Array.isArray(data.combinations)) {
+          throw new Error('잘못된 파일 형식입니다.');
+        }
+        
+        if (confirm(`파일에서 ${data.combinations.length}개의 조합을 찾았습니다. 가져오시겠습니까?`)) {
+          savedCombinations = savedCombinations.concat(data.combinations);
+          localStorage.setItem('lottoCombinations', JSON.stringify(savedCombinations));
+          loadSavedCombinations();
+          alert('조합을 성공적으로 가져왔습니다!');
+        }
+      } catch (err) {
+        alert('파일을 읽는 중 오류가 발생했습니다: ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+  };
+  
+  input.click();
+}
+
+// 최신 회차 정보 가져오기
+async function fetchLatestDrawNo() {
+  try {
+    const res = await fetch(PROXY + encodeURIComponent('https://www.dhlottery.co.kr/gameResult.do?method=byWin'));
+    const html = await res.text();
+    const match = html.match(/<strong>(\d+)<\/strong>회/);
+    return match ? match[1] : null;
+  } catch (err) {
+    console.error('회차 정보 가져오기 실패:', err);
+    return null;
+  }
+}
+
+// 최신 당첨번호 가져오기
 async function fetchRecentDraw() {
   const drawNo = await fetchLatestDrawNo();
   if (!drawNo) {
@@ -134,12 +463,18 @@ async function fetchRecentDraw() {
     return;
   }
 
-  const res = await fetch(PROXY + encodeURIComponent(`https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${drawNo}`));
-  const d = await res.json();
-  const nums = [d.drwtNo1, d.drwtNo2, d.drwtNo3, d.drwtNo4, d.drwtNo5, d.drwtNo6];
-  document.getElementById("recentDraw").innerText = `🎯 ${d.drwNo}회 당첨번호: ${nums.join(', ')} + 보너스: ${d.bnusNo}`;
+  try {
+    const res = await fetch(PROXY + encodeURIComponent(`https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${drawNo}`));
+    const d = await res.json();
+    const nums = [d.drwtNo1, d.drwtNo2, d.drwtNo3, d.drwtNo4, d.drwtNo5, d.drwtNo6];
+    document.getElementById("recentDraw").innerText = `🎯 ${d.drwNo}회 당첨번호: ${nums.join(', ')} + 보너스: ${d.bnusNo}`;
+  } catch (err) {
+    document.getElementById("recentDraw").innerText = '❌ 당첨번호를 불러오는 중 오류 발생';
+    console.error(err);
+  }
 }
 
+// 당첨 판매점 정보 가져오기
 async function fetchWinnerStores() {
   const drawNo = await fetchLatestDrawNo();
   if (!drawNo) {
@@ -147,17 +482,23 @@ async function fetchWinnerStores() {
     return;
   }
 
-  const res = await fetch(PROXY + encodeURIComponent(`https://www.dhlottery.co.kr/store.do?method=topStore&pageGubun=L645&drwNo=${drawNo}`));
-  const html = await res.text();
-  const items = [...html.matchAll(/<td class=".*?">(.*?)<\/td>/g)].map(m => m[1].replace(/<.*?>/g,''));
-  const listEl = document.getElementById("storeList");
-  let out = `<strong>🏪 ${drawNo}회 1등 판매점:</strong><ul>`;
-  for (let i = 0; i < items.length; i += 5) {
-    out += `<li>${items[i]} / ${items[i+3]} / ${items[i+4]}</li>`;
+  try {
+    const res = await fetch(PROXY + encodeURIComponent(`https://www.dhlottery.co.kr/store.do?method=topStore&pageGubun=L645&drwNo=${drawNo}`));
+    const html = await res.text();
+    const items = [...html.matchAll(/<td class=".*?">(.*?)<\/td>/g)].map(m => m[1].replace(/<.*?>/g,''));
+    const listEl = document.getElementById("storeList");
+    let out = `<strong>🏪 ${drawNo}회 1등 판매점:</strong><ul>`;
+    for (let i = 0; i < items.length; i += 5) {
+      out += `<li>${items[i]} / ${items[i+3]} / ${items[i+4]}</li>`;
+    }
+    listEl.innerHTML = out + '</ul>';
+  } catch (err) {
+    document.getElementById("storeList").innerText = '❌ 판매점 정보를 불러오는 중 오류 발생';
+    console.error(err);
   }
-  listEl.innerHTML = out + '</ul>';
 }
 
+// 초기 데이터 로드 및 주기적 갱신
 fetchRecentDraw();
 fetchWinnerStores();
 setInterval(fetchRecentDraw, 30 * 60 * 1000);
