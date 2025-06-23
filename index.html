@@ -117,51 +117,51 @@
     <div id="history" class="history-box"></div>
   </div>
 
-  <script>
-  const PROXY = 'https://lotto-proxy.jshwang.workers.dev?url=';
+<script>
+const PROXY = 'https://lotto-proxy.jshwang.workers.dev?url=';
 
-  async function fetchLatestDrawNo() {
-    const res = await fetch(PROXY + encodeURIComponent('https://www.dhlottery.co.kr/gameResult.do?method=byWin'));
-    const html = await res.text();
-    const match = html.match(/<strong>(\d+)<\/strong>회/);
-    return match ? match[1] : null;
+async function fetchLatestDrawNo() {
+  const res = await fetch(PROXY + encodeURIComponent('https://www.dhlottery.co.kr/gameResult.do?method=byWin'));
+  const html = await res.text();
+  const match = html.match(/<strong>(\d+)<\/strong>회/);
+  return match ? match[1] : null;
+}
+
+async function fetchRecentDraw() {
+  const drawNo = await fetchLatestDrawNo();
+  if (!drawNo) {
+    document.getElementById("recentDraw").innerText = '❌ 최신 회차 번호를 불러오지 못했어요';
+    return;
   }
 
-  async function fetchRecentDraw() {
-    const drawNo = await fetchLatestDrawNo();
-    if (!drawNo) {
-      document.getElementById(\"recentDraw\").innerText = '❌ 최신 회차 번호를 불러오지 못했어요';
-      return;
-    }
+  const res = await fetch(PROXY + encodeURIComponent(`https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${drawNo}`));
+  const d = await res.json();
+  const nums = [d.drwtNo1, d.drwtNo2, d.drwtNo3, d.drwtNo4, d.drwtNo5, d.drwtNo6];
+  document.getElementById("recentDraw").innerText = `🎯 ${d.drwNo}회 당첨번호: ${nums.join(', ')} + 보너스: ${d.bnusNo}`;
+}
 
-    const res = await fetch(...);
-    const d = await res.json();
-    const nums = [d.drwtNo1, d.drwtNo2, d.drwtNo3, d.drwtNo4, d.drwtNo5, d.drwtNo6];
-    document.getElementById(\"recentDraw\").innerText = `🎯 ${d.drwNo}회 당첨번호: ${nums.join(', ')} + 보너스: ${d.bnusNo}`;
+async function fetchWinnerStores() {
+  const drawNo = await fetchLatestDrawNo();
+  if (!drawNo) {
+    document.getElementById("storeList").innerText = '❌ 최신 회차 번호를 불러오지 못했어요';
+    return;
   }
 
-  async function fetchWinnerStores() {
-    const drawNo = await fetchLatestDrawNo();
-    if (!drawNo) {
-      document.getElementById(\"storeList\").innerText = '❌ 최신 회차 번호를 불러오지 못했어요';
-      return;
-    }
-
-    const res = await fetch(PROXY + encodeURIComponent(`https://www.dhlottery.co.kr/store.do?method=topStore&pageGubun=L645&drwNo=${drawNo}`));
-    const html = await res.text();
-    const items = [...html.matchAll(/<td class=\".*?\">(.*?)<\\/td>/g)].map(m => m[1].replace(/<.*?>/g,''));
-    const listEl = document.getElementById(\"storeList\");
-    let out = `<strong>🏪 ${drawNo}회 1등 판매점:</strong><ul>`;
-    for (let i = 0; i < items.length; i += 5) {
-      out += `<li>${items[i]} / ${items[i+3]} / ${items[i+4]}</li>`;
-    }
-    listEl.innerHTML = out + '</ul>';
+  const res = await fetch(PROXY + encodeURIComponent(`https://www.dhlottery.co.kr/store.do?method=topStore&pageGubun=L645&drwNo=${drawNo}`));
+  const html = await res.text();
+  const items = [...html.matchAll(/<td class=".*?">(.*?)<\/td>/g)].map(m => m[1].replace(/<.*?>/g,''));
+  const listEl = document.getElementById("storeList");
+  let out = `<strong>🏪 ${drawNo}회 1등 판매점:</strong><ul>`;
+  for (let i = 0; i < items.length; i += 5) {
+    out += `<li>${items[i]} / ${items[i+3]} / ${items[i+4]}</li>`;
   }
+  listEl.innerHTML = out + '</ul>';
+}
 
-  fetchRecentDraw();
-  fetchWinnerStores();
-  setInterval(fetchRecentDraw, 30 * 60 * 1000);
-  setInterval(fetchWinnerStores, 30 * 60 * 1000);
+fetchRecentDraw();
+fetchWinnerStores();
+setInterval(fetchRecentDraw, 30 * 60 * 1000);
+setInterval(fetchWinnerStores, 30 * 60 * 1000);
 </script>
 </body>
 </html>
