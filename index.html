@@ -123,7 +123,7 @@
   async function fetchLatestDrawNo() {
     const res = await fetch(PROXY + encodeURIComponent('https://www.dhlottery.co.kr/gameResult.do?method=byWin'));
     const html = await res.text();
-    const match = html.match(/<strong>(\\d+)<\\/strong>회/);
+    const match = html.match(/<strong>(\d+)<\/strong>회/);
     return match ? match[1] : null;
   }
 
