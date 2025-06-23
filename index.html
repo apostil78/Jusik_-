@@ -134,9 +134,8 @@
       return;
     }
 
-    const res = await fetch(PROXY + encodeURIComponent(`https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${drawNo}`));
-    const data = await res.text();
-    const d = JSON.parse(data);
+    const res = await fetch(...);
+    const d = await res.json();
     const nums = [d.drwtNo1, d.drwtNo2, d.drwtNo3, d.drwtNo4, d.drwtNo5, d.drwtNo6];
     document.getElementById(\"recentDraw\").innerText = `🎯 ${d.drwNo}회 당첨번호: ${nums.join(', ')} + 보너스: ${d.bnusNo}`;
   }
