@@ -118,156 +118,52 @@
   </div>
 
   <script>
-    const PROXY = 'https://lotto-proxy.jshwang.workers.dev?url=';
-    const API_DRAW = 'https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=0';
-    const API_STORE = 'https://www.dhlottery.co.kr/store.do?method=topStore&pageGubun=L645&drwNo=0';
+  const PROXY = 'https://lotto-proxy.오빠ID.workers.dev?url=';
 
-    function fetchRecentDraw() {
-      fetch(PROXY + encodeURIComponent(API_DRAW))
-        .then(r => r.text())
-        .then(txt => {
-          const d = JSON.parse(txt);
-          const nums = [d.drwtNo1,d.drwtNo2,d.drwtNo3,d.drwtNo4,d.drwtNo5,d.drwtNo6];
-          document.getElementById("recentDraw").innerText = `🎯 ${d.drwNo}회 당첨번호: ${nums.join(', ')} + 보너스: ${d.bnusNo}`;
-        })
-        .catch(() => document.getElementById("recentDraw").innerText = '❌ 당첨번호 불러오기 실패');
+  async function fetchLatestDrawNo() {
+    const res = await fetch(PROXY + encodeURIComponent('https://www.dhlottery.co.kr/gameResult.do?method=byWin'));
+    const html = await res.text();
+    const match = html.match(/<strong>(\\d+)<\\/strong>회/);
+    return match ? match[1] : null;
+  }
+
+  async function fetchRecentDraw() {
+    const drawNo = await fetchLatestDrawNo();
+    if (!drawNo) {
+      document.getElementById(\"recentDraw\").innerText = '❌ 최신 회차 번호를 불러오지 못했어요';
+      return;
     }
 
-    function fetchWinnerStores() {
-      fetch(PROXY + encodeURIComponent(API_STORE))
-        .then(r => r.text())
-        .then(html => {
-          const items = [...html.matchAll(/<td class=".*?">(.*?)<\/td>/g)].map(m => m[1].replace(/<.*?>/g,''));
-          const listEl = document.getElementById("storeList");
-          let out = '<strong>🏪 1등 판매점 목록:</strong><ul>';
-          for (let i=0; i<items.length; i+=5) {
-            out += `<li>${items[i]} / ${items[i+3]} / ${items[i+4]}</li>`;
-          }
-          listEl.innerHTML = out + '</ul>';
-        })
-        .catch(() => document.getElementById("storeList").innerText = '❌ 판매점 정보 불러오기 실패');
+    const res = await fetch(PROXY + encodeURIComponent(`https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${drawNo}`));
+    const data = await res.text();
+    const d = JSON.parse(data);
+    const nums = [d.drwtNo1, d.drwtNo2, d.drwtNo3, d.drwtNo4, d.drwtNo5, d.drwtNo6];
+    document.getElementById(\"recentDraw\").innerText = `🎯 ${d.drwNo}회 당첨번호: ${nums.join(', ')} + 보너스: ${d.bnusNo}`;
+  }
+
+  async function fetchWinnerStores() {
+    const drawNo = await fetchLatestDrawNo();
+    if (!drawNo) {
+      document.getElementById(\"storeList\").innerText = '❌ 최신 회차 번호를 불러오지 못했어요';
+      return;
     }
 
-    fetchRecentDraw();
-    fetchWinnerStores();
-    setInterval(fetchRecentDraw, 30 * 60 * 1000);
-    setInterval(fetchWinnerStores, 30 * 60 * 1000);
-
-    const hotBalls = [6, 9, 16, 21, 25, 29, 35, 36, 37, 44];
-    const coldBalls = [1, 2, 12, 13, 14, 17, 23, 28, 33, 38];
-    let currentCombos = [];
-
-    function getClassByNumber(n) {
-      if (n <= 10) return 'n1';
-      if (n <= 20) return 'n2';
-      if (n <= 30) return 'n3';
-      if (n <= 40) return 'n4';
-      return 'n5';
+    const res = await fetch(PROXY + encodeURIComponent(`https://www.dhlottery.co.kr/store.do?method=topStore&pageGubun=L645&drwNo=${drawNo}`));
+    const html = await res.text();
+    const items = [...html.matchAll(/<td class=\".*?\">(.*?)<\\/td>/g)].map(m => m[1].replace(/<.*?>/g,''));
+    const listEl = document.getElementById(\"storeList\");
+    let out = `<strong>🏪 ${drawNo}회 1등 판매점:</strong><ul>`;
+    for (let i = 0; i < items.length; i += 5) {
+      out += `<li>${items[i]} / ${items[i+3]} / ${items[i+4]}</li>`;
     }
+    listEl.innerHTML = out + '</ul>';
+  }
 
-    function countIncluded(target, arr) {
-      return arr.filter(n => target.includes(n)).length;
-    }
-
-    function countConsecutive(arr) {
-      let count = 0;
-      for (let i = 1; i < arr.length; i++) {
-        if (arr[i] === arr[i - 1] + 1) count++;
-      }
-      return count;
-    }
-
-    function generateFilteredLotto() {
-      let result = [];
-      while (true) {
-        let nums = [];
-        while (nums.length < 6) {
-          let n = Math.floor(Math.random() * 45) + 1;
-          if (!nums.includes(n)) nums.push(n);
-        }
-        nums.sort((a, b) => a - b);
-
-        let hotCount = countIncluded(nums, hotBalls);
-        let coldCount = countIncluded(nums, coldBalls);
-        let even = nums.filter(n => n % 2 === 0).length;
-        let consecutive = countConsecutive(nums);
-
-        if (hotCount >= 2 && hotCount <= 3 && coldCount <= 1 && (even >= 2 && even <= 4) && consecutive <= 1) {
-          result = nums;
-          break;
-        }
-      }
-      return result;
-    }
-
-    function generateMultiple() {
-      const count = parseInt(document.getElementById("comboCount").value);
-      const resultsDiv = document.getElementById("results");
-      resultsDiv.innerHTML = "";
-      currentCombos = [];
-
-      for (let i = 0; i < count; i++) {
-        let nums = generateFilteredLotto();
-        currentCombos.push(nums);
-
-        let card = document.createElement("div");
-        card.className = "combo-card";
-
-        let title = document.createElement("div");
-        title.className = "combo-card-title";
-        title.textContent = `${i + 1}번 조합`;
-
-        let numberRow = document.createElement("div");
-        nums.forEach(n => {
-          let ball = document.createElement("span");
-          ball.className = `number-ball ${getClassByNumber(n)}`;
-          ball.textContent = n;
-          numberRow.appendChild(ball);
-        });
-
-        card.appendChild(title);
-        card.appendChild(numberRow);
-        resultsDiv.appendChild(card);
-      }
-    }
-
-    function saveCombinations() {
-      const history = JSON.parse(localStorage.getItem("lottoHistory") || "[]");
-      const date = new Date().toLocaleString();
-      history.push({ date, combos: currentCombos });
-      localStorage.setItem("lottoHistory", JSON.stringify(history));
-      displayHistory();
-    }
-
-    function displayHistory() {
-      const historyDiv = document.getElementById("history");
-      historyDiv.innerHTML = "";
-      const history = JSON.parse(localStorage.getItem("lottoHistory") || "[]");
-      history.reverse().forEach(entry => {
-        const block = document.createElement("div");
-        block.className = "combo-card";
-        const title = document.createElement("div");
-        title.className = "combo-card-title";
-        title.textContent = `✔️ ${entry.date}`;
-        block.appendChild(title);
-
-        entry.combos.forEach((combo, i) => {
-          const line = document.createElement("div");
-          combo.forEach(n => {
-            const ball = document.createElement("span");
-            ball.className = `number-ball ${getClassByNumber(n)}`;
-            ball.textContent = n;
-            line.appendChild(ball);
-          });
-          block.appendChild(line);
-        });
-
-        historyDiv.appendChild(block);
-      });
-    }
-
-    displayHistory();
-  </script>
+  fetchRecentDraw();
+  fetchWinnerStores();
+  setInterval(fetchRecentDraw, 30 * 60 * 1000);
+  setInterval(fetchWinnerStores, 30 * 60 * 1000);
+</script>
 </body>
 </html>
 
