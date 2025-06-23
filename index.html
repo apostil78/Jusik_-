@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>시기의 AI Lotto - 자동 업데이트 버전</title>
+  <title>로또 강력추천 - 최종 버전</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -261,21 +261,6 @@
       to { opacity: 0; }
     }
     
-    .loading {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(255,255,255,.3);
-      border-radius: 50%;
-      border-top-color: #ffd600;
-      animation: spin 1s ease-in-out infinite;
-      margin-right: 10px;
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    
     @media (max-width: 768px) {
       .btn {
         width: 100%;
@@ -303,24 +288,12 @@
   <div class="container">
     <header>
       <div class="logo">
-        <i class="fas fa-dice"></i>시기의 AI Lotto
+        <i class="fas fa-dice"></i>로또 강력추천
       </div>
       <div class="subtitle">
-        AI 알고리즘으로 최적의 번호를 추천해 드립니다
+        강력추천 알고리즘으로 최적의 번호를 추천해 드립니다
       </div>
     </header>
-    
-    <div class="card">
-      <h2 class="section-title">
-        <i class="fas fa-trophy"></i> 최신 회차 당첨번호
-      </h2>
-      
-      <div class="control-group">
-        <div id="winningInfo" class="combo-numbers">
-          <div class="loading"></div> 당첨번호 정보를 불러오는 중...
-        </div>
-      </div>
-    </div>
     
     <div class="card">
       <h2 class="section-title">
@@ -333,7 +306,7 @@
           <select id="comboCount">
             <script>
               for (let i = 5; i <= 100; i++) {
-                document.write(`<option value="${i}" ${i === 10 ? 'selected' : ''}>${i} 조합</option>`);
+                document.write(`<option value="${i}">${i} 조합</option>`);
               }
             </script>
           </select>
@@ -347,9 +320,6 @@
         <button class="btn" onclick="saveCombinations()">
           <i class="fas fa-save"></i> 조합 저장하기
         </button>
-        <button class="btn" onclick="updateWinningInfo()">
-          <i class="fas fa-sync-alt"></i> 당첨번호 업데이트
-        </button>
       </div>
     </div>
     
@@ -360,6 +330,29 @@
       
       <div class="combos-container" id="results">
         <!-- 결과가 여기에 동적으로 생성됩니다 -->
+        <div class="combo-card">
+          <div class="combo-title"><i class="fas fa-crown"></i> 조합 1</div>
+          <div class="combo-numbers">
+            <span class="number-ball ball-1">7</span>
+            <span class="number-ball ball-2">15</span>
+            <span class="number-ball ball-3">23</span>
+            <span class="number-ball ball-4">28</span>
+            <span class="number-ball ball-5">35</span>
+            <span class="number-ball ball-4">40</span>
+          </div>
+        </div>
+        
+        <div class="combo-card">
+          <div class="combo-title"><i class="fas fa-crown"></i> 조합 2</div>
+          <div class="combo-numbers">
+            <span class="number-ball ball-1">5</span>
+            <span class="number-ball ball-2">12</span>
+            <span class="number-ball ball-3">19</span>
+            <span class="number-ball ball-4">27</span>
+            <span class="number-ball ball-5">33</span>
+            <span class="number-ball ball-5">42</span>
+          </div>
+        </div>
       </div>
     </div>
     
@@ -374,9 +367,8 @@
     </div>
     
     <div class="footer">
-      <p>© 2025 시기의 AI Lotto. 모든 권리 보유.</p>
+      <p>© 2023 로또 강력추천. 모든 권리 보유.</p>
       <p>이 서비스는 오락 목적으로만 제공되며, 실제 당첨을 보장하지 않습니다.</p>
-      <p>당첨번호 정보는 동행복권 API에서 자동으로 가져옵니다.</p>
     </div>
   </div>
 
@@ -394,82 +386,7 @@
     // DOM 로드 시 실행
     document.addEventListener('DOMContentLoaded', () => {
       updateHistoryCount();
-      updateWinningInfo(); // 최신 당첨번호 업데이트
     });
-    
-    // 최신 당첨번호 업데이트 함수
-    async function updateWinningInfo() {
-      const winningInfoDiv = document.getElementById('winningInfo');
-      winningInfoDiv.innerHTML = '<div class="loading"></div> 당첨번호 정보를 불러오는 중...';
-      
-      try {
-        // CORS 우회를 위한 프록시 사용
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        const apiUrl = 'https://www.dhlottery.co.kr/common.do?method=getLottoNumber';
-        
-        const response = await fetch(proxyUrl + apiUrl);
-        const data = await response.json();
-        
-        if (data.returnValue === 'success') {
-          const drawNo = data.drwNo;
-          const numbers = [
-            data.drwtNo1, data.drwtNo2, data.drwtNo3,
-            data.drwtNo4, data.drwtNo5, data.drwtNo6
-          ];
-          const bonus = data.bnusNo;
-          
-          // 다음 추첨일 계산 (매주 토요일)
-          const drawDate = new Date(data.drwNoDate);
-          const nextDrawDate = new Date(drawDate);
-          nextDrawDate.setDate(drawDate.getDate() + 7);
-          
-          // 당첨번호 HTML 생성
-          const ballsHTML = numbers.map(num => {
-            let ballClass;
-            if (num <= 10) ballClass = "ball-1";
-            else if (num <= 20) ballClass = "ball-2";
-            else if (num <= 30) ballClass = "ball-3";
-            else if (num <= 40) ballClass = "ball-4";
-            else ballClass = "ball-5";
-            
-            return `<span class="number-ball ${ballClass}">${num}</span>`;
-          }).join('');
-          
-          const bonusBallClass = bonus <= 40 ? "ball-4" : "ball-5";
-          
-          winningInfoDiv.innerHTML = `
-            <div style="text-align: center;">
-              <div style="font-size: 18px; margin-bottom: 10px; color: #ffd600;">
-                ${drawNo}회 당첨번호
-              </div>
-              <div class="combo-numbers">
-                ${ballsHTML}
-                <span style="margin: 0 10px; color: #aaa;">+</span>
-                <span class="number-ball ${bonusBallClass}">${bonus}</span>
-              </div>
-              <div style="margin-top: 15px; color: #bb86fc;">
-                다음 추첨일: ${nextDrawDate.getFullYear()}년 
-                ${nextDrawDate.getMonth() + 1}월 
-                ${nextDrawDate.getDate()}일
-              </div>
-            </div>
-          `;
-          
-          showNotification('최신 당첨번호 정보를 업데이트했습니다!');
-        } else {
-          throw new Error('API 응답 오류');
-        }
-      } catch (error) {
-        console.error('당첨번호 불러오기 오류:', error);
-        winningInfoDiv.innerHTML = `
-          <div style="color: #ff6d00; text-align: center;">
-            <i class="fas fa-exclamation-triangle"></i> 
-            당첨번호 정보를 불러오지 못했습니다. 나중에 다시 시도해주세요.
-          </div>
-        `;
-        showNotification('당첨번호 정보 불러오기에 실패했습니다', true);
-      }
-    }
     
     // 번호 생성 함수
     function generateNumbers() {
@@ -542,7 +459,7 @@
     function saveCombinations() {
       const comboCards = document.querySelectorAll('#results .combo-card');
       if (comboCards.length === 0) {
-        showNotification('먼저 번호를 생성해 주세요!', true);
+        showNotification('먼저 번호를 생성해 주세요!');
         return;
       }
       
@@ -620,7 +537,7 @@
     }
     
     // 알림 표시
-    function showNotification(message, isError = false) {
+    function showNotification(message) {
       // 기존 알림 제거
       const existing = document.querySelector('.notification');
       if (existing) existing.remove();
@@ -629,8 +546,7 @@
       const notification = document.createElement('div');
       notification.className = 'notification';
       notification.innerHTML = `
-        <i class="fas ${isError ? 'fa-exclamation-triangle' : 'fa-check-circle'}" 
-           style="color: ${isError ? '#ff6d00' : '#4caf50'}; margin-right: 10px;"></i>
+        <i class="fas fa-check-circle" style="color: #4caf50; margin-right: 10px;"></i>
         ${message}
       `;
       
