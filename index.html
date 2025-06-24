@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>시기의 PREMIUM Lotto - 1178회 추천</title>
+  <title>시기의 Premium Lotto 추천</title>
   <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     * {
@@ -563,7 +563,7 @@
     <div class="header box">
       <h1>시기의 PREMIUM Lotto</h1>
       <div class="subtitle">
-        1178회 AI강력알고리즘 <span class="power-mode">ACTIVE</span>
+         AI강력알고리즘 <span class="power-mode">ACTIVE</span>
       </div>
       
       <div class="filter-info">
@@ -825,13 +825,13 @@
         .map(item => item.num);
     }
 
-    // 번호 생성 함수 - 강력추천 모드 (모든 필터 적용)
+    // 번호 생성 함수 - AI강력 알고리즘 모드 (모든 필터 적용)
     function generateNumbers() {
       const count = parseInt(document.getElementById('comboCount').value);
       const resultsDiv = document.getElementById('results');
       resultsDiv.innerHTML = '';
       
-      // 모든 필터 적용 (강력추천 모드)
+      // 모든 필터 적용 (AI강력 알고리즘 모드)
       const useEvenOdd = true;
       const useHotCold = true;
       const useRange = true;
@@ -859,14 +859,14 @@
         
         resultsDiv.innerHTML += `
           <div class="combo-card">
-            <div class="combo-card-title"><i>✨</i> 추천 조합 ${i+1}</div>
+            <div class="combo-card-title"><i>✨</i> AI추천 조합 ${i+1}</div>
             <div class="numbers">${ballElements}</div>
           </div>
         `;
       }
     }
 
-    // 단일 번호 세트 생성 (강력추천 모드)
+    // 단일 번호 세트 생성 (AI강력 알고리즘 모드)
     function generateSingleNumberSet(useEvenOdd, useHotCold, useRange) {
       const numbers = [];
       const analysis = analysisResults;
@@ -964,7 +964,7 @@
       return numbers.sort((a, b) => a - b);
     }
 
-    // 번호 세트 유효성 검사 (강력추천 모드)
+    // 번호 세트 유효성 검사 (AI강력 알고리즘 모드)
     function validateNumberSet(numbers, useSum, useConsecutive) {
       // 1. 합계 검사 (최근 100회 데이터 기반 동적 범위)
       if (useSum) {
