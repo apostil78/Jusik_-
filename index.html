@@ -563,7 +563,7 @@
     <div class="header box">
       <h1>시기의 PREMIUM Lotto</h1>
       <div class="subtitle">
-        1178회 강력추천 모드 <span class="power-mode">ACTIVE</span>
+        1178회 AI강력알고리즘 <span class="power-mode">ACTIVE</span>
       </div>
       
       <div class="filter-info">
@@ -618,8 +618,8 @@
     </div>
     
     <div class="footer">
-      <p>* 강력추천 모드: 최근 100회 당첨번호를 분석하여 모든 고급 필터를 적용한 번호를 생성합니다</p>
-      <p>* 1177회 추첨일: 2025년 6월 21일 (토)</p>
+      <p>* AI알고리즘 모드: 최근 100회 당첨번호를 분석하여 모든 고급 필터를 적용한 번호를 생성합니다</p>
+      <p>* - 저작권 HWANG JUSIK - </p>
     </div>
   </div>
 
@@ -628,13 +628,9 @@
     <div class="modal-content">
       <span class="close-modal" onclick="closeModal()">&times;</span>
       <h2 class="section-title" style="margin-top: 0;">📋 조합 내역보기 (1178회 기준)</h2>
-      
-      <div class="current-draw">
-        <div class="current-draw-title">1178회 당첨 번호</div>
-        <div id="currentDrawNumbers" class="numbers"></div>
-        <p style="margin-top: 15px; font-weight: 600; color: #0288d1;">1177회 추첨일: 2025년 6월 21일 (토)</p>
+    
       </div>
-      
+     
       <div id="historyContent"></div>
     </div>
   </div>
@@ -1067,7 +1063,7 @@
         
         historyDiv.innerHTML += `
           <div class="combo-card">
-            <div class="combo-card-title"><i>📌</i> 저장된 조합 ${index+1}</div>
+            <div class="combo-card-title"><i>📌</i> AI추천 ${index+1}</div>
             <div class="numbers">${ballElements}</div>
             <div class="action-buttons">
               <button class="delete-btn" onclick="deleteCombination(${index})">
