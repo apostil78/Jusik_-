@@ -733,6 +733,12 @@
     </div>
   </div>
 
+<div id="drawInput" style="margin-top: 30px;">
+  <label for="drawNumbers">📥 1178회 당첨번호 입력 (6개 + 보너스):</label><br>
+  <input id="drawNumbers" type="text" placeholder="예: 3,12,22,29,31,44 + 10" style="padding:6px; width:260px; margin:8px;">
+  <button onclick="applyManualDraw()">당첨번호 적용</button>
+</div>
+
   <script>
     // 1078회~1177회 실제 당첨번호 데이터 (1177회: 2025년 6월 21일)
     const lottoHistory = [
@@ -1335,6 +1341,58 @@
         `;
       });
     }
+let currentDraw = null; // 전역 변수
+
+function applyManualDraw() {
+  const input = document.getElementById("drawNumbers").value;
+  const match = input.match(/^(\d{1,2},\d{1,2},\d{1,2},\d{1,2},\d{1,2},\d{1,2}) *\+ *(\d{1,2})$/);
+
+  if (!match) {
+    alert("❌ 형식이 올바르지 않습니다. 예: 3,12,22,29,31,44 + 10");
+    return;
+  }
+
+  const main = match[1].split(',').map(n => parseInt(n.trim())).sort((a,b) => a - b);
+  const bonus = parseInt(match[2]);
+  currentDraw = { drawNo: 1178, numbers: main, bonus: bonus };
+
+  alert(`🎯 1178회 당첨번호가 적용되었습니다!`);
+  showCombinationHistory(); // 자동 결과 분석
+}
+
+function showCombinationHistory() {
+  const historyDiv = document.getElementById('history');
+  historyDiv.innerHTML = '';
+
+  if (savedCombinations.length === 0) {
+    historyDiv.innerHTML = '<p>저장된 조합이 없습니다.</p>';
+    return;
+  }
+
+  if (!currentDraw) {
+    historyDiv.innerHTML = '<p>⚠️ 먼저 위에 당첨번호를 입력해주세요.</p>';
+    return;
+  }
+
+  const list = document.createElement('ul');
+
+  savedCombinations.forEach((combo, i) => {
+    const li = document.createElement('li');
+    const matchCount = combo.filter(n => currentDraw.numbers.includes(n)).length;
+    const hasBonus = combo.includes(currentDraw.bonus);
+    let grade = "낙첨";
+
+    if (matchCount === 6) grade = "🥇 1등";
+    else if (matchCount === 5 && hasBonus) grade = "🥈 2등";
+    else if (matchCount === 5) grade = "🥉 3등";
+    else if (matchCount === 4) grade = "4등";
+    else if (matchCount === 3) grade = "5등";
+
+    li.textContent = `${i + 1}번 조합 [${combo.join(', ')}] → 맞은 개수: ${matchCount}${hasBonus ? " + 보너스" : ""} → 결과: ${grade}`;
+    list.appendChild(li);
+  });
+
+  historyDiv.appendChild(list);
 
     // 조합 삭제
     function deleteCombination(index) {
@@ -1358,22 +1416,7 @@
         alert('저장된 조합이 없습니다.');
         return;
       }
-    function promptManualDrawInput() {
-  const input = prompt("1178회 당첨번호 6개 + 보너스 번호를 입력하세요 (예: 3,12,22,29,31,44 + 10)", "");
-  if (!input) return;
-
-  const match = input.match(/^(\d{1,2},\d{1,2},\d{1,2},\d{1,2},\d{1,2},\d{1,2}) *\+ *(\d{1,2})$/);
-  if (!match) {
-    alert("형식이 잘못되었습니다. 예시처럼 입력해주세요: 3,12,22,29,31,44 + 10");
-    return;
-  }
-
-  const main = match[1].split(',').map(n => parseInt(n)).sort((a,b) => a - b);
-  const bonus = parseInt(match[2]);
-
-  currentDraw = { drawNo: 1178, numbers: main, bonus: bonus };
-  alert("✅ 1178회 당첨번호가 저장되었습니다.");
-}  
+      
       // 1178회 당첨번호 생성 (한 번만 생성)
       if (!currentDraw) {
         currentDraw = generateCurrentDraw();
