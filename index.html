@@ -591,6 +591,79 @@
       border-bottom: none;
     }
     
+    /* 수동 입력 필드 스타일 */
+    .winning-input-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin: 15px 0;
+    }
+    
+    .winning-input {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      border: 2px solid #0288d1;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+      background: rgba(255, 255, 255, 0.9);
+      transition: all 0.3s;
+    }
+    
+    .winning-input:focus {
+      outline: none;
+      border-color: #d81b60;
+      box-shadow: 0 0 0 3px rgba(216, 27, 96, 0.2);
+      transform: scale(1.1);
+    }
+    
+    .bonus-input {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      border: 2px solid #d81b60;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+      background: rgba(255, 255, 255, 0.9);
+      transition: all 0.3s;
+    }
+    
+    .bonus-input:focus {
+      outline: none;
+      border-color: #0288d1;
+      box-shadow: 0 0 0 3px rgba(2, 136, 209, 0.2);
+      transform: scale(1.1);
+    }
+    
+    .input-label {
+      font-weight: 600;
+      color: #5f6368;
+      margin-top: 5px;
+      margin-bottom: 10px;
+    }
+    
+    .check-btn {
+      background: linear-gradient(135deg, #4caf50, #8bc34a);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 1rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 600;
+      margin-top: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .check-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+    
     @media (max-width: 900px) {
       .container {
         grid-template-columns: 1fr;
@@ -644,6 +717,12 @@
       
       .combo-card {
         padding: 15px;
+      }
+      
+      .winning-input, .bonus-input {
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
       }
     }
   </style>
@@ -718,48 +797,30 @@
   </div>
 
   <!-- 조합 내역 보기 모달 -->
-
-<!-- 사용자 수동 입력 추가 -->
-<div class="current-draw">
-  <div class="current-draw-title">1178회 당첨 번호 수동 입력</div>
-  <div style="margin-bottom:10px;">
-    <label>당첨번호 (쉼표로 구분): <input type="text" id="manualWinningNumbers" placeholder="예: 1,2,3,4,5,6" style="width:200px;"></label>
-  </div>
-  <div>
-    <label>보너스 번호: <input type="number" id="manualBonusNumber" min="1" max="45" style="width:100px;"></label>
-    <button onclick="applyManualDraw()">적용</button>
-  </div>
-</div>
-
-<script>
-  function applyManualDraw() {
-    const nums = document.getElementById('manualWinningNumbers').value.split(',').map(n => parseInt(n.trim())).filter(n => !isNaN(n));
-    const bonus = parseInt(document.getElementById('manualBonusNumber').value);
-
-    if (nums.length !== 6 || nums.some(n => n < 1 || n > 45) || isNaN(bonus) || bonus < 1 || bonus > 45 || nums.includes(bonus)) {
-      alert("유효한 당첨번호 6개와 보너스 번호 1개를 입력해주세요.");
-      return;
-    }
-
-    currentDraw = {
-      drawNo: 1178,
-      numbers: nums.sort((a, b) => a - b),
-      bonus: bonus
-    };
-
-    alert("수동 입력된 당첨번호가 적용되었습니다.");
-  }
-</script>
-
   <div id="historyModal" class="modal">
     <div class="modal-content">
       <span class="close-modal" onclick="closeModal()">&times;</span>
       <h2 class="section-title" style="margin-top: 0;">📋 조합 내역보기 (1178회 기준)</h2>
       
       <div class="current-draw">
-        <div class="current-draw-title">1178회 당첨 번호</div>
-        <div id="currentDrawNumbers" class="numbers"></div>
-        <p style="margin-top: 15px; font-weight: 600; color: #0288d1;">
+        <div class="current-draw-title">1178회 당첨 번호 수동 입력</div>
+        
+        <div class="input-label">본 번호 6개 (1~45)</div>
+        <div class="winning-input-container">
+          <input type="number" min="1" max="45" class="winning-input" id="winning1">
+          <input type="number" min="1" max="45" class="winning-input" id="winning2">
+          <input type="number" min="1" max="45" class="winning-input" id="winning3">
+          <input type="number" min="1" max="45" class="winning-input" id="winning4">
+          <input type="number" min="1" max="45" class="winning-input" id="winning5">
+          <input type="number" min="1" max="45" class="winning-input" id="winning6">
+        </div>
+        
+        <div class="input-label">보너스 번호 (1~45)</div>
+        <div class="winning-input-container">
+          <input type="number" min="1" max="45" class="bonus-input" id="bonus">
+        </div>
+        
+        <button class="check-btn" onclick="checkWinning()">당첨 확인</button>
       </div>
       
       <div id="historyContent"></div>
@@ -1289,24 +1350,44 @@
       return combinations(n, k);
     }
     
-    // 1178회 당첨번호 생성
-    function generateCurrentDraw() {
-      const numbers = [];
-      while (numbers.length < 6) {
-        const num = Math.floor(Math.random() * 45) + 1;
-        if (!numbers.includes(num)) numbers.push(num);
+    // 당첨번호 입력 유효성 검사
+    function validateWinningInput() {
+      const inputs = [
+        parseInt(document.getElementById('winning1').value),
+        parseInt(document.getElementById('winning2').value),
+        parseInt(document.getElementById('winning3').value),
+        parseInt(document.getElementById('winning4').value),
+        parseInt(document.getElementById('winning5').value),
+        parseInt(document.getElementById('winning6').value),
+        parseInt(document.getElementById('bonus').value)
+      ];
+      
+      // 모든 필드가 채워졌는지 확인
+      if (inputs.some(val => isNaN(val) || val < 1 || val > 45)) {
+        alert('1부터 45까지의 숫자를 6개 본 번호와 1개 보너스 번호를 모두 입력해 주세요.');
+        return null;
       }
       
-      // 보너스 번호 생성
-      let bonus;
-      do {
-        bonus = Math.floor(Math.random() * 45) + 1;
-      } while (numbers.includes(bonus));
+      // 본 번호 6개 추출
+      const mainNumbers = inputs.slice(0, 6);
+      
+      // 중복 번호 확인
+      const uniqueNumbers = [...new Set(mainNumbers)];
+      if (uniqueNumbers.length !== 6) {
+        alert('본 번호에 중복된 숫자가 있습니다.');
+        return null;
+      }
+      
+      // 보너스 번호가 본 번호와 중복되지 않는지 확인
+      if (mainNumbers.includes(inputs[6])) {
+        alert('보너스 번호는 본 번호와 중복될 수 없습니다.');
+        return null;
+      }
       
       return {
         drawNo: 1178,
-        numbers: numbers.sort((a, b) => a - b),
-        bonus: bonus
+        numbers: mainNumbers.sort((a, b) => a - b),
+        bonus: inputs[6]
       };
     }
 
@@ -1385,31 +1466,21 @@
       }
     }
     
-    // 조합 내역 보기
-    function showCombinationHistory() {
-      if (savedCombinations.length === 0) {
-        alert('저장된 조합이 없습니다.');
-        return;
-      }
+    // 당첨 결과 확인
+    function checkWinning() {
+      const winningNumbers = validateWinningInput();
+      if (!winningNumbers) return;
       
-      // 1178회 당첨번호 생성 (한 번만 생성)
-      if (!currentDraw) {
-        currentDraw = generateCurrentDraw();
-      }
-      
-      const modal = document.getElementById('historyModal');
+      currentDraw = winningNumbers;
+      updateHistoryContent();
+    }
+    
+    // 조합 내역 업데이트
+    function updateHistoryContent() {
       const historyContent = document.getElementById('historyContent');
-      const currentDrawNumbers = document.getElementById('currentDrawNumbers');
-      
-      // 1178회 당첨번호 표시
-      const currentBallElements = currentDraw.numbers.map(n => 
-        `<div class="number-ball n${Math.ceil(n/10)}">${n}</div>`
-      ).join('');
-      
-      currentDrawNumbers.innerHTML = currentBallElements + 
-        ` + 보너스 <div class="number-ball n${Math.ceil(currentDraw.bonus/10)}">${currentDraw.bonus}</div>`;
-      
       historyContent.innerHTML = '';
+      
+      if (!currentDraw || !savedCombinations.length) return;
       
       savedCombinations.forEach((combo, index) => {
         const ballElements = combo.map(n => 
@@ -1435,8 +1506,39 @@
           </div>
         `;
       });
+    }
+    
+    // 조합 내역 보기
+    function showCombinationHistory() {
+      if (savedCombinations.length === 0) {
+        alert('저장된 조합이 없습니다.');
+        return;
+      }
       
+      const modal = document.getElementById('historyModal');
       modal.style.display = 'flex';
+      
+      // 입력 필드 초기화
+      document.getElementById('winning1').value = '';
+      document.getElementById('winning2').value = '';
+      document.getElementById('winning3').value = '';
+      document.getElementById('winning4').value = '';
+      document.getElementById('winning5').value = '';
+      document.getElementById('winning6').value = '';
+      document.getElementById('bonus').value = '';
+      
+      // 이전에 입력한 당첨번호가 있다면 표시
+      if (currentDraw) {
+        document.getElementById('winning1').value = currentDraw.numbers[0];
+        document.getElementById('winning2').value = currentDraw.numbers[1];
+        document.getElementById('winning3').value = currentDraw.numbers[2];
+        document.getElementById('winning4').value = currentDraw.numbers[3];
+        document.getElementById('winning5').value = currentDraw.numbers[4];
+        document.getElementById('winning6').value = currentDraw.numbers[5];
+        document.getElementById('bonus').value = currentDraw.bonus;
+        
+        updateHistoryContent();
+      }
     }
     
     // 모달 닫기
