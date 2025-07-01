@@ -1145,61 +1145,60 @@
       }
       
       // 2. 핫/콜드 넘버 선택
-      if (useHotCold) {
-        const hotCount = Math.floor(Math.random() * 2) + 3; // 3~4개
-        const coldCount = 6 - hotCount;
-        
-        const hotPool = [...analysis.hotNumbers].sort(() => 0.5 - Math.random());
-        const coldPool = [...analysis.coldNumbers].sort(() => 0.5 - Math.random());
-        
-        // 짝수 핫 넘버
-        const hotEven = hotPool.filter(n => n % 2 === 0);
-        while (numbers.filter(n => n % 2 === 0).length < evenCount && hotEven.length > 0) {
-          const num = hotEven.pop();
-          if (!numbers.includes(num)) numbers.push(num);
+if (useHotCold) {
+    const hotCount = Math.floor(Math.random() * 2) + 3; // 3~4개
+    const coldCount = 6 - hotCount;
+    
+    // 핫/콜드 넘버 풀 확장 (25개)
+    const hotPool = [...analysis.hotNumbers].sort(() => 0.5 - Math.random());
+    const coldPool = [...analysis.coldNumbers].sort(() => 0.5 - Math.random());
+    
+    // 짝수/홀수 분류
+    const hotEven = hotPool.filter(n => n % 2 === 0);
+    const hotOdd = hotPool.filter(n => n % 2 === 1);
+    const coldEven = coldPool.filter(n => n % 2 === 0);
+    const coldOdd = coldPool.filter(n => n % 2 === 1);
+    
+    // 짝수 핫 넘버 선택
+    let selected = 0;
+    while (selected < hotCount && hotEven.length > 0 && numbers.filter(n => n % 2 === 0).length < evenCount) {
+        const num = hotEven.pop();
+        if (!numbers.includes(num)) {
+            numbers.push(num);
+            selected++;
         }
-        
-        // 홀수 핫 넘버
-        const hotOdd = hotPool.filter(n => n % 2 === 1);
-        while (numbers.filter(n => n % 2 === 1).length < oddCount && hotOdd.length > 0) {
-          const num = hotOdd.pop();
-          if (!numbers.includes(num)) numbers.push(num);
+    }
+    
+    // 홀수 핫 넘버 선택
+    selected = 0;
+    while (selected < hotCount && hotOdd.length > 0 && numbers.filter(n => n % 2 === 1).length < oddCount) {
+        const num = hotOdd.pop();
+        if (!numbers.includes(num)) {
+            numbers.push(num);
+            selected++;
         }
-        
-        // 짝수 콜드 넘버
-        const coldEven = coldPool.filter(n => n % 2 === 0);
-        while (numbers.filter(n => n % 2 === 0).length < evenCount && coldEven.length > 0) {
-          const num = coldEven.pop();
-          if (!numbers.includes(num)) numbers.push(num);
+    }
+    
+    // 짝수 콜드 넘버 선택
+    selected = 0;
+    while (selected < coldCount && coldEven.length > 0 && numbers.filter(n => n % 2 === 0).length < evenCount) {
+        const num = coldEven.pop();
+        if (!numbers.includes(num)) {
+            numbers.push(num);
+            selected++;
         }
-        
-        // 홀수 콜드 넘버
-        const coldOdd = coldPool.filter(n => n % 2 === 1);
-        while (numbers.filter(n => n % 2 === 1).length < oddCount && coldOdd.length > 0) {
-          const num = coldOdd.pop();
-          if (!numbers.includes(num)) numbers.push(num);
+    }
+    
+    // 홀수 콜드 넘버 선택
+    selected = 0;
+    while (selected < coldCount && coldOdd.length > 0 && numbers.filter(n => n % 2 === 1).length < oddCount) {
+        const num = coldOdd.pop();
+        if (!numbers.includes(num)) {
+            numbers.push(num);
+            selected++;
         }
-      }
-      
-      // 3. 번호대 분포 조정
-      if (useRange) {
-        const rangeTargets = [...analysis.rangeDistribution]
-          .map((count, i) => ({range: i, count}))
-          .sort((a,b) => b.count - a.count)
-          .slice(0, 3);
-        
-        rangeTargets.forEach(target => {
-          const rangeStart = target.range * 10 + 1;
-          const rangeEnd = rangeStart + 9;
-          const needed = Math.ceil(6 * (target.count / analysis.rangeDistribution.reduce((a,b)=>a+b,0)));
-          
-          for (let i = 0; i < needed && numbers.length < 6; i++) {
-            const num = Math.floor(Math.random() * 10) + rangeStart;
-            if (!numbers.includes(num)) numbers.push(num);
-          }
-        });
-      }
-      
+    }
+}
       // 4. 패턴 기반 번호 생성
       if (usePattern) {
         const decadeWeights = analysis.patternStats.decadeDistribution.map(decade => 
