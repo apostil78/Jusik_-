@@ -1018,8 +1018,8 @@
       const upperBound = sortedSums[Math.ceil(sortedSums.length * 0.85)]; // 상위 15%
       
       return {
-        hotNumbers: getTopNumbers(numberStats, 15),
-        coldNumbers: getBottomNumbers(numberStats, 15),
+        hotNumbers: getTopNumbers(numberStats, 20),
+        coldNumbers: getBottomNumbers(numberStats, 20),
         evenOddRatio: evenOddStats,
         rangeDistribution: rangeStats,
         sumStats: {
