@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>시기의 Premium Lotto (고급 분석 버전)</title>
+  <title>시기의 Premium Lotto (AI 분석 버전)</title>
   <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     * {
@@ -760,6 +760,7 @@
             <option value="30">30 조합</option>
             <option value="40">40 조합</option>
             <option value="50">50 조합</option>
+            <option value="100">100 조합</option>
           </select>
         </div>
       </div>
@@ -781,7 +782,7 @@
     </div>
     
     <div class="box">
-      <h3 class="section-title">📌 1178회 추천 번호 조합</h3>
+      <h3 class="section-title">📌 금주의 추천 번호 조합</h3>
       <div id="results" class="result-box"></div>
     </div>
     
@@ -800,10 +801,10 @@
   <div id="historyModal" class="modal">
     <div class="modal-content">
       <span class="close-modal" onclick="closeModal()">&times;</span>
-      <h2 class="section-title" style="margin-top: 0;">📋 조합 내역보기 (1178회 기준)</h2>
+      <h2 class="section-title" style="margin-top: 0;">📋 조합 내역보기 </h2>
       
       <div class="current-draw">
-        <div class="current-draw-title">1178회 당첨 번호 수동 입력</div>
+        <div class="current-draw-title">최신회차 당첨 번호 수동 입력</div>
         
         <div class="input-label">본 번호 6개 (1~45)</div>
         <div class="winning-input-container">
@@ -828,9 +829,8 @@
   </div>
 
   <script>
-    // 1078회~1177회 실제 당첨번호 데이터 (1177회: 2025년 6월 21일)
+    // 1079회~1178회 실제 당첨번호 데이터 
     const lottoHistory = [
-      {drawNo: 1078, numbers: [6,10,11,14,36,38], bonus: 43},
       {drawNo: 1079, numbers: [4,8,18,24,37,45], bonus: 06},
       {drawNo: 1080, numbers: [13,16,23,31,36,44], bonus: 38},
       {drawNo: 1081, numbers: [1,9,16,23,24,38], bonus: 17},
@@ -929,12 +929,13 @@
       {drawNo: 1174, numbers: [8,11,14,17,36,39], bonus: 22},
       {drawNo: 1175, numbers: [3,4,6,8,32,42], bonus: 31},
       {drawNo: 1176, numbers: [7,9,11,21,30,35], bonus: 29},
-      {drawNo: 1177, numbers: [3,7,15,16,19,43], bonus: 21}
+      {drawNo: 1177, numbers: [3,7,15,16,19,43], bonus: 21},
+      {drawNo: 1178, numbers: [5,6,11,27,43,44], bonus: 17}
     ];
 
     let savedCombinations = JSON.parse(localStorage.getItem('lottoCombinations')) || [];
     let analysisResults = {};
-    let currentDraw = null; // 1178회 당첨번호 저장 변수
+    let currentDraw = null; // 금주의 당첨번호 저장 변수
 
     // DOM 로드 완료 시 실행
     document.addEventListener('DOMContentLoaded', () => {
