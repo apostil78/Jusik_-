@@ -1100,8 +1100,7 @@
       const count = parseInt(document.getElementById('comboCount').value);
       const resultsDiv = document.getElementById('results');
       resultsDiv.innerHTML = '';
-      
-      // 모든 필터 적용 (강력추천 모드)
+
       const useEvenOdd = true;
       const useHotCold = true;
       const useRange = true;
@@ -1110,15 +1109,12 @@
       const usePattern = true;
       const usePrime = true;
       const useEnding = true;
-      
-      // 마지막 회차 번호 조회
+
       const lastDraw = lottoHistory[lottoHistory.length - 1];
       const last7 = [...lastDraw.numbers, lastDraw.bonus];
-      
-      // 핫 넘버 선택
+
       currentHotNumber = selectHotNumber(last7, analysisResults.numberFrequencies);
-      
-      // 핫 넘버 표시
+
       const hotInfoDiv = document.createElement('div');
       hotInfoDiv.className = 'filter-info';
       hotInfoDiv.innerHTML = `
@@ -1130,32 +1126,32 @@
         </div>
       `;
       resultsDiv.before(hotInfoDiv);
-      
+
       for (let i = 0; i < count; i++) {
         let numbers;
         let isValid = false;
         let attempts = 0;
-        
+
         while (!isValid && attempts < 100) {
           numbers = generateSingleNumberSet(useEvenOdd, useHotCold, useRange, usePattern, currentHotNumber);
-          isValid = validateNumberSet(numbers, useSum, useConsecutive, usePattern, usePrime, useEnding);
+          const hotCount = numbers.filter(n => n === currentHotNumber).length;
+          isValid = (hotCount === 1) && validateNumberSet(numbers, useSum, useConsecutive, usePattern, usePrime, useEnding);
           attempts++;
         }
-        
+
         if (!isValid) {
           numbers = generateFallbackNumberSet(currentHotNumber);
         }
-        
-        // 당첨 확률 계산
+
         const probability = calculateProbability(numbers);
-        
+
         const ballElements = numbers.map(n => {
           const ballClass = n === currentHotNumber 
             ? `number-ball hot-ball n${Math.ceil(n/10)}`
             : `number-ball n${Math.ceil(n/10)}`;
           return `<div class="${ballClass}">${n}</div>`;
         }).join('');
-        
+
         resultsDiv.innerHTML += `
           <div class="combo-card">
             <div class="combo-card-title"><i>✨</i> 추천 조합 ${i+1}</div>
@@ -1384,11 +1380,11 @@
     }
 
     // 대체 번호 생성 (필터 조건을 충족하지 못할 경우)
-    function generateFallbackNumberSet(hotNumber) {
-      const numbers = [hotNumber]; // 핫 넘버 반드시 포함
+   function generateFallbackNumberSet(hotNumber) {
+      const numbers = [hotNumber];
       while (numbers.length < 6) {
         const num = Math.floor(Math.random() * 45) + 1;
-        if (!numbers.includes(num)) numbers.push(num);
+        if (!numbers.includes(num) && num !== hotNumber) numbers.push(num);
       }
       return numbers.sort((a, b) => a - b);
     }
