@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>시기의 Premium Lotto (핫 넘버 포함)</title>
+  <title>시기의 Premium Lotto (AI알고리즘)</title>
   <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     * {
@@ -761,7 +761,7 @@
     <div class="header box">
       <h1>시기의 PREMIUM Lotto</h1>
       <div class="subtitle">
-        핫 넘버 포함 모드 <span class="power-mode">ACTIVE</span>
+        AI알고리즘모드 <span class="power-mode">ACTIVE</span>
       </div>
       
       <div class="filter-info">
@@ -990,25 +990,25 @@
       return candidates[Math.floor(Math.random() * candidates.length)];
     }
 
-    // 당첨번호 분석 함수 (최근 100회)
-    function analyzeHistory() {
-      // 최근 100회 데이터 추출
-      const recentHistory = lottoHistory.slice(-100);
-      
-      const numberStats = Array(45).fill(0);
-      const evenOddStats = {even: 0, odd: 0};
-      const rangeStats = Array(5).fill(0);
-      const sumStats = {min: 999, max: 0, total: 0, counts: Array(300).fill(0)};
-      const consecutiveStats = Array(4).fill(0); // 연속번호 개수 분포
-      const sums = [];
+   // 당첨번호 분석 함수 (전체 회차)
+function analyzeHistory() {
+  // 전체 데이터 사용
+  const recentHistory = lottoHistory;
+  
+  const numberStats = Array(45).fill(0);
+  const evenOddStats = {even: 0, odd: 0};
+  const rangeStats = Array(5).fill(0);
+  const sumStats = {min: 999, max: 0, total: 0, counts: Array(300).fill(0)};
+  const consecutiveStats = Array(4).fill(0); // 연속번호 개수 분포
+  const sums = [];
       
       // 패턴 분석 추가
       const patternStats = {
-        consecutivePairs: 0,
-        sameEnding: Array(10).fill(0),
-        primeNumbers: 0,
-        decadeDistribution: Array(5).fill(0).map(() => Array(10).fill(0))
-      };
+    consecutivePairs: 0,
+    sameEnding: Array(10).fill(0),
+    primeNumbers: 0,
+    decadeDistribution: Array(5).fill(0).map(() => Array(10).fill(0))
+  };
       
       recentHistory.forEach(draw => {
         const sorted = [...draw.numbers].sort((a, b) => a - b);
@@ -1057,12 +1057,13 @@
       });
       
       // 평균 계산
-      sumStats.avg = Math.round(sumStats.total / recentHistory.length);
+    sumStats.avg = Math.round(sumStats.total / recentHistory.length);
       
-      // 합계 범위 계산 (최근 100회 데이터 기반)
-      const sortedSums = [...sums].sort((a, b) => a - b);
-      const lowerBound = sortedSums[Math.floor(sortedSums.length * 0.15)]; // 하위 15%
-      const upperBound = sortedSums[Math.ceil(sortedSums.length * 0.85)]; // 상위 15%
+       // 합계 범위 계산 (전체 회차 데이터 기반)
+  const sortedSums = [...sums].sort((a, b) => a - b);
+  const lowerBound = sortedSums[Math.floor(sortedSums.length * 0.15)];
+  const upperBound = sortedSums[Math.ceil(sortedSums.length * 0.85)];
+
       
       return {
         hotNumbers: getTopNumbers(numberStats, 20),
