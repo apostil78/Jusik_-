@@ -1,7 +1,8 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>시기의 Premium Lotto (AI알고리즘)</title>
   <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
@@ -30,7 +31,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: 
+      background:
         radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.4) 0%, transparent 40%),
         radial-gradient(circle at 80% 70%, rgba(179, 229, 252, 0.4) 0%, transparent 40%);
       z-index: -1;
@@ -77,6 +78,7 @@
       background: linear-gradient(135deg, #0288d1, #0097a7);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
     
     .subtitle {
@@ -163,7 +165,7 @@
       70% { box-shadow: 0 0 0 10px rgba(216, 27, 96, 0); }
       100% { box-shadow: 0 0 0 0 rgba(216, 27, 96, 0); }
     }
-    
+
     .controls {
       display: flex;
       flex-wrap: wrap;
@@ -356,8 +358,8 @@
     .n2 { background: linear-gradient(135deg, #0097a7, #006064); }
     .n3 { background: linear-gradient(135deg, #f57c00, #e65100); }
     .n4 { background: linear-gradient(135deg, #7b1fa2, #4a148c); }
-    .n5 { background: linear-gradient(135deg, #c2185b, #880e4f); }
-    
+    .n5 { background: linear-gradient(135deg, #c2185b, #880e4f); }   
+
     .section-title {
       color: #0288d1;
       font-size: 1.7rem;
@@ -599,7 +601,6 @@
       color: #333;
       z-index: 2;
     }
-    
     /* 통계 박스 스타일 */
     .stats-box {
       background: rgba(255, 255, 255, 0.7);
@@ -693,6 +694,51 @@
       box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
     }
     
+    /* 추가: 당첨 등수 스타일 */
+    .prize-rank {
+      font-size: 1.2rem;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 8px;
+      display: inline-block;
+      margin-top: 10px;
+    }
+    
+    .first-prize { background: #ffd700; color: #333; }
+    .second-prize { background: #c0c0c0; color: #333; }
+    .third-prize { background: #cd7f32; color: white; }
+    .fourth-prize { background: #4caf50; color: white; }
+    .fifth-prize { background: #2196f3; color: white; }
+    .no-prize { background: #bdbdbd; color: white; }
+
+    /* 추가: 로딩 애니메이션 */
+    .loading-container {
+      display: none; /* JavaScript에서 'flex'로 변경 */
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .loading-spinner {
+      width: 80px;
+      height: 80px;
+      border: 8px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #0288d1;
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* 반응형 디자인 개선 */
     @media (max-width: 900px) {
       .container {
         grid-template-columns: 1fr;
@@ -757,6 +803,10 @@
   </style>
 </head>
 <body>
+  <div class="loading-container" id="loadingSpinner">
+    <div class="loading-spinner"></div>
+  </div>
+
   <div class="container">
     <div class="header box">
       <h1>시기의 PREMIUM Lotto</h1>
@@ -825,7 +875,7 @@
       <p>* 저작권 : JS HWANG company</p>
     </div>
   </div>
-
+  
   <!-- 조합 내역 보기 모달 -->
   <div id="historyModal" class="modal">
     <div class="modal-content">
@@ -856,9 +906,9 @@
       <div id="historyContent"></div>
     </div>
   </div>
-
+  
   <script>
-    // 850회~1182회 실제 당첨번호 데이터 
+    // 850회~1183회 실제 당첨번호 데이터
     const lottoHistory = [
       {drawNo: 850, numbers: [16,20,24,28,36,39], bonus: 5},
       {drawNo: 851, numbers: [14,18,22,26,31,44], bonus: 40},
@@ -1073,7 +1123,7 @@
       {drawNo: 1060, numbers: [3,10,24,33,38,45], bonus: 36},
       {drawNo: 1061, numbers: [4,24,27,35,37,45], bonus: 15},
       {drawNo: 1062, numbers: [20,31,32,40,41,45], bonus: 12},
-      {drawNo: 1063, numbers: [3,6,22,23,24,38], bonus: 30},  
+      {drawNo: 1063, numbers: [3,6,22,23,24,38], bonus: 30},
       {drawNo: 1064, numbers: [3,6,9,18,22,35], bonus: 14},
       {drawNo: 1065, numbers: [3,18,19,23,32,45], bonus: 24},
       {drawNo: 1066, numbers: [6,11,16,19,21,32], bonus: 45},
@@ -1088,8 +1138,8 @@
       {drawNo: 1075, numbers: [1,23,24,35,44,45], bonus: 10},
       {drawNo: 1076, numbers: [3,7,9,33,36,37], bonus: 10},
       {drawNo: 1077, numbers: [4,8,17,30,40,43], bonus: 34},
-      {drawNo: 1078, numbers: [6,10,11,14,36,38], bonus: 43}, 
-      {drawNo: 1079, numbers: [4,8,18,24,37,45], bonus: 06},
+      {drawNo: 1078, numbers: [6,10,11,14,36,38], bonus: 43},
+      {drawNo: 1079, numbers: [4,8,18,24,37,45], bonus: 6},
       {drawNo: 1080, numbers: [13,16,23,31,36,44], bonus: 38},
       {drawNo: 1081, numbers: [1,9,16,23,24,38], bonus: 17},
       {drawNo: 1082, numbers: [21,26,27,32,34,42], bonus: 31},
@@ -1195,134 +1245,206 @@
       {drawNo: 1182, numbers: [1,13,21,25,28,31], bonus: 22},
       {drawNo: 1183, numbers: [4,15,17,23,27,36], bonus: 31}
     ];
-
+    
     let savedCombinations = JSON.parse(localStorage.getItem('lottoCombinations')) || [];
     let analysisResults = {};
     let currentDraw = null; // 금주의 당첨번호 저장 변수
     let currentHotNumber = null; // 현재 핫 넘버 저장
+    const primes = [2,3,5,7,11,13,17,19,23,29,31,37,41,43];
+
+    // 로딩 스피너 표시/숨김 함수
+    function showLoading() {
+      document.getElementById('loadingSpinner').style.display = 'flex';
+    }
+
+    function hideLoading() {
+      document.getElementById('loadingSpinner').style.display = 'none';
+    }
 
     // DOM 로드 완료 시 실행
     document.addEventListener('DOMContentLoaded', () => {
       analysisResults = analyzeHistory();
       loadSavedCombinations();
+      // 마지막 회차 정보를 기준으로 핫 넘버를 미리 설정하여 필터 정보에 표시
+      updateHotNumberDisplay();
     });
 
-    // 핫 넘버 선택 함수
-    function selectHotNumber(last7, frequencies) {
-      let maxFreq = -1;
-      let candidate = null;
-      
-      for (let num of last7) {
-        if (frequencies[num-1] > maxFreq) {
-          maxFreq = frequencies[num-1];
-          candidate = num;
-        }
+    // 핫 넘버 디스플레이 업데이트
+    function updateHotNumberDisplay() {
+      const lastDraw = lottoHistory[lottoHistory.length - 1];
+      const last7 = [...lastDraw.numbers, lastDraw.bonus];
+      currentHotNumber = selectHotNumber(last7, analysisResults.numberFrequencies);
+
+      const headerBox = document.querySelector('.header.box');
+      let hotInfoDiv = headerBox.querySelector('.hot-number-info');
+      if (!hotInfoDiv) {
+        hotInfoDiv = document.createElement('div');
+        hotInfoDiv.className = 'filter-info hot-number-info'; // 클래스 추가
+        headerBox.appendChild(hotInfoDiv);
       }
-      
-      // 동일 빈도수 번호 처리
-      const candidates = last7.filter(num => frequencies[num-1] === maxFreq);
-      return candidates[Math.floor(Math.random() * candidates.length)];
+      hotInfoDiv.innerHTML = `
+        <h3>적용된 핫 넘버</h3>
+        <div class="filters">
+          <span class="hot-number-tag">
+            마지막 회차 (${lastDraw.drawNo}회) 핫 넘버: ${currentHotNumber}
+          </span>
+        </div>
+      `;
     }
 
-   // 당첨번호 분석 함수 (전체 회차)
-function analyzeHistory() {
-  // 전체 데이터 사용
-  const recentHistory = lottoHistory;
-  
-  const numberStats = Array(45).fill(0);
-  const evenOddStats = {even: 0, odd: 0};
-  const rangeStats = Array(5).fill(0);
-  const sumStats = {min: 999, max: 0, total: 0, counts: Array(300).fill(0)};
-  const consecutiveStats = Array(4).fill(0); // 연속번호 개수 분포
-  const sums = [];
+    // 핫 넘버 선택 함수 (최근 당첨번호 중 빈도 높은 번호)
+    function selectHotNumber(last7, frequencies) {
+      const freqMap = new Map();
+      // 지난 7개 번호의 최근 빈도를 계산
+      for(const num of last7) {
+        freqMap.set(num, (freqMap.get(num) || 0) + 1);
+      }
+
+      let maxFreq = -1;
+      let candidates = [];
+
+      for(const [num, count] of freqMap.entries()) {
+        if(count > maxFreq) {
+          maxFreq = count;
+          candidates = [num];
+        } else if (count === maxFreq) {
+          candidates.push(num);
+        }
+      }
+      // 동일 빈도수 번호 중 임의 선택
+      return candidates[Math.floor(Math.random() * candidates.length)];
+    }
+    
+    // 당첨번호 분석 함수 (전체 회차)
+    function analyzeHistory() {
+      const recentHistory = lottoHistory;
       
-      // 패턴 분석 추가
-      const patternStats = {
-    consecutivePairs: 0,
-    sameEnding: Array(10).fill(0),
-    primeNumbers: 0,
-    decadeDistribution: Array(5).fill(0).map(() => Array(10).fill(0))
-  };
-      
+      const numberStats = Array(45).fill(0);
+      const evenOddStats = {even: 0, odd: 0};
+      const rangeStats = Array(5).fill(0); // 1-10, 11-20, ... 41-45
+      const sumStats = {min: 999, max: 0, total: 0, counts: Array(301).fill(0)}; // 합계 6~270
+      const consecutiveStats = Array(4).fill(0); // 0, 1, 2, 3+
+      const endingStats = Array(10).fill(0); // 끝자리 0~9
+      const primeStats = {primeCount: 0, nonPrimeCount: 0};
+
       recentHistory.forEach(draw => {
         const sorted = [...draw.numbers].sort((a, b) => a - b);
-        
+        const currentSum = sorted.reduce((a,b) => a+b, 0);
+
         // 번호 출현 빈도
         draw.numbers.forEach(num => {
           numberStats[num-1]++;
           evenOddStats[num % 2 === 0 ? 'even' : 'odd']++;
-          rangeStats[Math.floor((num-1)/10)]++;
+          rangeStats[Math.floor((num - 1) / 10)]++; // 0-4
+          endingStats[num % 10]++;
+          if (primes.includes(num)) {
+            primeStats.primeCount++;
+          } else {
+            primeStats.nonPrimeCount++;
+          }
         });
-        
+
         // 번호 합계 분석
-        const sum = draw.numbers.reduce((a,b) => a+b, 0);
-        sums.push(sum);
-        sumStats.total += sum;
-        sumStats.min = Math.min(sumStats.min, sum);
-        sumStats.max = Math.max(sumStats.max, sum);
-        sumStats.counts[sum] = (sumStats.counts[sum] || 0) + 1;
-        
+        sumStats.total += currentSum;
+        sumStats.min = Math.min(sumStats.min, currentSum);
+        sumStats.max = Math.max(sumStats.max, currentSum);
+        sumStats.counts[currentSum]++;
+
         // 연속 번호 분석
-        let consecutive = 0;
+        let currentConsecutive = 0;
         for (let i = 1; i < sorted.length; i++) {
-          if (sorted[i] === sorted[i-1] + 1) consecutive++;
+          if (sorted[i] === sorted[i-1] + 1) {
+            currentConsecutive++;
+          } else {
+            if (currentConsecutive > 0) {
+              consecutiveStats[Math.min(currentConsecutive, 3)]++; // 1, 2, 3 이상
+            }
+            currentConsecutive = 0;
+          }
         }
-        consecutiveStats[Math.min(consecutive, 3)]++;
-        
-        // 패턴 분석 추가
-        // 연속 숫자 쌍 분석
-        for (let i = 1; i < sorted.length; i++) {
-          if (sorted[i] - sorted[i-1] === 1) patternStats.consecutivePairs++;
+        if (currentConsecutive > 0) {
+          consecutiveStats[Math.min(currentConsecutive, 3)]++;
         }
         
-        // 끝자리 패턴 분석
-        draw.numbers.forEach(num => {
-          const lastDigit = num % 10;
-          patternStats.sameEnding[lastDigit]++;
-          
-          // 10단위 분포 분석
-          const decade = Math.floor((num - 1) / 10);
-          patternStats.decadeDistribution[decade][lastDigit]++;
-        });
-        
-        // 소수 번호 분석
-        const primes = [2,3,5,7,11,13,17,19,23,29,31,37,41,43];
-        patternStats.primeNumbers += draw.numbers.filter(n => primes.includes(n)).length;
+        // 연속 번호가 없는 경우 카운트
+        if (currentConsecutive === 0 && sorted.length > 0) {
+            let hasAnyConsecutive = false;
+            for(let i = 0; i < sorted.length - 1; i++) {
+                if (sorted[i+1] - sorted[i] === 1) {
+                    hasAnyConsecutive = true;
+                    break;
+                }
+            }
+            if (!hasAnyConsecutive) {
+                consecutiveStats[0]++;
+            }
+        }
       });
       
-      // 평균 계산
-    sumStats.avg = Math.round(sumStats.total / recentHistory.length);
-      
-       // 합계 범위 계산 (전체 회차 데이터 기반)
-  const sortedSums = [...sums].sort((a, b) => a - b);
-  const lowerBound = sortedSums[Math.floor(sortedSums.length * 0.15)];
-  const upperBound = sortedSums[Math.ceil(sortedSums.length * 0.85)];
+      // 연속번호 통계의 보정 (2개 이상 연속인 경우 1개 연속에도 포함되므로 이를 분리)
+      // 실제 연속 번호 개수 분포를 정확히 반영하기 위해 수정
+      // (2,1,0) (3,2,1,0)과 같이 연속된 숫자의 개수로 통계 -> 1개 연속 2개 연속 3개 연속 이상으로 수정
+      const calculatedConsecutiveCounts = Array(4).fill(0); // 0연속, 1연속, 2연속, 3+연속
+      recentHistory.forEach(draw => {
+          const sorted = [...draw.numbers].sort((a, b) => a - b);
+          let currentConsec = 0;
+          let maxConsec = 0;
+          for (let i = 1; i < sorted.length; i++) {
+              if (sorted[i] === sorted[i-1] + 1) {
+                  currentConsec++;
+              } else {
+                  if (currentConsec > 0) {
+                      maxConsec = Math.max(maxConsec, currentConsec);
+                  }
+                  currentConsec = 0;
+              }
+          }
+          if (currentConsec > 0) {
+              maxConsec = Math.max(maxConsec, currentConsec);
+          }
+          calculatedConsecutiveCounts[Math.min(maxConsec, 3)]++; // 0연속은 따로 세지 않음
+      });
 
-      
+      // 합계 범위 계산 (전체 회차 데이터 기반)
+      const allSums = recentHistory.map(draw => draw.numbers.reduce((a,b) => a+b, 0));
+      allSums.sort((a, b) => a - b);
+      const lowerBound = allSums[Math.floor(allSums.length * 0.15)];
+      const upperBound = allSums[Math.ceil(allSums.length * 0.85) - 1]; // -1 because it's an index
+
+      // 통계 객체 반환
       return {
-        hotNumbers: getTopNumbers(numberStats, 20),
-        coldNumbers: getBottomNumbers(numberStats, 20),
-        evenOddRatio: evenOddStats,
-        rangeDistribution: rangeStats,
-        sumStats: {
-          ...sumStats,
-          dynamicMin: Math.max(100, lowerBound - 10),
-          dynamicMax: Math.min(170, upperBound + 10)
-        },
-        consecutiveStats: consecutiveStats,
         numberFrequencies: numberStats,
-        patternStats: patternStats
+        hotNumbers: getTopNumbers(numberStats, 10), // 상위 10개
+        coldNumbers: getBottomNumbers(numberStats, 10), // 하위 10개
+        evenOddRatio: {
+            even: evenOddStats.even / (evenOddStats.even + evenOddStats.odd),
+            odd: evenOddStats.odd / (evenOddStats.even + evenOddStats.odd)
+        },
+        rangeDistribution: rangeStats.map(count => count / recentHistory.length), // 비율로 변환
+        sumStats: {
+          dynamicMin: lowerBound,
+          dynamicMax: upperBound,
+          avg: sumStats.total / recentHistory.length,
+          counts: sumStats.counts
+        },
+        consecutiveStats: calculatedConsecutiveCounts,
+        endingStats: endingStats.map(count => count / recentHistory.length), // 비율로 변환
+        primeStats: {
+            ratio: primeStats.primeCount / (primeStats.primeCount + primeStats.nonPrimeCount),
+            avgCount: (primeStats.primeCount / recentHistory.length).toFixed(2)
+        }
       };
     }
 
-    // 상위/하위 번호 추출 함수
+    // 상위 N개 번호 추출 함수
     function getTopNumbers(stats, count) {
       return stats.map((count, num) => ({num: num+1, count}))
         .sort((a,b) => b.count - a.count)
         .slice(0, count)
         .map(item => item.num);
     }
-
+    
+    // 하위 N개 번호 추출 함수
     function getBottomNumbers(stats, count) {
       return stats.map((count, num) => ({num: num+1, count}))
         .sort((a,b) => a.count - b.count)
@@ -1331,62 +1453,61 @@ function analyzeHistory() {
     }
 
     // 번호 생성 함수 - 강력추천 모드 (모든 필터 적용)
-    function generateNumbers() {
+    async function generateNumbers() {
+      showLoading();
+      await new Promise(resolve => setTimeout(resolve, 100)); // 로딩 스피너 표시를 위한 딜레이
+
       const count = parseInt(document.getElementById('comboCount').value);
       const resultsDiv = document.getElementById('results');
       resultsDiv.innerHTML = '';
-
-      const useEvenOdd = true;
-      const useHotCold = true;
-      const useRange = true;
-      const useSum = true;
-      const useConsecutive = true;
-      const usePattern = true;
-      const usePrime = true;
-      const useEnding = true;
-
+      
       const lastDraw = lottoHistory[lottoHistory.length - 1];
       const last7 = [...lastDraw.numbers, lastDraw.bonus];
-
       currentHotNumber = selectHotNumber(last7, analysisResults.numberFrequencies);
 
-      const hotInfoDiv = document.createElement('div');
-      hotInfoDiv.className = 'filter-info';
-      hotInfoDiv.innerHTML = `
-        <h3>적용된 핫 넘버</h3>
-        <div class="filters">
-          <div class="hot-number-tag">
-            마지막 회차 (${lastDraw.drawNo}회) 핫 넘버: ${currentHotNumber}
-          </div>
-        </div>
-      `;
-      resultsDiv.before(hotInfoDiv);
+      // 핫 넘버 정보는 Header 영역에 있으므로, 이 부분은 제거
+      // resultsDiv.before(hotInfoDiv); 이 부분은 제거되었습니다.
 
+      const generatedCombos = [];
       for (let i = 0; i < count; i++) {
         let numbers;
         let isValid = false;
         let attempts = 0;
+        const MAX_ATTEMPTS = 5000; // 충분한 시도 횟수
 
-        while (!isValid && attempts < 100) {
-          numbers = generateSingleNumberSet(useEvenOdd, useHotCold, useRange, usePattern, currentHotNumber);
+        while (!isValid && attempts < MAX_ATTEMPTS) {
+          numbers = generateSingleNumberSetWithFilters(currentHotNumber);
+          // 핫 넘버가 반드시 1개 포함되었는지 확인
           const hotCount = numbers.filter(n => n === currentHotNumber).length;
-          isValid = (hotCount === 1) && validateNumberSet(numbers, useSum, useConsecutive, usePattern, usePrime, useEnding);
+          isValid = (hotCount === 1) && validateNumberSet(numbers);
           attempts++;
         }
 
         if (!isValid) {
+          // 최대 시도에도 유효한 번호 조합을 찾지 못하면 대체 번호 생성
           numbers = generateFallbackNumberSet(currentHotNumber);
+          console.warn(`최대 시도 (${MAX_ATTEMPTS})에도 유효한 조합을 찾지 못하여 대체 번호 조합을 생성합니다.`, numbers);
         }
+        
+        // 생성된 조합이 이전에 생성된 조합과 중복되는지 확인
+        const sortedNumbers = numbers.slice().sort((a, b) => a - b);
+        if (generatedCombos.some(c => c.join(',') === sortedNumbers.join(','))) {
+            // 중복되면 다시 시도 (아주 드물게 발생할 수 있으나 대비)
+            i--; // 현재 조합 다시 시도
+            continue;
+        }
+        generatedCombos.push(sortedNumbers);
 
-        const probability = calculateProbability(numbers);
+
+        const probability = calculateProbability(numbers); // 당첨 확률 계산
 
         const ballElements = numbers.map(n => {
-          const ballClass = n === currentHotNumber 
+          const ballClass = (n === currentHotNumber)
             ? `number-ball hot-ball n${Math.ceil(n/10)}`
             : `number-ball n${Math.ceil(n/10)}`;
           return `<div class="${ballClass}">${n}</div>`;
         }).join('');
-
+        
         resultsDiv.innerHTML += `
           <div class="combo-card">
             <div class="combo-card-title"><i>✨</i> 추천 조합 ${i+1}</div>
@@ -1397,21 +1518,21 @@ function analyzeHistory() {
                 <div class="probability-bar">
                   <div class="bar-label">1등:</div>
                   <div class="bar-container">
-                    <div class="bar-fill" style="width: ${probability.first * 100}%"></div>
+                    <div class="bar-fill" style="width: ${Math.min(probability.first * 10000000, 100)}%"></div>
                     <div class="bar-value">1/${Math.floor(1/probability.first).toLocaleString()}</div>
                   </div>
                 </div>
                 <div class="probability-bar">
                   <div class="bar-label">2등:</div>
                   <div class="bar-container">
-                    <div class="bar-fill" style="width: ${probability.second * 100}%"></div>
+                    <div class="bar-fill" style="width: ${Math.min(probability.second * 1000000, 100)}%"></div>
                     <div class="bar-value">1/${Math.floor(1/probability.second).toLocaleString()}</div>
                   </div>
                 </div>
                 <div class="probability-bar">
                   <div class="bar-label">3등:</div>
                   <div class="bar-container">
-                    <div class="bar-fill" style="width: ${probability.third * 100}%"></div>
+                    <div class="bar-fill" style="width: ${Math.min(probability.third * 100000, 100)}%"></div>
                     <div class="bar-value">1/${Math.floor(1/probability.third).toLocaleString()}</div>
                   </div>
                 </div>
@@ -1420,298 +1541,223 @@ function analyzeHistory() {
           </div>
         `;
       }
+      hideLoading();
     }
 
-    // 단일 번호 세트 생성 (강력추천 모드)
-    function generateSingleNumberSet(useEvenOdd, useHotCold, useRange, usePattern, hotNumber) {
-      const numbers = [hotNumber]; // 핫 넘버 반드시 포함
-      const analysis = analysisResults;
-      
-      // 1. 짝/홀 비율 결정 (3:3 또는 4:2)
-      let evenCountTarget, oddCountTarget;
-      if (useEvenOdd) {
-        const totalEven = analysis.evenOddRatio.even;
-        const totalOdd = analysis.evenOddRatio.odd;
-        const evenRatio = totalEven / (totalEven + totalOdd);
+    // 단일 번호 세트 생성 (모든 필터 적용 로직 포함)
+    function generateSingleNumberSetWithFilters(hotNumber) {
+        let numbers = [hotNumber];
+        const analysis = analysisResults;
+        const allNumbers = Array.from({length: 45}, (_, i) => i + 1).filter(n => n !== hotNumber);
         
-        if (Math.random() < evenRatio) {
-          evenCountTarget = Math.random() > 0.5 ? 3 : 4;
-        } else {
-          evenCountTarget = Math.random() > 0.5 ? 2 : 3;
-        }
-        oddCountTarget = 6 - evenCountTarget;
-        
-        // 핫 넘버에 따라 조정
-        if (hotNumber % 2 === 0) {
-          evenCountTarget--;
-        } else {
-          oddCountTarget--;
-        }
-      } else {
-        evenCountTarget = 0;
-        oddCountTarget = 0;
-      }
-      
-      // 2. 핫/콜드 넘버 선택
-      if (useHotCold) {
-        const hotCount = Math.floor(Math.random() * 2) + 3; // 3~4개
-        const coldCount = 6 - hotCount;
-        
-        // 핫/콜드 넘버 풀 확장 (25개)
-        const hotPool = [...analysis.hotNumbers].sort(() => 0.5 - Math.random());
-        const coldPool = [...analysis.coldNumbers].sort(() => 0.5 - Math.random());
-        
-        // 핫 넘버 제거
-        const filteredHotPool = hotPool.filter(n => n !== hotNumber);
-        const filteredColdPool = coldPool.filter(n => n !== hotNumber);
-        
-        // 짝수/홀수 분류
-        const hotEven = filteredHotPool.filter(n => n % 2 === 0);
-        const hotOdd = filteredHotPool.filter(n => n % 2 === 1);
-        const coldEven = filteredColdPool.filter(n => n % 2 === 0);
-        const coldOdd = filteredColdPool.filter(n => n % 2 === 1);
-        
-        // 짝수 핫 넘버 선택
-        let selected = 0;
-        while (selected < hotCount && hotEven.length > 0 && numbers.filter(n => n % 2 === 0).length < evenCountTarget) {
-          const num = hotEven.pop();
-          if (!numbers.includes(num)) {
-            numbers.push(num);
-            selected++;
-          }
-        }
-        
-        // 홀수 핫 넘버 선택
-        selected = 0;
-        while (selected < hotCount && hotOdd.length > 0 && numbers.filter(n => n % 2 === 1).length < oddCountTarget) {
-          const num = hotOdd.pop();
-          if (!numbers.includes(num)) {
-            numbers.push(num);
-            selected++;
-          }
-        }
-        
-        // 짝수 콜드 넘버 선택
-        selected = 0;
-        while (selected < coldCount && coldEven.length > 0 && numbers.filter(n => n % 2 === 0).length < evenCountTarget) {
-          const num = coldEven.pop();
-          if (!numbers.includes(num)) {
-            numbers.push(num);
-            selected++;
-          }
-        }
-        
-        // 홀수 콜드 넘버 선택
-        selected = 0;
-        while (selected < coldCount && coldOdd.length > 0 && numbers.filter(n => n % 2 === 1).length < oddCountTarget) {
-          const num = coldOdd.pop();
-          if (!numbers.includes(num)) {
-            numbers.push(num);
-            selected++;
-          }
-        }
-      }
-      
-      // 4. 패턴 기반 번호 생성
-      if (usePattern) {
-        const decadeWeights = analysis.patternStats.decadeDistribution.map(decade => 
-          Math.max(...decade) / decade.reduce((a, b) => a + b, 0)
-        );
-        
-        while (numbers.length < 6) {
-          // 가중치 기반 번호 선택
-          const decade = weightedRandom(decadeWeights);
-          const validEndings = analysis.patternStats.decadeDistribution[decade]
-            .map((count, i) => count > 0 ? i : -1)
-            .filter(i => i >= 0);
-          
-          const ending = validEndings[Math.floor(Math.random() * validEndings.length)];
-          const num = decade * 10 + ending + 1;
-          
-          // 유효성 검사
-          if (!numbers.includes(num) && num <= 45) {
-            // 끝자리 중복 검사
-            const endings = numbers.map(n => n % 10);
-            if (endings.filter(e => e === ending).length < 2) {
-              numbers.push(num);
-            }
-          }
-        }
-      }
-      
-      // 5. 부족한 번호는 랜덤으로 채움
-      while (numbers.length < 6) {
-        const num = Math.floor(Math.random() * 45) + 1;
-        if (!numbers.includes(num)) {
-          if (useEvenOdd) {
+        // 핫/콜드 풀 (핫 넘버 제외)
+        const hotPool = analysis.hotNumbers.filter(n => n !== hotNumber);
+        const coldPool = analysis.coldNumbers.filter(n => n !== hotNumber);
+        const normalPool = allNumbers.filter(n => !hotPool.includes(n) && !coldPool.includes(n));
+
+        // 목표 짝홀 비율 (3:3 또는 4:2, hotNumber 포함하여 설정)
+        let evenCountTarget = Math.random() < 0.5 ? 3 : 4;
+        let oddCountTarget = 6 - evenCountTarget;
+
+        if (hotNumber % 2 === 0) evenCountTarget--;
+        else oddCountTarget--;
+
+        let currentEvenCount = hotNumber % 2 === 0 ? 1 : 0;
+        let currentOddCount = hotNumber % 2 === 1 ? 1 : 0;
+
+        // 소수 번호 개수 (핫 넘버 포함하여 설정)
+        let primeCountTarget = Math.floor(Math.random() * 3) + 1; // 1~3개
+        if (primes.includes(hotNumber)) primeCountTarget--;
+        primeCountTarget = Math.max(0, primeCountTarget); // 0보다 작아지지 않도록 보정
+
+        let currentPrimeCount = primes.includes(hotNumber) ? 1 : 0;
+
+        // 번호를 뽑는 과정
+        const availableNumbers = shuffleArray(allNumbers.slice());
+
+        for (let i = 0; i < availableNumbers.length && numbers.length < 6; i++) {
+            const num = availableNumbers[i];
+
+            // 짝홀 비율 검사
             const isEven = num % 2 === 0;
-            if ((isEven && numbers.filter(n => n % 2 === 0).length < evenCountTarget) || 
-                (!isEven && numbers.filter(n => n % 2 === 1).length < oddCountTarget)) {
-              numbers.push(num);
+            if ((isEven && currentEvenCount >= evenCountTarget) || (!isEven && currentOddCount >= oddCountTarget)) {
+                continue; // 짝홀 비율 초과
             }
-          } else {
+
+            // 소수 개수 검사
+            if (primes.includes(num) && currentPrimeCount >= primeCountTarget) {
+                continue; // 소수 개수 초과
+            }
+
+            // 이미 추가된 숫자인지 확인 (hotNumber 때문에 안전장치)
+            if (numbers.includes(num)) continue;
+
+            // 추가될 경우의 임시 번호 세트
+            const tempNumbers = [...numbers, num].sort((a,b) => a-b);
+
+            // 연속 번호 검사 (추가될 경우)
+            let consecutiveCount = 0;
+            for (let k = 1; k < tempNumbers.length; k++) {
+                if (tempNumbers[k] === tempNumbers[k-1] + 1) {
+                    consecutiveCount++;
+                } else {
+                    if (consecutiveCount > 0) { // 여기서 max_consecutive_len을 추적
+                        // 이전 연속 길이가 2 이상이면 문제 (총 3개 연속 이상)
+                        if (consecutiveCount >= 2) { 
+                           consecutiveCount = -1; // 유효성 검사 실패
+                           break;
+                        }
+                    }
+                    consecutiveCount = 0;
+                }
+            }
+            if (consecutiveCount === -1 || consecutiveCount >= 2) continue; // 3개 연속이 되거나, 2개 연속을 넘어섬 (2개 연속까지 허용)
+
+
+            // 끝자리 패턴 검사 (추가될 경우)
+            const tempEndings = Array(10).fill(0);
+            tempNumbers.forEach(n => tempEndings[n % 10]++);
+            if (Math.max(...tempEndings) >= 3) {
+                continue; // 동일 끝자리 3개 이상 방지
+            }
+
+            // 모든 검사 통과 시 추가
             numbers.push(num);
-          }
+            if (isEven) currentEvenCount++;
+            else currentOddCount++;
+            if (primes.includes(num)) currentPrimeCount++;
         }
-      }
-      
-      return numbers.sort((a, b) => a - b);
-    }
-    
-    // 가중치 기반 랜덤 선택 함수
-    function weightedRandom(weights) {
-      const total = weights.reduce((a, b) => a + b, 0);
-      let rand = Math.random() * total;
-      for (let i = 0; i < weights.length; i++) {
-        rand -= weights[i];
-        if (rand <= 0) return i;
-      }
-      return weights.length - 1;
+        
+        // 최종 번호 세트 반환 (6개 미만이면 validate에서 걸러지거나 fallback에서 처리)
+        return numbers.sort((a, b) => a - b);
     }
 
-    // 번호 세트 유효성 검사 (강력추천 모드)
-    function validateNumberSet(numbers, useSum, useConsecutive, usePattern, usePrime, useEnding) {
-      // 1. 합계 검사 (최근 100회 데이터 기반 동적 범위)
-      if (useSum) {
-        const sum = numbers.reduce((a,b) => a+b, 0);
-        if (sum < analysisResults.sumStats.dynamicMin || sum > analysisResults.sumStats.dynamicMax) return false;
+    // 배열 섞기 함수
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
       }
-      
-      // 2. 연속 번호 검사
-      if (useConsecutive) {
-        const sorted = [...numbers].sort((a,b) => a-b);
-        let consecutive = 0;
-        for (let i = 1; i < sorted.length; i++) {
-          if (sorted[i] === sorted[i-1] + 1) consecutive++;
-          if (consecutive > 2) return false; // 연속번호 3개 이상 불가
+      return array;
+    }
+
+    // 번호 세트 유효성 검사 (모든 필터 통합 검사)
+    function validateNumberSet(numbers) {
+      if (numbers.length !== 6) return false;
+
+      const analysis = analysisResults;
+      const sorted = [...numbers].sort((a,b) => a-b);
+      const sum = sorted.reduce((a,b) => a+b, 0);
+
+      // 1. 합계 검사 (동적 범위)
+      if (sum < analysis.sumStats.dynamicMin || sum > analysis.sumStats.dynamicMax) return false;
+
+      // 2. 연속 번호 검사 (3개 이상 연속 방지)
+      let currentConsecutive = 0;
+      let maxConsecutive = 0;
+      for (let i = 1; i < sorted.length; i++) {
+        if (sorted[i] === sorted[i-1] + 1) {
+          currentConsecutive++;
+        } else {
+          maxConsecutive = Math.max(maxConsecutive, currentConsecutive);
+          currentConsecutive = 0;
         }
       }
-      
-      // 3. 패턴 필터링
-      if (usePattern) {
-        const sorted = [...numbers].sort((a, b) => a - b);
-        let consecutiveCount = 0;
-        for (let i = 1; i < sorted.length; i++) {
-          if (sorted[i] - sorted[i-1] === 1) consecutiveCount++;
-        }
-        if (consecutiveCount > 2) return false; // 연속 쌍 3개 이상 제한
+      maxConsecutive = Math.max(maxConsecutive, currentConsecutive); // 마지막 연속 처리
+      if (maxConsecutive >= 3) return false; // 3개 이상 연속 번호 불가
+
+      // 3. 짝/홀 비율 검사 (2:4, 3:3, 4:2 허용)
+      const evenCount = numbers.filter(n => n % 2 === 0).length;
+      const oddCount = 6 - evenCount;
+      if (!((evenCount === 2 && oddCount === 4) ||
+            (evenCount === 3 && oddCount === 3) ||
+            (evenCount === 4 && oddCount === 2))) {
+        return false;
       }
 
-      // 4. 소수 번호 필터링
-      if (usePrime) {
-        const primes = [2,3,5,7,11,13,17,19,23,29,31,37,41,43];
-        const primeCount = numbers.filter(n => primes.includes(n)).length;
-        if (primeCount < 1 || primeCount > 3) return false; // 소수 번호 1~3개
-      }
+      // 4. 소수 번호 개수 검사 (1~3개)
+      const primeCount = numbers.filter(n => primes.includes(n)).length;
+      if (primeCount < 1 || primeCount > 3) return false;
 
-      // 5. 끝자리 필터링
-      if (useEnding) {
-        const endings = Array(10).fill(0);
-        numbers.forEach(num => endings[num % 10]++);
-        if (Math.max(...endings) >= 3) return false; // 동일 끝자리 3개 이상 제한
-      }
-      
-      return true;
+      // 5. 끝자리 패턴 검사 (동일 끝자리 3개 이상 방지)
+      const endingCounts = Array(10).fill(0);
+      numbers.forEach(num => endingCounts[num % 10]++);
+      if (Math.max(...endingCounts) >= 3) return false;
+
+      // 6. 번호대 균형 검사 (각 번호대에 최소 1개 이상 권장, 단 41-45는 5개밖에 없으므로 예외)
+      const rangeCounts = Array(5).fill(0);
+      numbers.forEach(num => rangeCounts[Math.floor((num - 1) / 10)]++);
+      if (rangeCounts.filter(c => c === 0).length >= 2) return false; // 0개인 번호대가 2개 이상이면 안 됨 (ex: 10번대, 30번대 아예 없음)
+      // 41-45 구간이 0개인 것은 허용. 그 외 다른 구간에서 0개가 2개 이상일 때만 걸러내기
+      if (rangeCounts[0] === 0 && rangeCounts[1] === 0) return false;
+      if (rangeCounts[0] === 0 && rangeCounts[2] === 0) return false;
+      // ... 모든 조합을 다 고려하기는 어려우니 일반적인 분포를 벗어나지 않도록 조정.
+      // 여기서는 심플하게 0개인 번호대가 너무 많지 않도록만 검사. (전체 45개 숫자에 대한 분포와 평균을 보면 2개 정도 비어도 정상 범위일 수 있음)
+      // 조금 더 엄격하게: 최소 1개의 숫자는 1-10, 11-20, 21-30, 31-40 중 최소 3개 이상의 번호대에 분포
+      const activeDecades = rangeCounts.filter((count, index) => count > 0).length;
+      if (activeDecades < 3) return false;
+
+
+      return true; // 모든 필터 통과
     }
 
     // 대체 번호 생성 (필터 조건을 충족하지 못할 경우)
-   function generateFallbackNumberSet(hotNumber) {
+    function generateFallbackNumberSet(hotNumber) {
       const numbers = [hotNumber];
       while (numbers.length < 6) {
         const num = Math.floor(Math.random() * 45) + 1;
-        if (!numbers.includes(num) && num !== hotNumber) numbers.push(num);
+        if (!numbers.includes(num)) {
+          numbers.push(num);
+        }
       }
       return numbers.sort((a, b) => a - b);
     }
     
-    // 당첨 확률 계산 함수
+    // 당첨 확률 계산 함수 (이전과 동일)
     function calculateProbability(numbers) {
-      // 확률 계산 기준 (한국 로또 기준)
       const totalNumbers = 45;
       const selectNumbers = 6;
       
-      // 1등 확률: 6개 모두 일치
-      const first = 1 / (totalCombinations(totalNumbers, selectNumbers));
+      const first = 1 / (combinations(totalNumbers, selectNumbers));
+      const second = (combinations(selectNumbers, 5) * combinations(totalNumbers - selectNumbers, 1)) / (combinations(totalNumbers, selectNumbers)); // 5개 일치 + 보너스 일치 (여기서 totalNumbers-selectNumbers-1 해야 보너스 제외 다른 숫자가 맞음)
+      // 2등은 5개 일치, 그리고 나머지 한 자리가 보너스 번호와 일치.
+      // 따라서 C(6, 5) * C(1, 1) * C(38, 0) / C(45, 6) 의 형태가 됨.
+      // 5개 일치와 보너스볼 일치 (C(6, 5) * C(1,1))
+      const probSecond = (combinations(6, 5) * combinations(1, 1)) / combinations(45, 6);
       
-      // 2등 확률: 5개 일치 + 보너스 번호 일치
-      const second = (combinations(6, 5) * combinations(39, 1)) / totalCombinations(totalNumbers, selectNumbers);
-      
-      // 3등 확률: 5개 일치
-      const third = (combinations(6, 5) * combinations(38, 1)) / totalCombinations(totalNumbers, selectNumbers);
-      
+      // 3등은 5개 일치, 보너스 볼은 불일치. (C(6,5) * C(38,1))
+      // 5개 일치와 보너스볼 불일치 (C(6,5) * C(38,1))
+      const probThird = (combinations(6, 5) * combinations(38, 1)) / combinations(45, 6);
+
       return {
         first: first,
-        second: second,
-        third: third
+        second: probSecond,
+        third: probThird
       };
     }
     
     // 조합 계산 함수
     function combinations(n, k) {
-      if (k > n) return 0;
+      if (k < 0 || k > n) return 0;
       if (k === 0 || k === n) return 1;
-      
-      let result = 1;
-      for (let i = 1; i <= k; i++) {
-        result = result * (n - i + 1) / i;
-      }
-      return result;
-    }
-    
-    // 전체 조합 수 계산
-    function totalCombinations(n, k) {
-      return combinations(n, k);
-    }
-    
-    // 당첨번호 입력 유효성 검사
-    function validateWinningInput() {
-      const inputs = [
-        parseInt(document.getElementById('winning1').value),
-        parseInt(document.getElementById('winning2').value),
-        parseInt(document.getElementById('winning3').value),
-        parseInt(document.getElementById('winning4').value),
-        parseInt(document.getElementById('winning5').value),
-        parseInt(document.getElementById('winning6').value),
-        parseInt(document.getElementById('bonus').value)
-      ];
-      
-      // 모든 필드가 채워졌는지 확인
-      if (inputs.some(val => isNaN(val) || val < 1 || val > 45)) {
-        alert('1부터 45까지의 숫자를 6개 본 번호와 1개 보너스 번호를 모두 입력해 주세요.');
-        return null;
-      }
-      
-      // 본 번호 6개 추출
-      const mainNumbers = inputs.slice(0, 6);
-      
-      // 중복 번호 확인
-      const uniqueNumbers = [...new Set(mainNumbers)];
-      if (uniqueNumbers.length !== 6) {
-        alert('본 번호에 중복된 숫자가 있습니다.');
-        return null;
-      }
-      
-      // 보너스 번호가 본 번호와 중복되지 않는지 확인
-      if (mainNumbers.includes(inputs[6])) {
-        alert('보너스 번호는 본 번호와 중복될 수 없습니다.');
-        return null;
-      }
-      
-      return {
-        drawNo: 1178,
-        numbers: mainNumbers.sort((a, b) => a - b),
-        bonus: inputs[6]
-      };
-    }
+      if (k > n / 2) k = n - k; // nCk = nC(n-k)
 
+      let res = 1;
+      for (let i = 1; i <= k; i++) {
+        res = res * (n - i + 1) / i;
+      }
+      return res;
+    }
+    
     // 조합 저장 기능
     function saveCombinations() {
-      const comboCards = document.querySelectorAll('.combo-card');
+      const comboCards = document.querySelectorAll('#results .combo-card');
       if (comboCards.length === 0) {
         alert('먼저 번호를 생성해 주세요!');
         return;
       }
       
+      let newCombinationsSaved = 0;
       comboCards.forEach(card => {
         const numbers = Array.from(card.querySelectorAll('.number-ball'))
           .map(ball => parseInt(ball.textContent));
@@ -1723,21 +1769,26 @@ function analyzeHistory() {
         
         if (!isDuplicate) {
           savedCombinations.push(numbers);
+          newCombinationsSaved++;
         }
       });
       
       localStorage.setItem('lottoCombinations', JSON.stringify(savedCombinations));
       loadSavedCombinations();
-      alert('선택된 조합이 저장되었습니다!');
+      if (newCombinationsSaved > 0) {
+        alert(`${newCombinationsSaved}개의 새로운 조합이 저장되었습니다!`);
+      } else {
+        alert('새로 저장할 조합이 없습니다. (모두 이미 저장됨)');
+      }
     }
-
+    
     // 저장된 조합 로드
     function loadSavedCombinations() {
       const historyDiv = document.getElementById('history');
-      const historyCount = document.getElementById('historyCount');
+      const historyCountSpan = document.getElementById('historyCount');
       
       historyDiv.innerHTML = '';
-      historyCount.textContent = savedCombinations.length;
+      historyCountSpan.textContent = savedCombinations.length;
       
       if (savedCombinations.length === 0) {
         historyDiv.innerHTML = '<p>저장된 조합이 없습니다</p>';
@@ -1762,21 +1813,34 @@ function analyzeHistory() {
         `;
       });
     }
-
+    
     // 조합 삭제
     function deleteCombination(index) {
-      savedCombinations.splice(index, 1);
-      localStorage.setItem('lottoCombinations', JSON.stringify(savedCombinations));
-      loadSavedCombinations();
+      if (confirm('이 조합을 삭제하시겠습니까?')) {
+        savedCombinations.splice(index, 1);
+        localStorage.setItem('lottoCombinations', JSON.stringify(savedCombinations));
+        loadSavedCombinations();
+      }
     }
-
+    
     // 전체 삭제
     function clearAll() {
-      if (confirm('저장된 모든 조합을 삭제하시겠습니까?')) {
+      if (confirm('저장된 모든 조합을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
         savedCombinations = [];
         localStorage.removeItem('lottoCombinations');
         loadSavedCombinations();
+        alert('모든 저장된 조합이 삭제되었습니다.');
       }
+    }
+
+    // 당첨 등수 계산 함수 (한국 로또 기준)
+    function getPrizeRank(mainMatches, bonusMatch) {
+      if (mainMatches === 6) return { rank: "1등", className: "first-prize" };
+      if (mainMatches === 5 && bonusMatch) return { rank: "2등", className: "second-prize" };
+      if (mainMatches === 5 && !bonusMatch) return { rank: "3등", className: "third-prize" };
+      if (mainMatches === 4) return { rank: "4등", className: "fourth-prize" };
+      if (mainMatches === 3) return { rank: "5등", className: "fifth-prize" };
+      return { rank: "낙첨", className: "no-prize" };
     }
     
     // 당첨 결과 확인
@@ -1788,69 +1852,79 @@ function analyzeHistory() {
       updateHistoryContent();
     }
     
-    // 조합 내역 업데이트
+    // 조합 내역 업데이트 및 당첨 확인 결과 표시
     function updateHistoryContent() {
       const historyContent = document.getElementById('historyContent');
       historyContent.innerHTML = '';
       
-      if (!currentDraw || !savedCombinations.length) return;
-      
+      if (!currentDraw || savedCombinations.length === 0) {
+        historyContent.innerHTML = '<p>당첨번호를 입력하고 저장된 조합이 있어야 당첨 확인을 할 수 있습니다.</p>';
+        return;
+      }
+
+      // 최신 회차 당첨 번호 표시
+      historyContent.innerHTML += `
+        <h3 class="section-title">📊 당첨 확인 결과</h3>
+        <div class="current-draw">
+            <div class="current-draw-title">입력된 당첨 번호 (${currentDraw.drawNo}회)</div>
+            <div class="numbers">
+                ${currentDraw.numbers.map(n => `<div class="number-ball n${Math.ceil(n/10)}">${n}</div>`).join('')}
+                <div class="number-ball n${Math.ceil(currentDraw.bonus/10)}" style="border: 2px dashed #d81b60;">+${currentDraw.bonus}</div>
+            </div>
+        </div>
+      `;
+
       savedCombinations.forEach((combo, index) => {
         const ballElements = combo.map(n => 
           `<div class="number-ball n${Math.ceil(n/10)}">${n}</div>`
         ).join('');
         
         // 당첨 결과 확인
-        const matchCount = combo.filter(num => currentDraw.numbers.includes(num)).length;
+        const mainMatches = combo.filter(num => currentDraw.numbers.includes(num)).length;
         const bonusMatch = combo.includes(currentDraw.bonus);
         
+        const prize = getPrizeRank(mainMatches, bonusMatch);
+
         historyContent.innerHTML += `
           <div class="history-item">
             <div class="history-header">
               <div class="combo-card-title">저장된 조합 ${index+1}</div>
-              <div class="match-count">${matchCount}개 일치</div>
+              <div class="match-count ${prize.className}">${mainMatches}개 일치</div>
             </div>
             <div class="numbers">${ballElements}</div>
             
             <div class="draw-info">
-              ${matchCount}개 일치
-              ${bonusMatch ? '<div class="bonus-info">+ 보너스 번호 일치!</div>' : ''}
+              <span class="prize-rank ${prize.className}">${prize.rank}</span>
+              ${bonusMatch && prize.rank !== '1등' ? '<div class="bonus-info"> (보너스 번호 일치)</div>' : ''}
             </div>
           </div>
         `;
       });
     }
     
-    // 조합 내역 보기
+    // 조합 내역 보기 모달 열기
     function showCombinationHistory() {
-      if (savedCombinations.length === 0) {
-        alert('저장된 조합이 없습니다.');
-        return;
-      }
-      
       const modal = document.getElementById('historyModal');
       modal.style.display = 'flex';
       
-      // 입력 필드 초기화
-      document.getElementById('winning1').value = '';
-      document.getElementById('winning2').value = '';
-      document.getElementById('winning3').value = '';
-      document.getElementById('winning4').value = '';
-      document.getElementById('winning5').value = '';
-      document.getElementById('winning6').value = '';
-      document.getElementById('bonus').value = '';
-      
+      // 입력 필드 초기화 (만약 이전에 입력된 값이 없다면)
+      const winningInputs = document.querySelectorAll('.winning-input');
+      const bonusInput = document.getElementById('bonus');
+      winningInputs.forEach(input => input.value = '');
+      bonusInput.value = '';
+
       // 이전에 입력한 당첨번호가 있다면 표시
       if (currentDraw) {
-        document.getElementById('winning1').value = currentDraw.numbers[0];
-        document.getElementById('winning2').value = currentDraw.numbers[1];
-        document.getElementById('winning3').value = currentDraw.numbers[2];
-        document.getElementById('winning4').value = currentDraw.numbers[3];
-        document.getElementById('winning5').value = currentDraw.numbers[4];
-        document.getElementById('winning6').value = currentDraw.numbers[5];
-        document.getElementById('bonus').value = currentDraw.bonus;
-        
-        updateHistoryContent();
+        winningInputs.forEach((input, idx) => input.value = currentDraw.numbers[idx]);
+        bonusInput.value = currentDraw.bonus;
+        updateHistoryContent(); // 이전 당첨 번호로 바로 확인 결과 표시
+      } else {
+        // 당첨번호가 없으면 안내 메시지
+        document.getElementById('historyContent').innerHTML = `
+          <div class="current-draw">
+            <p style="color: #5f6368;">최신 회차 당첨 번호를 입력하시면 저장된 조합들의 당첨 여부를 확인할 수 있습니다.</p>
+          </div>
+        `;
       }
     }
     
@@ -1858,7 +1932,47 @@ function analyzeHistory() {
     function closeModal() {
       document.getElementById('historyModal').style.display = 'none';
     }
+
+    // 입력된 당첨 번호 유효성 검사
+    function validateWinningInput() {
+      const winningInputs = Array.from(document.querySelectorAll('.winning-input')).map(input => parseInt(input.value));
+      const bonusInputVal = parseInt(document.getElementById('bonus').value);
+
+      const allInputs = [...winningInputs, bonusInputVal];
+
+      // 모든 필드가 1~45 범위 내의 유효한 숫자인지 확인
+      if (allInputs.some(val => isNaN(val) || val < 1 || val > 45)) {
+        alert('모든 번호는 1부터 45까지의 유효한 숫자로 입력해야 합니다.');
+        return null;
+      }
+
+      // 본 번호 6개 추출
+      const mainNumbers = winningInputs.sort((a,b) => a-b);
+      
+      // 본 번호 중복 확인
+      const uniqueMainNumbers = new Set(mainNumbers);
+      if (uniqueMainNumbers.size !== 6) {
+        alert('본 번호에 중복된 숫자가 있습니다. 6개의 서로 다른 본 번호를 입력해주세요.');
+        return null;
+      }
+      
+      // 보너스 번호가 본 번호와 중복되지 않는지 확인
+      if (mainNumbers.includes(bonusInputVal)) {
+        alert('보너스 번호는 본 번호와 중복될 수 없습니다.');
+        return null;
+      }
+
+      return {
+        // 실제 당첨번호 회차는 데이터에서 가져오는 것이 맞지만, 수동 입력이므로 임의 지정 (예: 가장 최근 회차 번호)
+        // 여기서는 임시로 '최근 입력' 또는 가장 최신 회차 번호를 부여
+        drawNo: lottoHistory[lottoHistory.length - 1].drawNo + 1, 
+        numbers: mainNumbers,
+        bonus: bonusInputVal
+      };
+    }
   </script>
 </body>
 </html>
+
+
 
