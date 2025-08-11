@@ -817,7 +817,6 @@
       <div class="filter-info">
         <h3>적용된 고급 필터</h3>
         <div class="filters">
-          <span class="filter-item">짝/홀 비율 최적화</span>
           <span class="filter-item">핫/콜드 넘버 조합</span>
           <span class="filter-item">번호대 균형 조정</span>
           <span class="filter-item">동적 합계 범위</span>
@@ -909,7 +908,7 @@
   </div>
   
   <script>
-    // 850회~1183회 실제 당첨번호 데이터
+    // 850회~1184회 실제 당첨번호 데이터
     const lottoHistory = [
       {drawNo: 850, numbers: [16,20,24,28,36,39], bonus: 5},
       {drawNo: 851, numbers: [14,18,22,26,31,44], bonus: 40},
@@ -1467,9 +1466,6 @@
       const last7 = [...lastDraw.numbers, lastDraw.bonus];
       currentHotNumber = selectHotNumber(last7, analysisResults.numberFrequencies);
 
-      // 핫 넘버 정보는 Header 영역에 있으므로, 이 부분은 제거
-      // resultsDiv.before(hotInfoDiv); 이 부분은 제거되었습니다.
-
       const generatedCombos = [];
       for (let i = 0; i < count; i++) {
         let numbers;
@@ -1479,16 +1475,13 @@
 
         while (!isValid && attempts < MAX_ATTEMPTS) {
           numbers = generateSingleNumberSetWithFilters(currentHotNumber);
-          // 핫 넘버가 반드시 1개 포함되었는지 확인
-          const hotCount = numbers.filter(n => n === currentHotNumber).length;
-          isValid = (hotCount === 1) && validateNumberSet(numbers);
+          isValid = validateNumberSet(numbers);
           attempts++;
         }
 
         if (!isValid) {
           // 최대 시도에도 유효한 번호 조합을 찾지 못하면 대체 번호 생성
           numbers = generateFallbackNumberSet(currentHotNumber);
-          console.warn(`최대 시도 (${MAX_ATTEMPTS})에도 유효한 조합을 찾지 못하여 대체 번호 조합을 생성합니다.`, numbers);
         }
         
         // 생성된 조합이 이전에 생성된 조합과 중복되는지 확인
@@ -1499,7 +1492,6 @@
             continue;
         }
         generatedCombos.push(sortedNumbers);
-
 
         const probability = calculateProbability(numbers); // 당첨 확률 계산
 
@@ -1549,12 +1541,11 @@
     // 단일 번호 세트 생성 (모든 필터 적용 로직 포함)
     function generateSingleNumberSetWithFilters(hotNumber) {
         let numbers = [hotNumber];
-        const analysis = analysisResults;
         const allNumbers = Array.from({length: 45}, (_, i) => i + 1).filter(n => n !== hotNumber);
         
         // 핫/콜드 풀 (핫 넘버 제외)
-        const hotPool = analysis.hotNumbers.filter(n => n !== hotNumber);
-        const coldPool = analysis.coldNumbers.filter(n => n !== hotNumber);
+        const hotPool = analysisResults.hotNumbers.filter(n => n !== hotNumber);
+        const coldPool = analysisResults.coldNumbers.filter(n => n !== hotNumber);
         const normalPool = allNumbers.filter(n => !hotPool.includes(n) && !coldPool.includes(n));
 
         // 소수 번호 개수 (핫 넘버 포함하여 설정)
@@ -1599,7 +1590,6 @@
             }
             if (consecutiveCount === -1 || consecutiveCount >= 2) continue; // 3개 연속이 되거나, 2개 연속을 넘어섬 (2개 연속까지 허용)
 
-
             // 끝자리 패턴 검사 (추가될 경우)
             const tempEndings = Array(10).fill(0);
             tempNumbers.forEach(n => tempEndings[n % 10]++);
@@ -1609,8 +1599,6 @@
 
             // 모든 검사 통과 시 추가
             numbers.push(num);
-            if (isEven) currentEvenCount++;
-            else currentOddCount++;
             if (primes.includes(num)) currentPrimeCount++;
         }
         
@@ -1644,13 +1632,14 @@
       for (let i = 1; i < sorted.length; i++) {
         if (sorted[i] === sorted[i-1] + 1) {
           currentConsecutive++;
+          if (currentConsecutive > maxConsecutive) {
+            maxConsecutive = currentConsecutive;
+          }
         } else {
-          maxConsecutive = Math.max(maxConsecutive, currentConsecutive);
           currentConsecutive = 0;
         }
       }
-      maxConsecutive = Math.max(maxConsecutive, currentConsecutive); // 마지막 연속 처리
-      if (maxConsecutive >= 3) return false; // 3개 이상 연속 번호 불가
+      if (maxConsecutive >= 2) return false; // 3개 이상 연속 번호 불가
 
       // 3. 소수 번호 개수 검사 (1~3개)
       const primeCount = numbers.filter(n => primes.includes(n)).length;
@@ -1664,16 +1653,11 @@
       // 5. 번호대 균형 검사 (각 번호대에 최소 1개 이상 권장, 단 41-45는 5개밖에 없으므로 예외)
       const rangeCounts = Array(5).fill(0);
       numbers.forEach(num => rangeCounts[Math.floor((num - 1) / 10)]++);
-      if (rangeCounts.filter(c => c === 0).length >= 2) return false; // 0개인 번호대가 2개 이상이면 안 됨 (ex: 10번대, 30번대 아예 없음)
-      // 41-45 구간이 0개인 것은 허용. 그 외 다른 구간에서 0개가 2개 이상일 때만 걸러내기
-      if (rangeCounts[0] === 0 && rangeCounts[1] === 0) return false;
-      if (rangeCounts[0] === 0 && rangeCounts[2] === 0) return false;
-      // ... 모든 조합을 다 고려하기는 어려우니 일반적인 분포를 벗어나지 않도록 조정.
-      // 여기서는 심플하게 0개인 번호대가 너무 많지 않도록만 검사. (전체 45개 숫자에 대한 분포와 평균을 보면 2개 정도 비어도 정상 범위일 수 있음)
-      // 조금 더 엄격하게: 최소 1개의 숫자는 1-10, 11-20, 21-30, 31-40 중 최소 3개 이상의 번호대에 분포
-      const activeDecades = rangeCounts.filter((count, index) => count > 0).length;
-      if (activeDecades < 3) return false;
-
+      
+      // 0개인 번호대가 2개 이상이면 안 됨 (ex: 10번대, 30번대 아예 없음)
+      // 단, 41-45 구간은 제외
+      const validRanges = rangeCounts.filter((count, idx) => idx !== 4 && count === 0).length;
+      if (validRanges >= 2) return false;
 
       return true; // 모든 필터 통과
     }
