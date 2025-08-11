@@ -1324,7 +1324,6 @@
       const evenOddStats = {even: 0, odd: 0};
       const rangeStats = Array(5).fill(0); // 1-10, 11-20, ... 41-45
       const sumStats = {min: 999, max: 0, total: 0, counts: Array(301).fill(0)}; // 합계 6~270
-      const consecutiveStats = Array(4).fill(0); // 0, 1, 2, 3+
       const endingStats = Array(10).fill(0); // 끝자리 0~9
       const primeStats = {primeCount: 0, nonPrimeCount: 0};
 
@@ -1350,62 +1349,8 @@
         sumStats.min = Math.min(sumStats.min, currentSum);
         sumStats.max = Math.max(sumStats.max, currentSum);
         sumStats.counts[currentSum]++;
-
-        // 연속 번호 분석
-        let currentConsecutive = 0;
-        for (let i = 1; i < sorted.length; i++) {
-          if (sorted[i] === sorted[i-1] + 1) {
-            currentConsecutive++;
-          } else {
-            if (currentConsecutive > 0) {
-              consecutiveStats[Math.min(currentConsecutive, 3)]++; // 1, 2, 3 이상
-            }
-            currentConsecutive = 0;
-          }
-        }
-        if (currentConsecutive > 0) {
-          consecutiveStats[Math.min(currentConsecutive, 3)]++;
-        }
-        
-        // 연속 번호가 없는 경우 카운트
-        if (currentConsecutive === 0 && sorted.length > 0) {
-            let hasAnyConsecutive = false;
-            for(let i = 0; i < sorted.length - 1; i++) {
-                if (sorted[i+1] - sorted[i] === 1) {
-                    hasAnyConsecutive = true;
-                    break;
-                }
-            }
-            if (!hasAnyConsecutive) {
-                consecutiveStats[0]++;
-            }
-        }
       });
       
-      // 연속번호 통계의 보정 (2개 이상 연속인 경우 1개 연속에도 포함되므로 이를 분리)
-      // 실제 연속 번호 개수 분포를 정확히 반영하기 위해 수정
-      // (2,1,0) (3,2,1,0)과 같이 연속된 숫자의 개수로 통계 -> 1개 연속 2개 연속 3개 연속 이상으로 수정
-      const calculatedConsecutiveCounts = Array(4).fill(0); // 0연속, 1연속, 2연속, 3+연속
-      recentHistory.forEach(draw => {
-          const sorted = [...draw.numbers].sort((a, b) => a - b);
-          let currentConsec = 0;
-          let maxConsec = 0;
-          for (let i = 1; i < sorted.length; i++) {
-              if (sorted[i] === sorted[i-1] + 1) {
-                  currentConsec++;
-              } else {
-                  if (currentConsec > 0) {
-                      maxConsec = Math.max(maxConsec, currentConsec);
-                  }
-                  currentConsec = 0;
-              }
-          }
-          if (currentConsec > 0) {
-              maxConsec = Math.max(maxConsec, currentConsec);
-          }
-          calculatedConsecutiveCounts[Math.min(maxConsec, 3)]++; // 0연속은 따로 세지 않음
-      });
-
       // 합계 범위 계산 (전체 회차 데이터 기반)
       const allSums = recentHistory.map(draw => draw.numbers.reduce((a,b) => a+b, 0));
       allSums.sort((a, b) => a - b);
@@ -1428,7 +1373,6 @@
           avg: sumStats.total / recentHistory.length,
           counts: sumStats.counts
         },
-        consecutiveStats: calculatedConsecutiveCounts,
         endingStats: endingStats.map(count => count / recentHistory.length), // 비율로 변환
         primeStats: {
             ratio: primeStats.primeCount / (primeStats.primeCount + primeStats.nonPrimeCount),
@@ -1572,24 +1516,6 @@
             // 추가될 경우의 임시 번호 세트
             const tempNumbers = [...numbers, num].sort((a,b) => a-b);
 
-            // 연속 번호 검사 (추가될 경우)
-            let consecutiveCount = 0;
-            for (let k = 1; k < tempNumbers.length; k++) {
-                if (tempNumbers[k] === tempNumbers[k-1] + 1) {
-                    consecutiveCount++;
-                } else {
-                    if (consecutiveCount > 0) { // 여기서 max_consecutive_len을 추적
-                        // 이전 연속 길이가 2 이상이면 문제 (총 3개 연속 이상)
-                        if (consecutiveCount >= 2) { 
-                           consecutiveCount = -1; // 유효성 검사 실패
-                           break;
-                        }
-                    }
-                    consecutiveCount = 0;
-                }
-            }
-            if (consecutiveCount === -1 || consecutiveCount >= 2) continue; // 3개 연속이 되거나, 2개 연속을 넘어섬 (2개 연속까지 허용)
-
             // 끝자리 패턴 검사 (추가될 경우)
             const tempEndings = Array(10).fill(0);
             tempNumbers.forEach(n => tempEndings[n % 10]++);
@@ -1626,31 +1552,16 @@
       // 1. 합계 검사 (동적 범위)
       if (sum < analysis.sumStats.dynamicMin || sum > analysis.sumStats.dynamicMax) return false;
 
-      // 2. 연속 번호 검사 (3개 이상 연속 방지)
-      let currentConsecutive = 0;
-      let maxConsecutive = 0;
-      for (let i = 1; i < sorted.length; i++) {
-        if (sorted[i] === sorted[i-1] + 1) {
-          currentConsecutive++;
-          if (currentConsecutive > maxConsecutive) {
-            maxConsecutive = currentConsecutive;
-          }
-        } else {
-          currentConsecutive = 0;
-        }
-      }
-      if (maxConsecutive >= 2) return false; // 3개 이상 연속 번호 불가
-
-      // 3. 소수 번호 개수 검사 (1~3개)
+      // 2. 소수 번호 개수 검사 (1~3개)
       const primeCount = numbers.filter(n => primes.includes(n)).length;
       if (primeCount < 1 || primeCount > 3) return false;
 
-      // 4. 끝자리 패턴 검사 (동일 끝자리 3개 이상 방지)
+      // 3. 끝자리 패턴 검사 (동일 끝자리 3개 이상 방지)
       const endingCounts = Array(10).fill(0);
       numbers.forEach(num => endingCounts[num % 10]++);
       if (Math.max(...endingCounts) >= 3) return false;
 
-      // 5. 번호대 균형 검사 (각 번호대에 최소 1개 이상 권장, 단 41-45는 5개밖에 없으므로 예외)
+      // 4. 번호대 균형 검사 (각 번호대에 최소 1개 이상 권장, 단 41-45는 5개밖에 없으므로 예외)
       const rangeCounts = Array(5).fill(0);
       numbers.forEach(num => rangeCounts[Math.floor((num - 1) / 10)]++);
       
