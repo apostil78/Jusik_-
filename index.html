@@ -1244,7 +1244,8 @@
       {drawNo: 1180, numbers: [6,12,18,37,40,41], bonus: 3},
       {drawNo: 1181, numbers: [8,10,14,20,33,41], bonus: 28},
       {drawNo: 1182, numbers: [1,13,21,25,28,31], bonus: 22},
-      {drawNo: 1183, numbers: [4,15,17,23,27,36], bonus: 31}
+      {drawNo: 1183, numbers: [4,15,17,23,27,36], bonus: 31},
+      {drawNo: 1184, numbers: [14,16,23,25,31,37], bonus: 42}
     ];
     
     let savedCombinations = JSON.parse(localStorage.getItem('lottoCombinations')) || [];
@@ -1556,16 +1557,6 @@
         const coldPool = analysis.coldNumbers.filter(n => n !== hotNumber);
         const normalPool = allNumbers.filter(n => !hotPool.includes(n) && !coldPool.includes(n));
 
-        // 목표 짝홀 비율 (3:3 또는 4:2, hotNumber 포함하여 설정)
-        let evenCountTarget = Math.random() < 0.5 ? 3 : 4;
-        let oddCountTarget = 6 - evenCountTarget;
-
-        if (hotNumber % 2 === 0) evenCountTarget--;
-        else oddCountTarget--;
-
-        let currentEvenCount = hotNumber % 2 === 0 ? 1 : 0;
-        let currentOddCount = hotNumber % 2 === 1 ? 1 : 0;
-
         // 소수 번호 개수 (핫 넘버 포함하여 설정)
         let primeCountTarget = Math.floor(Math.random() * 3) + 1; // 1~3개
         if (primes.includes(hotNumber)) primeCountTarget--;
@@ -1578,13 +1569,7 @@
 
         for (let i = 0; i < availableNumbers.length && numbers.length < 6; i++) {
             const num = availableNumbers[i];
-
-            // 짝홀 비율 검사
-            const isEven = num % 2 === 0;
-            if ((isEven && currentEvenCount >= evenCountTarget) || (!isEven && currentOddCount >= oddCountTarget)) {
-                continue; // 짝홀 비율 초과
-            }
-
+         
             // 소수 개수 검사
             if (primes.includes(num) && currentPrimeCount >= primeCountTarget) {
                 continue; // 소수 개수 초과
@@ -1667,25 +1652,16 @@
       maxConsecutive = Math.max(maxConsecutive, currentConsecutive); // 마지막 연속 처리
       if (maxConsecutive >= 3) return false; // 3개 이상 연속 번호 불가
 
-      // 3. 짝/홀 비율 검사 (2:4, 3:3, 4:2 허용)
-      const evenCount = numbers.filter(n => n % 2 === 0).length;
-      const oddCount = 6 - evenCount;
-      if (!((evenCount === 2 && oddCount === 4) ||
-            (evenCount === 3 && oddCount === 3) ||
-            (evenCount === 4 && oddCount === 2))) {
-        return false;
-      }
-
-      // 4. 소수 번호 개수 검사 (1~3개)
+      // 3. 소수 번호 개수 검사 (1~3개)
       const primeCount = numbers.filter(n => primes.includes(n)).length;
       if (primeCount < 1 || primeCount > 3) return false;
 
-      // 5. 끝자리 패턴 검사 (동일 끝자리 3개 이상 방지)
+      // 4. 끝자리 패턴 검사 (동일 끝자리 3개 이상 방지)
       const endingCounts = Array(10).fill(0);
       numbers.forEach(num => endingCounts[num % 10]++);
       if (Math.max(...endingCounts) >= 3) return false;
 
-      // 6. 번호대 균형 검사 (각 번호대에 최소 1개 이상 권장, 단 41-45는 5개밖에 없으므로 예외)
+      // 5. 번호대 균형 검사 (각 번호대에 최소 1개 이상 권장, 단 41-45는 5개밖에 없으므로 예외)
       const rangeCounts = Array(5).fill(0);
       numbers.forEach(num => rangeCounts[Math.floor((num - 1) / 10)]++);
       if (rangeCounts.filter(c => c === 0).length >= 2) return false; // 0개인 번호대가 2개 이상이면 안 됨 (ex: 10번대, 30번대 아예 없음)
@@ -1974,7 +1950,3 @@
   </script>
 </body>
 </html>
-
-
-
-
