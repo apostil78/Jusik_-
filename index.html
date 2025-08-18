@@ -1454,10 +1454,15 @@
         const coldPool = analysisResults.coldNumbers.filter(n => n !== hotNumber);
         const normalPool = allNumbers.filter(n => !hotPool.includes(n) && !coldPool.includes(n));
 
-        // 소수 번호 개수 (핫 넘버 포함하여 설정)
-        let primeCountTarget = Math.floor(Math.random() * 3) + 1; // 1~3개
-        if (primes.includes(hotNumber)) primeCountTarget--;
-        primeCountTarget = Math.max(0, primeCountTarget); // 0보다 작아지지 않도록 보정
+        // 소수 번호 개수 설정 (핫 넘버 포함하여 최소 1개 이상)
+        let primeCountTarget = 1; // 기본적으로 1개 이상
+        if (primes.includes(hotNumber)) {
+            // 핫 넘버가 소수인 경우, 추가 소수 개수는 랜덤 (0~3개)
+            primeCountTarget += Math.floor(Math.random() * 3);
+        } else {
+            // 핫 넘버가 소수가 아닌 경우, 소수 개수는 1~4개
+            primeCountTarget += Math.floor(Math.random() * 3);
+        }
 
         let currentPrimeCount = primes.includes(hotNumber) ? 1 : 0;
 
@@ -1467,9 +1472,9 @@
         for (let i = 0; i < availableNumbers.length && numbers.length < 6; i++) {
             const num = availableNumbers[i];
          
-            // 소수 개수 검사
-            if (primes.includes(num) && currentPrimeCount >= primeCountTarget) {
-                continue; // 소수 개수 초과
+            // 소수 개수 검사 (최소 1개 이상은 보장, 최대 제한 없음)
+            if (primes.includes(num) && currentPrimeCount >= primeCountTarget && currentPrimeCount > 0) {
+                continue; // 이미 최소 1개 이상의 소수가 있고 목표 개수를 초과한 경우
             }
 
             // 이미 추가된 숫자인지 확인 (hotNumber 때문에 안전장치)
@@ -1514,9 +1519,9 @@
       // 1. 합계 검사 (동적 범위)
       if (sum < analysis.sumStats.dynamicMin || sum > analysis.sumStats.dynamicMax) return false;
 
-      // 2. 소수 번호 개수 검사 (1~3개)
+      // 2. 소수 번호 개수 검사 (최소 1개 이상)
       const primeCount = numbers.filter(n => primes.includes(n)).length;
-      if (primeCount < 1 || primeCount > 3) return false;
+      if (primeCount < 1) return false;
 
       // 3. 끝자리 패턴 검사 (동일 끝자리 3개 이상 방지)
       const endingCounts = Array(10).fill(0);
