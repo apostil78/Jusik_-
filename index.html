@@ -820,9 +820,17 @@
           <span class="filter-item">핫/콜드 넘버 조합</span>
           <span class="filter-item">번호대 균형 조정</span>
           <span class="filter-item">동적 합계 범위</span>
-          <span class="hot-number-tag">마지막 회차 핫 넘버 1개 포함</span>
           <span class="filter-item">끝자리 패턴 분석</span>
           <span class="filter-item">소수 번호 필터</span>
+        </div>
+      </div>
+      
+      <div class="filter-info hot-number-info">
+        <h3>적용된 핫 넘버</h3>
+        <div class="filters">
+          <span class="hot-number-tag">
+            마지막 회차 (1185회) 번호 중 랜덤 1개 포함: 6,17,22,28,29,32,38
+          </span>
         </div>
       </div>
     </div>
@@ -833,7 +841,7 @@
           <span class="label">추천 조합 수:</span>
           <select id="comboCount">
             <option value="1">1 조합</option>  
-            <option value="5"selected>5 조합</option>
+            <option value="5" selected>5 조합</option>
             <option value="10">10 조합</option>
             <option value="20">20 조합</option>
             <option value="30">30 조합</option>
@@ -871,7 +879,7 @@
     </div>
     
     <div class="footer">
-      <p>* 핫 넘버 포함 모드: 마지막 회차의 6개 당첨번호와 보너스번호 중 가장 핫한 번호 1개를 반드시 포함합니다</p>
+      <p>* 각 조합은 마지막 회차의 당첨번호와 보너스번호 중 랜덤하게 1개를 반드시 포함합니다</p>
       <p>* 저작권 : JS HWANG company</p>
     </div>
   </div>
@@ -908,7 +916,7 @@
   </div>
   
   <script>
-    // 850회~1184회 실제 당첨번호 데이터
+    // 850회~1185회 실제 당첨번호 데이터
     const lottoHistory = [
       {drawNo: 850, numbers: [16,20,24,28,36,39], bonus: 5},
       {drawNo: 851, numbers: [14,18,22,26,31,44], bonus: 40},
@@ -1251,7 +1259,6 @@
     let savedCombinations = JSON.parse(localStorage.getItem('lottoCombinations')) || [];
     let analysisResults = {};
     let currentDraw = null; // 금주의 당첨번호 저장 변수
-    let currentHotNumber = null; // 현재 핫 넘버 저장
     const primes = [2,3,5,7,11,13,17,19,23,29,31,37,41,43];
 
     // 로딩 스피너 표시/숨김 함수
@@ -1267,56 +1274,8 @@
     document.addEventListener('DOMContentLoaded', () => {
       analysisResults = analyzeHistory();
       loadSavedCombinations();
-      // 마지막 회차 정보를 기준으로 핫 넘버를 미리 설정하여 필터 정보에 표시
-      updateHotNumberDisplay();
     });
 
-    // 핫 넘버 디스플레이 업데이트
-    function updateHotNumberDisplay() {
-      const lastDraw = lottoHistory[lottoHistory.length - 1];
-      const last7 = [...lastDraw.numbers, lastDraw.bonus];
-      currentHotNumber = selectHotNumber(last7, analysisResults.numberFrequencies);
-
-      const headerBox = document.querySelector('.header.box');
-      let hotInfoDiv = headerBox.querySelector('.hot-number-info');
-      if (!hotInfoDiv) {
-        hotInfoDiv = document.createElement('div');
-        hotInfoDiv.className = 'filter-info hot-number-info'; // 클래스 추가
-        headerBox.appendChild(hotInfoDiv);
-      }
-      hotInfoDiv.innerHTML = `
-        <h3>적용된 핫 넘버</h3>
-        <div class="filters">
-          <span class="hot-number-tag">
-            마지막 회차 (${lastDraw.drawNo}회) 핫 넘버: ${currentHotNumber}
-          </span>
-        </div>
-      `;
-    }
-
-    // 핫 넘버 선택 함수 (최근 당첨번호 중 빈도 높은 번호)
-    function selectHotNumber(last7, frequencies) {
-      const freqMap = new Map();
-      // 지난 7개 번호의 최근 빈도를 계산
-      for(const num of last7) {
-        freqMap.set(num, (freqMap.get(num) || 0) + 1);
-      }
-
-      let maxFreq = -1;
-      let candidates = [];
-
-      for(const [num, count] of freqMap.entries()) {
-        if(count > maxFreq) {
-          maxFreq = count;
-          candidates = [num];
-        } else if (count === maxFreq) {
-          candidates.push(num);
-        }
-      }
-      // 동일 빈도수 번호 중 임의 선택
-      return candidates[Math.floor(Math.random() * candidates.length)];
-    }
-    
     // 당첨번호 분석 함수 (전체 회차)
     function analyzeHistory() {
       const recentHistory = lottoHistory;
@@ -1409,10 +1368,12 @@
       
       const lastDraw = lottoHistory[lottoHistory.length - 1];
       const last7 = [...lastDraw.numbers, lastDraw.bonus];
-      currentHotNumber = selectHotNumber(last7, analysisResults.numberFrequencies);
 
       const generatedCombos = [];
       for (let i = 0; i < count; i++) {
+        // 각 조합마다 새로운 핫 넘버를 랜덤하게 선택
+        const currentHotNumber = last7[Math.floor(Math.random() * last7.length)];
+        
         let numbers;
         let isValid = false;
         let attempts = 0;
@@ -1586,7 +1547,7 @@
       return numbers.sort((a, b) => a - b);
     }
     
-    // 당첨 확률 계산 함수 (이전과 동일)
+    // 당첨 확률 계산 함수
     function calculateProbability(numbers) {
       const totalNumbers = 45;
       const selectNumbers = 6;
@@ -1846,4 +1807,3 @@
   </script>
 </body>
 </html>
-
