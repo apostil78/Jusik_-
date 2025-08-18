@@ -1454,17 +1454,10 @@
         const coldPool = analysisResults.coldNumbers.filter(n => n !== hotNumber);
         const normalPool = allNumbers.filter(n => !hotPool.includes(n) && !coldPool.includes(n));
 
-        // 소수 번호 개수 설정 (핫 넘버 포함하여 최소 1개 이상)
-        let primeCountTarget = 1; // 기본적으로 1개 이상
-        if (primes.includes(hotNumber)) {
-            // 핫 넘버가 소수인 경우, 추가 소수 개수는 랜덤 (0~3개)
-            primeCountTarget += Math.floor(Math.random() * 3);
-        } else {
-            // 핫 넘버가 소수가 아닌 경우, 소수 개수는 1~4개
-            primeCountTarget += Math.floor(Math.random() * 3);
-        }
+       // 소수 번호 개수 설정 (최소 1개 이상, 최대 제한 없음)
+       let primeCountTarget = 1 + Math.floor(Math.random() * 3); // 1~4개
 
-        let currentPrimeCount = primes.includes(hotNumber) ? 1 : 0;
+       let currentPrimeCount = primes.includes(hotNumber) ? 1 : 0;
 
         // 번호를 뽑는 과정
         const availableNumbers = shuffleArray(allNumbers.slice());
@@ -1812,3 +1805,4 @@
   </script>
 </body>
 </html>
+
