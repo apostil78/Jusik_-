@@ -1455,21 +1455,14 @@
 
         for (let i = 0; i < availableNumbers.length && numbers.length < 6; i++) {
             const num = availableNumbers[i];
-    
-            // 소수 개수 검사 (최소 1개 이상 보장)
-           if (primes.includes(num)) {
-               if (currentPrimeCount >= primeCountTarget) {
-                   continue; // 목표 개수를 초과한 경우 건너뜀
-               }
-               currentPrimeCount++; // 소수 개수 증가
-           }
+         
+            // 소수 개수 검사 (최소 1개 이상은 보장, 최대 제한 없음)
+            if (primes.includes(num) && currentPrimeCount >= primeCountTarget && currentPrimeCount > 0) {
+                continue; // 이미 최소 1개 이상의 소수가 있고 목표 개수를 초과한 경우
+            }
 
-            // 이미 추가된 숫자인지 확인 
+            // 이미 추가된 숫자인지 확인 (hotNumber 때문에 안전장치)
             if (numbers.includes(num)) continue;
-
-            // ... (나머지 검사 로직)
-            numbers.push(num);
-       } 
 
             // 추가될 경우의 임시 번호 세트
             const tempNumbers = [...numbers, num].sort((a,b) => a-b);
@@ -1803,8 +1796,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
