@@ -1308,18 +1308,6 @@
           }
         });
 
-        // 번호 합계 분석
-        sumStats.total += currentSum;
-        sumStats.min = Math.min(sumStats.min, currentSum);
-        sumStats.max = Math.max(sumStats.max, currentSum);
-        sumStats.counts[currentSum]++;
-      });
-      
-      // 합계 범위 계산 (전체 회차 데이터 기반)
-      const allSums = recentHistory.map(draw => draw.numbers.reduce((a,b) => a+b, 0));
-      allSums.sort((a, b) => a - b);
-      const lowerBound = allSums[Math.floor(allSums.length * 0.15)];
-      const upperBound = allSums[Math.ceil(allSums.length * 0.85) - 1];
 
       // 통계 객체 반환
       return {
@@ -1517,13 +1505,6 @@
             // 소수 개수 조건 확인
             if (primes.includes(num) && currentPrimeCount >= primeCountTarget) continue;
             
-            // 끝자리 패턴 확인 (임시 추가 시뮬레이션)
-            const tempEndings = Array(10).fill(0);
-            currentNumbers.forEach(n => tempEndings[n % 10]++);
-            tempEndings[num % 10]++;
-            if (Math.max(...tempEndings) >= 3) continue;
-            
-            pool.push(num);
         }
         
         return shuffleArray(pool);
@@ -1534,12 +1515,6 @@
         const tempNumbers = new Set([...currentNumbers, candidate]);
         if (tempNumbers.size !== currentNumbers.size + 1) return false;
         
-        // 끝자리 패턴 검사
-        const endings = Array(10).fill(0);
-        tempNumbers.forEach(n => endings[n % 10]++);
-        if (Math.max(...endings) >= 3) return false;
-        
-        return true;
     }
 
     // 번호 세트 완성 (필터 조건 완화)
@@ -1860,6 +1835,7 @@
   </script>
 </body>
 </html>
+
 
 
 
