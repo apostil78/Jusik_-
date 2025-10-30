@@ -103,12 +103,9 @@
     }
     
     @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(2, 136, 209, 0.4);
-      }
-      70% { box-shadow: 0 0 0 10px rgba(2, 136, 209, 0);
-      }
-      100% { box-shadow: 0 0 0 0 rgba(2, 136, 209, 0);
-      }
+      0% { box-shadow: 0 0 0 0 rgba(2, 136, 209, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(2, 136, 209, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(2, 136, 209, 0); }
     }
     
     .filter-info {
@@ -164,12 +161,9 @@
     }
     
     @keyframes hot-pulse {
-      0% { box-shadow: 0 0 0 0 rgba(216, 27, 96, 0.4);
-      }
-      70% { box-shadow: 0 0 0 10px rgba(216, 27, 96, 0);
-      }
-      100% { box-shadow: 0 0 0 0 rgba(216, 27, 96, 0);
-      }
+      0% { box-shadow: 0 0 0 0 rgba(216, 27, 96, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(216, 27, 96, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(216, 27, 96, 0); }
     }
 
     .controls {
@@ -355,22 +349,16 @@
     }
     
     @keyframes hot-ball-pulse {
-      0% { box-shadow: 0 0 0 0 rgba(216, 27, 96, 0.4);
-      }
-      70% { box-shadow: 0 0 0 10px rgba(216, 27, 96, 0);
-      }
-      100% { box-shadow: 0 0 0 0 rgba(216, 27, 96, 0);
-      }
+      0% { box-shadow: 0 0 0 0 rgba(216, 27, 96, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(216, 27, 96, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(216, 27, 96, 0); }
     }
     
-    .n1 { background: linear-gradient(135deg, #0288d1, #01579b);
-    }
+    .n1 { background: linear-gradient(135deg, #0288d1, #01579b); }
     .n2 { background: linear-gradient(135deg, #0097a7, #006064); }
-    .n3 { background: linear-gradient(135deg, #f57c00, #e65100);
-    }
+    .n3 { background: linear-gradient(135deg, #f57c00, #e65100); }
     .n4 { background: linear-gradient(135deg, #7b1fa2, #4a148c); }
-    .n5 { background: linear-gradient(135deg, #c2185b, #880e4f);
-    }   
+    .n5 { background: linear-gradient(135deg, #c2185b, #880e4f); }   
 
     .section-title {
       color: #0288d1;
@@ -720,16 +708,12 @@
       margin-top: 10px;
     }
     
-    .first-prize { background: #ffd700; color: #333;
-    }
+    .first-prize { background: #ffd700; color: #333; }
     .second-prize { background: #c0c0c0; color: #333; }
-    .third-prize { background: #cd7f32; color: white;
-    }
+    .third-prize { background: #cd7f32; color: white; }
     .fourth-prize { background: #4caf50; color: white; }
-    .fifth-prize { background: #2196f3; color: white;
-    }
-    .no-prize { background: #bdbdbd; color: white;
-    }
+    .fifth-prize { background: #2196f3; color: white; }
+    .no-prize { background: #bdbdbd; color: white; }
 
     /* 추가: 로딩 애니메이션 */
     .loading-container {
@@ -755,8 +739,7 @@
     }
     
     @keyframes spin {
-      to { transform: rotate(360deg);
-      }
+      to { transform: rotate(360deg); }
     }
     
     /* 반응형 디자인 개선 */
@@ -838,7 +821,11 @@
       <div class="filter-info">
         <h3>적용된 고급 필터</h3>
         <div class="filters">
-          <span class="filter-item">핫/콜드 넘버 조합</span>
+          <span class="filter-item">최신 당첨 번호 1개 포함 (필수)</span>
+          <span class="filter-item">핫/콜드 넘버 조합 (전체 회차 기준)</span>
+          <span class="filter-item">번호대 균형 조정</span>
+          <span class="filter-item">동적 합계 범위</span>
+          <span class="filter-item">끝자리 패턴 분석</span>
           <span class="filter-item">소수 번호 필터</span>
         </div>
       </div>
@@ -846,6 +833,7 @@
     
     <div class="box">
       <div class="controls">
+        
         <div class="control-group">
           <span class="label">추천 조합 수:</span>
           <select id="comboCount">
@@ -875,6 +863,7 @@
           <i>🗑️</i> 전체 삭제
         </button>
       </div>
+  
     </div>
     
     <div class="box">
@@ -902,6 +891,7 @@
         <div class="current-draw-title">최신회차 당첨 번호 수동 입력</div>
         
         <div class="input-label">본 번호 6개 (1~45)</div>
+      
         <div class="winning-input-container">
           <input type="number" min="1" max="45" class="winning-input" id="winning1">
           <input type="number" min="1" max="45" class="winning-input" id="winning2">
@@ -917,14 +907,12 @@
         </div>
         
         <button class="check-btn" onclick="checkWinning()">당첨 확인</button>
-        <div id="checkResult"></div>
-
       </div>
       
       <div id="historyContent"></div>
     </div>
   </div>
-
+  
   <script>
     // 850회~1186회 실제 당첨번호 데이터
     const lottoHistory = [
@@ -1002,308 +990,325 @@
       {drawNo: 921, numbers: [5,7,12,22,28,41], bonus: 1},
       {drawNo: 922, numbers: [2,6,13,17,27,43], bonus: 36},
       {drawNo: 923, numbers: [3,17,18,23,36,41], bonus: 26},
-      {drawNo: 924, numbers: [1,13,28,31,34,44], bonus: 12},
-      {drawNo: 925, numbers: [1,2,3,10,31,33], bonus: 17},
-      {drawNo: 926, numbers: [4,15,19,24,35,45], bonus: 17},
-      {drawNo: 927, numbers: [11,21,28,34,42,44], bonus: 45},
-      {drawNo: 928, numbers: [7,14,20,28,36,44], bonus: 1},
-      {drawNo: 929, numbers: [2,4,15,31,33,39], bonus: 14},
-      {drawNo: 930, numbers: [1,15,22,25,27,34], bonus: 36},
-      {drawNo: 931, numbers: [4,20,21,27,42,44], bonus: 32},
-      {drawNo: 932, numbers: [2,9,13,17,19,28], bonus: 10},
-      {drawNo: 933, numbers: [11,15,25,33,34,40], bonus: 1},
-      {drawNo: 934, numbers: [1,11,18,20,33,42], bonus: 10},
-      {drawNo: 935, numbers: [6,15,22,25,35,44], bonus: 28},
-      {drawNo: 936, numbers: [3,4,10,23,30,33], bonus: 45},
-      {drawNo: 937, numbers: [12,17,23,27,35,38], bonus: 15},
-      {drawNo: 938, numbers: [1,22,26,27,31,35], bonus: 15},
-      {drawNo: 939, numbers: [11,13,18,25,31,43], bonus: 27},
-      {drawNo: 940, numbers: [17,24,25,35,37,40], bonus: 13},
-      {drawNo: 941, numbers: [8,13,18,24,35,43], bonus: 36},
-      {drawNo: 942, numbers: [1,10,15,17,25,43], bonus: 35},
-      {drawNo: 943, numbers: [1,6,12,16,21,32], bonus: 43},
-      {drawNo: 944, numbers: [12,14,21,24,40,41], bonus: 1},
-      {drawNo: 945, numbers: [1,4,17,21,27,33], bonus: 11},
-      {drawNo: 946, numbers: [4,10,23,27,39,44], bonus: 28},
-      {drawNo: 947, numbers: [10,24,27,31,43,44], bonus: 35},
-      {drawNo: 948, numbers: [1,5,15,23,32,42], bonus: 8},
-      {drawNo: 949, numbers: [8,10,13,20,28,44], bonus: 1},
-      {drawNo: 950, numbers: [1,5,6,12,25,33], bonus: 34},
-      {drawNo: 951, numbers: [2,4,9,11,16,40], bonus: 22},
-      {drawNo: 952, numbers: [6,16,24,29,40,44], bonus: 42},
-      {drawNo: 953, numbers: [4,5,17,25,41,43], bonus: 30},
-      {drawNo: 954, numbers: [3,13,22,25,39,40], bonus: 2},
-      {drawNo: 955, numbers: [3,12,17,22,34,35], bonus: 29},
-      {drawNo: 956, numbers: [2,10,11,13,27,38], bonus: 29},
-      {drawNo: 957, numbers: [1,2,3,4,42,43], bonus: 29},
-      {drawNo: 958, numbers: [7,14,15,21,30,41], bonus: 19},
-      {drawNo: 959, numbers: [14,19,25,37,42,45], bonus: 12},
-      {drawNo: 960, numbers: [1,8,13,32,35,45], bonus: 9},
-      {drawNo: 961, numbers: [1,24,29,38,42,43], bonus: 3},
-      {drawNo: 962, numbers: [1,14,22,24,28,45], bonus: 1},
-      {drawNo: 963, numbers: [10,15,22,33,35,44], bonus: 26},
-      {drawNo: 964, numbers: [11,14,21,32,39,45], bonus: 22},
-      {drawNo: 965, numbers: [1,8,10,12,16,23], bonus: 43},
-      {drawNo: 966, numbers: [3,11,12,15,23,32], bonus: 37},
-      {drawNo: 967, numbers: [4,13,23,28,39,41], bonus: 30},
-      {drawNo: 968, numbers: [10,13,20,33,35,38], bonus: 39},
-      {drawNo: 969, numbers: [5,17,20,21,29,38], bonus: 44},
-      {drawNo: 970, numbers: [5,20,23,24,29,40], bonus: 28},
-      {drawNo: 971, numbers: [3,9,11,12,13,19], bonus: 16},
-      {drawNo: 972, numbers: [7,14,17,19,28,34], bonus: 40},
-      {drawNo: 973, numbers: [1,4,13,23,28,39], bonus: 18},
-      {drawNo: 974, numbers: [6,8,22,25,33,38], bonus: 27},
-      {drawNo: 975, numbers: [1,4,5,7,12,32], bonus: 29},
-      {drawNo: 976, numbers: [11,17,20,21,30,40], bonus: 42},
-      {drawNo: 977, numbers: [2,8,10,14,15,41], bonus: 27},
-      {drawNo: 978, numbers: [4,5,19,25,32,38], bonus: 39},
-      {drawNo: 979, numbers: [5,10,13,22,33,40], bonus: 45},
-      {drawNo: 980, numbers: [2,7,16,21,27,33], bonus: 30},
-      {drawNo: 981, numbers: [15,16,17,20,21,35], bonus: 36},
-      {drawNo: 982, numbers: [6,7,10,22,29,38], bonus: 4},
-      {drawNo: 983, numbers: [13,17,18,20,31,43], bonus: 25},
-      {drawNo: 984, numbers: [2,5,12,18,22,24], bonus: 41},
-      {drawNo: 985, numbers: [5,16,24,30,32,41], bonus: 17},
-      {drawNo: 986, numbers: [6,13,25,36,37,41], bonus: 2},
-      {drawNo: 987, numbers: [1,3,9,12,21,43], bonus: 39},
-      {drawNo: 988, numbers: [10,13,23,32,33,44], bonus: 45},
-      {drawNo: 989, numbers: [7,8,10,13,20,23], bonus: 17},
-      {drawNo: 990, numbers: [11,15,22,35,36,44], bonus: 43},
-      {drawNo: 991, numbers: [10,13,22,27,32,39], bonus: 41},
-      {drawNo: 992, numbers: [1,2,5,28,38,40], bonus: 39},
-      {drawNo: 993, numbers: [8,10,12,29,42,43], bonus: 37},
-      {drawNo: 994, numbers: [15,19,20,24,31,40], bonus: 34},
-      {drawNo: 995, numbers: [4,11,20,21,29,31], bonus: 25},
-      {drawNo: 996, numbers: [6,12,27,29,35,36], bonus: 15},
-      {drawNo: 997, numbers: [14,24,27,31,34,35], bonus: 6},
-      {drawNo: 998, numbers: [1,2,11,16,19,27], bonus: 23},
-      {drawNo: 999, numbers: [12,16,21,23,26,42], bonus: 19},
-      {drawNo: 1000, numbers: [3,31,32,33,35,43], bonus: 1},
-      {drawNo: 1001, numbers: [11,12,17,21,41,44], bonus: 40},
-      {drawNo: 1002, numbers: [2,8,13,22,40,41], bonus: 35},
-      {drawNo: 1003, numbers: [14,16,21,24,33,42], bonus: 13},
-      {drawNo: 1004, numbers: [5,10,16,27,33,35], bonus: 43},
-      {drawNo: 1005, numbers: [1,5,10,11,19,41], bonus: 4},
-      {drawNo: 1006, numbers: [11,12,24,30,34,38], bonus: 4},
-      {drawNo: 1007, numbers: [8,11,15,20,38,40], bonus: 26},
-      {drawNo: 1008, numbers: [1,11,19,21,27,35], bonus: 37},
-      {drawNo: 1009, numbers: [1,4,13,21,30,38], bonus: 24},
-      {drawNo: 1010, numbers: [7,13,19,21,30,32], bonus: 39},
-      {drawNo: 1011, numbers: [4,20,26,27,40,43], bonus: 6},
-      {drawNo: 1012, numbers: [1,12,18,22,25,32], bonus: 35},
-      {drawNo: 1013, numbers: [6,7,12,23,28,39], bonus: 30},
-      {drawNo: 1014, numbers: [3,18,23,30,34,42], bonus: 4},
-      {drawNo: 1015, numbers: [10,13,14,35,36,37], bonus: 38},
-      {drawNo: 1016, numbers: [1,15,17,22,26,32], bonus: 44},
-      {drawNo: 1017, numbers: [1,3,17,21,31,40], bonus: 13},
-      {drawNo: 1018, numbers: [14,15,23,25,35,43], bonus: 38},
-      {drawNo: 1019, numbers: [4,10,24,28,37,42], bonus: 12},
-      {drawNo: 1020, numbers: [13,18,20,29,35,45], bonus: 34},
-      {drawNo: 1021, numbers: [2,8,19,22,23,43], bonus: 45},
-      {drawNo: 1022, numbers: [1,12,22,26,30,37], bonus: 6},
-      {drawNo: 1023, numbers: [1,4,10,16,17,39], bonus: 26},
-      {drawNo: 1024, numbers: [2,13,19,27,36,40], bonus: 26},
-      {drawNo: 1025, numbers: [1,13,23,24,34,44], bonus: 43},
-      {drawNo: 1026, numbers: [2,8,19,21,27,45], bonus: 10},
-      {drawNo: 1027, numbers: [11,20,23,35,36,44], bonus: 22},
-      {drawNo: 1028, numbers: [2,6,12,17,33,39], bonus: 18},
-      {drawNo: 1029, numbers: [1,6,12,24,31,32], bonus: 13},
-      {drawNo: 1030, numbers: [11,13,20,21,32,44], bonus: 39},
-      {drawNo: 1031, numbers: [7,8,13,19,39,40], bonus: 27},
-      {drawNo: 1032, numbers: [3,8,18,27,30,32], bonus: 26},
-      {drawNo: 1033, numbers: [7,15,22,35,36,42], bonus: 23},
-      {drawNo: 1034, numbers: [9,10,18,25,37,44], bonus: 6},
-      {drawNo: 1035, numbers: [3,10,20,26,30,33], bonus: 42},
-      {drawNo: 1036, numbers: [10,16,21,23,28,39], bonus: 9},
-      {drawNo: 1037, numbers: [8,10,15,19,24,36], bonus: 18},
-      {drawNo: 1038, numbers: [1,2,5,19,22,24], bonus: 41},
-      {drawNo: 1039, numbers: [7,13,15,18,34,41], bonus: 38},
-      {drawNo: 1040, numbers: [15,17,21,28,41,42], bonus: 36},
-      {drawNo: 1041, numbers: [4,16,21,35,40,43], bonus: 2},
-      {drawNo: 1042, numbers: [2,10,14,21,24,43], bonus: 16},
-      {drawNo: 1043, numbers: [6,19,27,29,33,44], bonus: 14},
-      {drawNo: 1044, numbers: [1,11,18,19,27,33], bonus: 24},
-      {drawNo: 1045, numbers: [1,15,16,22,26,40], bonus: 19},
-      {drawNo: 1046, numbers: [1,2,3,14,28,45], bonus: 25},
-      {drawNo: 1047, numbers: [13,16,28,34,35,42], bonus: 40},
-      {drawNo: 1048, numbers: [1,17,22,24,27,45], bonus: 20},
-      {drawNo: 1049, numbers: [2,4,13,32,36,42], bonus: 8},
-      {drawNo: 1050, numbers: [11,20,22,27,33,44], bonus: 42},
-      {drawNo: 1051, numbers: [3,6,22,27,29,43], bonus: 25},
-      {drawNo: 1052, numbers: [1,8,13,18,22,41], bonus: 44},
-      {drawNo: 1053, numbers: [14,20,21,26,38,40], bonus: 41},
-      {drawNo: 1054, numbers: [3,6,11,14,24,42], bonus: 30},
-      {drawNo: 1055, numbers: [2,10,14,35,36,42], bonus: 17},
-      {drawNo: 1056, numbers: [21,23,24,25,30,42], bonus: 35},
-      {drawNo: 1057, numbers: [4,6,14,19,25,43], bonus: 20},
-      {drawNo: 1058, numbers: [13,16,28,30,31,43], bonus: 38},
-      {drawNo: 1059, numbers: [11,13,20,21,34,42], bonus: 1},
-      {drawNo: 1060, numbers: [19,20,24,29,38,45], bonus: 16},
-      {drawNo: 1061, numbers: [15,20,24,28,37,45], bonus: 34},
-      {drawNo: 1062, numbers: [10,12,17,31,32,45], bonus: 41},
-      {drawNo: 1063, numbers: [1,8,16,21,29,37], bonus: 45},
-      {drawNo: 1064, numbers: [9,15,19,30,38,42], bonus: 2},
-      {drawNo: 1065, numbers: [1,3,9,18,24,31], bonus: 30},
-      {drawNo: 1066, numbers: [10,21,25,35,37,44], bonus: 18},
-      {drawNo: 1067, numbers: [8,10,20,26,27,43], bonus: 40},
-      {drawNo: 1068, numbers: [13,20,24,32,36,44], bonus: 17},
-      {drawNo: 1069, numbers: [11,14,16,27,42,43], bonus: 30},
-      {drawNo: 1070, numbers: [2,4,16,28,35,37], bonus: 39},
-      {drawNo: 1071, numbers: [17,26,29,30,34,44], bonus: 14},
-      {drawNo: 1072, numbers: [7,15,22,23,32,39], bonus: 30},
-      {drawNo: 1073, numbers: [10,18,24,32,41,45], bonus: 2},
-      {drawNo: 1074, numbers: [2,5,15,17,21,32], bonus: 40},
-      {drawNo: 1075, numbers: [7,18,25,29,40,42], bonus: 10},
-      {drawNo: 1076, numbers: [11,13,18,21,34,43], bonus: 30},
-      {drawNo: 1077, numbers: [4,16,22,28,30,42], bonus: 35},
-      {drawNo: 1078, numbers: [3,17,23,33,38,40], bonus: 31},
-      {drawNo: 1079, numbers: [1,9,11,14,21,32], bonus: 43},
-      {drawNo: 1080, numbers: [7,16,25,32,34,35], bonus: 33},
-      {drawNo: 1081, numbers: [1,3,9,30,33,40], bonus: 13},
-      {drawNo: 1082, numbers: [16,20,24,26,36,44], bonus: 40},
-      {drawNo: 1083, numbers: [2,5,12,18,19,42], bonus: 33},
-      {drawNo: 1084, numbers: [14,21,28,30,33,44], bonus: 8},
-      {drawNo: 1085, numbers: [3,5,12,16,23,38], bonus: 21},
-      {drawNo: 1086, numbers: [1,19,21,25,36,38], bonus: 44},
-      {drawNo: 1087, numbers: [12,19,21,29,35,38], bonus: 13},
-      {drawNo: 1088, numbers: [4,13,27,33,36,43], bonus: 11},
-      {drawNo: 1089, numbers: [11,16,25,27,35,44], bonus: 37},
-      {drawNo: 1090, numbers: [12,19,25,34,38,40], bonus: 2},
-      {drawNo: 1091, numbers: [2,3,4,13,38,45], bonus: 10},
-      {drawNo: 1092, numbers: [1,2,5,6,31,32], bonus: 4},
-      {drawNo: 1093, numbers: [3,19,21,23,28,42], bonus: 16},
-      {drawNo: 1094, numbers: [1,7,12,30,36,37], bonus: 44},
-      {drawNo: 1095, numbers: [7,17,27,33,36,38], bonus: 14},
-      {drawNo: 1096, numbers: [3,15,22,33,35,43], bonus: 2},
-      {drawNo: 1097, numbers: [2,13,20,24,36,44], bonus: 31},
-      {drawNo: 1098, numbers: [2,7,10,11,17,38], bonus: 13},
-      {drawNo: 1099, numbers: [1,8,13,22,30,43], bonus: 10},
-      {drawNo: 1100, numbers: [1,7,22,25,29,30], bonus: 13},
-      {drawNo: 1101, numbers: [3,7,9,20,21,43], bonus: 14},
-      {drawNo: 1102, numbers: [2,14,22,25,27,34], bonus: 36},
-      {drawNo: 1103, numbers: [5,10,16,22,33,44], bonus: 32},
-      {drawNo: 1104, numbers: [3,11,12,17,23,40], bonus: 27},
-      {drawNo: 1105, numbers: [21,24,28,35,37,42], bonus: 19},
-      {drawNo: 1106, numbers: [10,13,14,20,31,43], bonus: 36},
-      {drawNo: 1107, numbers: [6,9,11,14,35,37], bonus: 18},
-      {drawNo: 1108, numbers: [11,12,15,20,32,45], bonus: 27},
-      {drawNo: 1109, numbers: [11,16,25,28,34,36], bonus: 45},
-      {drawNo: 1110, numbers: [14,22,23,24,33,39], bonus: 18},
-      {drawNo: 1111, numbers: [2,19,26,30,34,42], bonus: 40},
-      {drawNo: 1112, numbers: [2,7,12,14,21,45], bonus: 23},
-      {drawNo: 1113, numbers: [10,14,16,24,27,39], bonus: 19},
-      {drawNo: 1114, numbers: [2,13,20,25,29,40], bonus: 34},
-      {drawNo: 1115, numbers: [5,10,23,31,38,40], bonus: 39},
-      {drawNo: 1116, numbers: [1,2,5,15,36,37], bonus: 44},
-      {drawNo: 1117, numbers: [5,8,14,20,38,45], bonus: 28},
-      {drawNo: 1118, numbers: [3,11,18,34,36,44], bonus: 24},
-      {drawNo: 1119, numbers: [1,3,10,19,25,32], bonus: 40},
-      {drawNo: 1120, numbers: [11,13,14,16,17,35], bonus: 38},
-      {drawNo: 1121, numbers: [11,14,16,23,32,43], bonus: 37},
-      {drawNo: 1122, numbers: [4,15,23,27,35,42], bonus: 39},
-      {drawNo: 1123, numbers: [2,14,21,24,35,40], bonus: 34},
-      {drawNo: 1124, numbers: [1,6,15,18,33,35], bonus: 40},
-      {drawNo: 1125, numbers: [3,5,16,21,26,36], bonus: 34},
-      {drawNo: 1126, numbers: [15,19,24,31,38,40], bonus: 44},
-      {drawNo: 1127, numbers: [1,3,5,18,20,40], bonus: 31},
-      {drawNo: 1128, numbers: [11,16,24,30,33,45], bonus: 13},
-      {drawNo: 1129, numbers: [2,20,33,36,39,45], bonus: 17},
-      {drawNo: 1130, numbers: [5,10,13,17,25,32], bonus: 23},
-      {drawNo: 1131, numbers: [2,14,21,30,39,41], bonus: 25},
-      {drawNo: 1132, numbers: [3,15,24,35,39,41], bonus: 28},
-      {drawNo: 1133, numbers: [7,15,30,33,36,44], bonus: 10},
-      {drawNo: 1134, numbers: [12,17,23,27,33,43], bonus: 10},
-      {drawNo: 1135, numbers: [1,5,13,20,29,43], bonus: 18},
-      {drawNo: 1136, numbers: [12,15,16,24,33,35], bonus: 13},
-      {drawNo: 1137, numbers: [9,10,11,14,35,38], bonus: 25},
-      {drawNo: 1138, numbers: [5,10,13,23,32,43], bonus: 17},
-      {drawNo: 1139, numbers: [6,7,12,18,22,29], bonus: 15},
-      {drawNo: 1140, numbers: [1,9,14,17,26,43], bonus: 24},
-      {drawNo: 1141, numbers: [1,11,21,29,34,39], bonus: 36},
-      {drawNo: 1142, numbers: [5,8,18,20,29,35], bonus: 43},
-      {drawNo: 1143, numbers: [1,4,13,18,34,39], bonus: 33},
-      {drawNo: 1144, numbers: [1,15,16,20,24,42], bonus: 31},
-      {drawNo: 1145, numbers: [3,6,24,32,35,39], bonus: 30},
-      {drawNo: 1146, numbers: [1,5,13,25,34,44], bonus: 35},
-      {drawNo: 1147, numbers: [1,6,10,15,37,42], bonus: 13},
-      {drawNo: 1148, numbers: [2,13,15,17,25,33], bonus: 42},
-      {drawNo: 1149, numbers: [1,4,12,21,33,42], bonus: 23},
-      {drawNo: 1150, numbers: [1,2,5,10,16,43], bonus: 37},
-      {drawNo: 1151, numbers: [7,13,16,19,23,38], bonus: 25},
-      {drawNo: 1152, numbers: [2,5,7,12,22,34], bonus: 35},
-      {drawNo: 1153, numbers: [13,14,20,24,34,40], bonus: 12},
-      {drawNo: 1154, numbers: [1,5,6,17,21,29], bonus: 40},
-      {drawNo: 1155, numbers: [1,12,20,27,33,40], bonus: 26},
-      {drawNo: 1156, numbers: [10,16,17,39,41,43], bonus: 12},
-      {drawNo: 1157, numbers: [2,3,10,25,33,40], bonus: 32},
-      {drawNo: 1158, numbers: [1,4,10,21,35,44], bonus: 16},
-      {drawNo: 1159, numbers: [3,8,13,19,25,44], bonus: 20},
-      {drawNo: 1160, numbers: [10,11,15,20,26,41], bonus: 16},
-      {drawNo: 1161, numbers: [1,6,10,14,35,43], bonus: 21},
-      {drawNo: 1162, numbers: [1,14,24,33,35,45], bonus: 6},
-      {drawNo: 1163, numbers: [15,16,17,19,42,45], bonus: 40},
-      {drawNo: 1164, numbers: [1,2,5,20,38,40], bonus: 24},
-      {drawNo: 1165, numbers: [3,11,14,24,31,44], bonus: 40},
-      {drawNo: 1166, numbers: [14,19,27,28,30,45], bonus: 43},
-      {drawNo: 1167, numbers: [5,7,12,18,29,34], bonus: 1},
-      {drawNo: 1168, numbers: [1,14,26,30,34,35], bonus: 29},
-      {drawNo: 1169, numbers: [5,15,16,17,28,32], bonus: 39},
-      {drawNo: 1170, numbers: [13,18,20,24,26,37], bonus: 11},
-      {drawNo: 1171, numbers: [1,6,9,12,15,31], bonus: 27},
-      {drawNo: 1172, numbers: [2,13,23,28,34,36], bonus: 11},
-      {drawNo: 1173, numbers: [2,8,19,22,25,41], bonus: 12},
-      {drawNo: 1174, numbers: [1,11,19,23,30,35], bonus: 34},
-      {drawNo: 1175, numbers: [3,14,26,27,41,42], bonus: 38},
-      {drawNo: 1176, numbers: [2,5,7,17,32,44], bonus: 19},
-      {drawNo: 1177, numbers: [2,17,21,30,38,43], bonus: 40},
-      {drawNo: 1178, numbers: [4,8,10,13,24,32], bonus: 41},
-      {drawNo: 1179, numbers: [6,15,20,24,25,44], bonus: 40},
-      {drawNo: 1180, numbers: [13,20,24,25,30,35], bonus: 38},
-      {drawNo: 1181, numbers: [11,13,14,16,35,42], bonus: 2},
-      {drawNo: 1182, numbers: [12,18,22,23,28,45], bonus: 30},
-      {drawNo: 1183, numbers: [5,8,14,25,27,40], bonus: 32},
-      {drawNo: 1184, numbers: [1,13,20,24,32,43], bonus: 28},
-      {drawNo: 1185, numbers: [4,10,14,24,29,35], bonus: 19},
-      {drawNo: 1186, numbers: [1,4,13,24,36,44], bonus: 22},
-      {drawNo: 1187, numbers: [5,13,26,29,37,40], bonus: 42},
-      {drawNo: 1188, numbers: [3,4,12,19,22,27], bonus: 9},
-      {drawNo: 1189, numbers: [9,19,29,35,37,38], bonus: 31},
-      {drawNo: 1190, numbers: [7,9,19,23,26,45], bonus: 33},
-      {drawNo: 1191, numbers: [1,4,11,12,20,41], bonus: 2},
-      {drawNo: 1192, numbers: [10,16,23,36,39,40], bonus: 11},
-      {drawNo: 1193, numbers: [6,9,16,19,24,28], bonus: 17},
-      {drawNo: 1194, numbers: [3,13,15,24,33,37], bonus: 2}
-    ].reverse(); // 최신 회차를 배열의 맨 앞으로
+      {drawNo: 924, numbers: [3,11,34,42,43,44], bonus: 13},
+      {drawNo: 925, numbers: [13,17,19,25,36,42], bonus: 40},
+      {drawNo: 926, numbers: [2,4,13,21,28,40], bonus: 16},
+      {drawNo: 927, numbers: [1,4,14,26,29,43], bonus: 16},
+      {drawNo: 928, numbers: [12,14,20,21,26,45], bonus: 28},
+      {drawNo: 929, numbers: [4,13,24,32,35,39], bonus: 1},
+      {drawNo: 930, numbers: [10,14,16,33,39,45], bonus: 1},
+      {drawNo: 931, numbers: [21,22,27,33,39,44], bonus: 36},
+      {drawNo: 932, numbers: [1,4,12,30,33,40], bonus: 43},
+      {drawNo: 933, numbers: [1,8,13,31,44,45], bonus: 32},
+      {drawNo: 934, numbers: [2,11,18,24,28,45], bonus: 44},
+      {drawNo: 935, numbers: [1,7,12,13,24,38], bonus: 31},
+      {drawNo: 936, numbers: [7,11,26,29,31,37], bonus: 2},
+      {drawNo: 937, numbers: [2,9,14,26,31,43], bonus: 38},
+      {drawNo: 938, numbers: [1,11,21,29,34,36], bonus: 13},
+      {drawNo: 939, numbers: [1,18,28,32,33,42], bonus: 45},
+      {drawNo: 940, numbers: [2,9,13,25,32,42], bonus: 38},
+      {drawNo: 941, numbers: [12,17,25,27,39,44], bonus: 29},
+      {drawNo: 942, numbers: [5,7,12,23,31,39], bonus: 24},
+      {drawNo: 943, numbers: [8,10,13,20,29,30], bonus: 33},
+      {drawNo: 944, numbers: [7,10,19,21,29,40], bonus: 23},
+      {drawNo: 945, numbers: [2,9,12,17,24,36], bonus: 10},
+      {drawNo: 946, numbers: [14,25,32,37,42,43], bonus: 44},
+      {drawNo: 947, numbers: [1,7,14,19,25,38], bonus: 12},
+      {drawNo: 948, numbers: [1,2,5,19,26,31], bonus: 43},
+      {drawNo: 949, numbers: [4,20,24,37,41,45], bonus: 33},
+      {drawNo: 950, numbers: [3,11,23,28,32,45], bonus: 17},
+      {drawNo: 951, numbers: [5,17,21,29,31,37], bonus: 38},
+      {drawNo: 952, numbers: [3,7,9,18,24,30], bonus: 19},
+      {drawNo: 953, numbers: [1,3,9,18,27,39], bonus: 25},
+      {drawNo: 954, numbers: [13,16,17,22,25,38], bonus: 11},
+      {drawNo: 955, numbers: [7,8,13,14,19,23], bonus: 26},
+      {drawNo: 956, numbers: [1,3,10,24,37,44], bonus: 42},
+      {drawNo: 957, numbers: [1,4,5,19,29,45], bonus: 15},
+      {drawNo: 958, numbers: [7,16,25,31,32,39], bonus: 26},
+      {drawNo: 959, numbers: [6,9,11,15,31,39], bonus: 42},
+      {drawNo: 960, numbers: [14,23,24,28,30,42], bonus: 35},
+      {drawNo: 961, numbers: [11,17,20,21,23,39], bonus: 4},
+      {drawNo: 962, numbers: [8,18,27,30,41,42], bonus: 37},
+      {drawNo: 963, numbers: [1,7,12,23,40,41], bonus: 18},
+      {drawNo: 964, numbers: [15,22,27,29,36,44], bonus: 14},
+      {drawNo: 965, numbers: [1,16,21,23,24,32], bonus: 44},
+      {drawNo: 966, numbers: [10,16,19,30,33,43], bonus: 13},
+      {drawNo: 967, numbers: [1,2,4,22,33,39], bonus: 24},
+      {drawNo: 968, numbers: [12,13,24,32,34,38], bonus: 6},
+      {drawNo: 969, numbers: [4,16,22,26,30,42], bonus: 18},
+      {drawNo: 970, numbers: [6,11,15,19,36,38], bonus: 25},
+      {drawNo: 971, numbers: [4,8,16,19,29,40], bonus: 31},
+      {drawNo: 972, numbers: [12,18,21,29,32,40], bonus: 33},
+      {drawNo: 973, numbers: [13,17,18,21,37,42], bonus: 4},
+      {drawNo: 974, numbers: [1,7,15,28,35,39], bonus: 41},
+      {drawNo: 975, numbers: [2,8,13,19,36,42], bonus: 14},
+      {drawNo: 976, numbers: [6,15,19,25,32,42], bonus: 38},
+      {drawNo: 977, numbers: [3,6,11,26,35,36], bonus: 24},
+      {drawNo: 978, numbers: [2,4,9,15,23,34], bonus: 10},
+      {drawNo: 979, numbers: [1,11,17,21,32,44], bonus: 16},
+      {drawNo: 980, numbers: [4,10,13,23,32,44], bonus: 15},
+      {drawNo: 981, numbers: [10,11,20,21,26,41], bonus: 43},
+      {drawNo: 982, numbers: [6,8,13,24,39,40], bonus: 15},
+      {drawNo: 983, numbers: [4,7,12,30,34,37], bonus: 36},
+      {drawNo: 984, numbers: [6,13,18,20,24,38], bonus: 23},
+      {drawNo: 985, numbers: [1,2,11,25,33,40], bonus: 5},
+      {drawNo: 986, numbers: [4,7,12,17,22,23], bonus: 37},
+      {drawNo: 987, numbers: [10,17,22,36,37,44], bonus: 32},
+      {drawNo: 988, numbers: [2,13,20,33,39,43], bonus: 38},
+      {drawNo: 989, numbers: [2,15,24,30,38,45], bonus: 35},
+      {drawNo: 990, numbers: [6,12,16,21,34,35], bonus: 30},
+      {drawNo: 991, numbers: [1,13,28,35,36,37], bonus: 19},
+      {drawNo: 992, numbers: [4,11,21,29,38,40], bonus: 17},
+      {drawNo: 993, numbers: [6,12,23,27,33,42], bonus: 15},
+      {drawNo: 994, numbers: [2,14,23,24,25,27], bonus: 32},
+      {drawNo: 995, numbers: [5,8,12,28,35,40], bonus: 14},
+      {drawNo: 996, numbers: [13,14,24,33,35,43], bonus: 16},
+      {drawNo: 997, numbers: [1,2,7,19,27,38], bonus: 40},
+      {drawNo: 998, numbers: [3,5,10,23,33,42], bonus: 12},
+      {drawNo: 999, numbers: [6,7,10,14,19,29], bonus: 39},
+      {drawNo: 1000, numbers: [1,5,11,22,28,39], bonus: 33},
+      {drawNo: 1001, numbers: [4,8,12,29,42,45], bonus: 31},
+      {drawNo: 1002, numbers: [8,13,18,23,24,42], bonus: 20},
+      {drawNo: 1003, numbers: [2,19,26,30,34,42], bonus: 40},
+      {drawNo: 1004, numbers: [4,12,25,32,36,44], bonus: 20},
+      {drawNo: 1005, numbers: [6,15,19,25,35,44], bonus: 18},
+      {drawNo: 1006, numbers: [1,8,13,32,38,40], bonus: 42},
+      {drawNo: 1007, numbers: [7,12,21,29,30,33], bonus: 23},
+      {drawNo: 1008, numbers: [2,5,18,28,36,44], bonus: 31},
+      {drawNo: 1009, numbers: [15,22,23,24,28,38], bonus: 44},
+      {drawNo: 1010, numbers: [16,21,27,31,37,42], bonus: 44},
+      {drawNo: 1011, numbers: [7,12,17,19,21,39], bonus: 22},
+      {drawNo: 1012, numbers: [5,10,18,29,34,36], bonus: 39},
+      {drawNo: 1013, numbers: [10,13,20,30,35,44], bonus: 34},
+      {drawNo: 1014, numbers: [14,19,20,27,35,39], bonus: 17},
+      {drawNo: 1015, numbers: [3,18,25,33,42,43], bonus: 12},
+      {drawNo: 1016, numbers: [1,11,18,19,27,36], bonus: 17},
+      {drawNo: 1017, numbers: [11,13,14,35,37,43], bonus: 16},
+      {drawNo: 1018, numbers: [1,2,5,18,22,41], bonus: 3},
+      {drawNo: 1019, numbers: [14,15,21,25,36,42], bonus: 22},
+      {drawNo: 1020, numbers: [3,10,19,25,31,36], bonus: 30},
+      {drawNo: 1021, numbers: [6,13,20,27,38,44], bonus: 34},
+      {drawNo: 1022, numbers: [13,20,24,32,39,42], bonus: 15},
+      {drawNo: 1023, numbers: [10,13,23,26,34,40], bonus: 27},
+      {drawNo: 1024, numbers: [11,19,21,22,28,31], bonus: 40},
+      {drawNo: 1025, numbers: [7,15,31,33,35,36], bonus: 18},
+      {drawNo: 1026, numbers: [1,2,7,12,23,43], bonus: 19},
+      {drawNo: 1027, numbers: [2,8,19,22,30,44], bonus: 16},
+      {drawNo: 1028, numbers: [2,13,23,26,27,36], bonus: 32},
+      {drawNo: 1029, numbers: [11,13,20,21,32,44], bonus: 33},
+      {drawNo: 1030, numbers: [5,16,21,29,36,44], bonus: 18},
+      {drawNo: 1031, numbers: [11,18,20,30,39,44], bonus: 19},
+      {drawNo: 1032, numbers: [2,15,23,30,35,45], bonus: 22},
+      {drawNo: 1033, numbers: [6,8,12,13,29,43], bonus: 10},
+      {drawNo: 1034, numbers: [1,10,16,18,37,42], bonus: 27},
+      {drawNo: 1035, numbers: [6,15,22,25,37,44], bonus: 14},
+      {drawNo: 1036, numbers: [11,17,20,27,34,44], bonus: 18},
+      {drawNo: 1037, numbers: [2,10,14,19,33,40], bonus: 35},
+      {drawNo: 1038, numbers: [1,5,10,15,27,40], bonus: 23},
+      {drawNo: 1039, numbers: [5,18,20,30,42,43], bonus: 27},
+      {drawNo: 1040, numbers: [2,4,28,34,35,44], bonus: 33},
+      {drawNo: 1041, numbers: [13,16,19,25,32,42], bonus: 35},
+      {drawNo: 1042, numbers: [4,16,17,23,32,39], bonus: 21},
+      {drawNo: 1043, numbers: [1,13,24,31,35,42], bonus: 30},
+      {drawNo: 1044, numbers: [2,4,13,18,22,43], bonus: 19},
+      {drawNo: 1045, numbers: [3,7,9,17,27,35], bonus: 26},
+      {drawNo: 1046, numbers: [1,2,5,22,29,44], bonus: 21},
+      {drawNo: 1047, numbers: [12,18,20,22,23,40], bonus: 13},
+      {drawNo: 1048, numbers: [2,13,25,28,29,43], bonus: 36},
+      {drawNo: 1049, numbers: [6,14,15,19,28,45], bonus: 13},
+      {drawNo: 1050, numbers: [12,15,23,28,30,39], bonus: 2},
+      {drawNo: 1051, numbers: [12,14,24,26,41,43], bonus: 20},
+      {drawNo: 1052, numbers: [10,12,18,35,40,43], bonus: 22},
+      {drawNo: 1053, numbers: [6,17,19,26,40,43], bonus: 42},
+      {drawNo: 1054, numbers: [7,17,20,24,34,38], bonus: 40},
+      {drawNo: 1055, numbers: [1,22,26,30,38,45], bonus: 39},
+      {drawNo: 1056, numbers: [5,15,20,24,30,35], bonus: 16},
+      {drawNo: 1057, numbers: [10,13,14,35,40,45], bonus: 3},
+      {drawNo: 1058, numbers: [2,5,7,12,15,23], bonus: 20},
+      {drawNo: 1059, numbers: [3,5,10,23,32,36], bonus: 35},
+      {drawNo: 1060, numbers: [15,19,20,24,27,38], bonus: 22},
+      {drawNo: 1061, numbers: [1,11,16,19,22,25], bonus: 40},
+      {drawNo: 1062, numbers: [13,20,24,29,37,43], bonus: 6},
+      {drawNo: 1063, numbers: [2,4,22,23,37,39], bonus: 8},
+      {drawNo: 1064, numbers: [13,23,25,32,35,37], bonus: 43},
+      {drawNo: 1065, numbers: [4,20,26,27,33,40], bonus: 14},
+      {drawNo: 1066, numbers: [6,12,17,21,32,43], bonus: 40},
+      {drawNo: 1067, numbers: [1,15,20,21,29,44], bonus: 45},
+      {drawNo: 1068, numbers: [3,13,20,23,43,45], bonus: 22},
+      {drawNo: 1069, numbers: [1,4,14,17,21,43], bonus: 25},
+      {drawNo: 1070, numbers: [2,3,4,19,32,40], bonus: 11},
+      {drawNo: 1071, numbers: [8,10,19,23,33,44], bonus: 16},
+      {drawNo: 1072, numbers: [1,2,7,8,13,38], bonus: 29},
+      {drawNo: 1073, numbers: [2,3,17,22,35,41], bonus: 43},
+      {drawNo: 1074, numbers: [4,10,13,22,33,45], bonus: 26},
+      {drawNo: 1075, numbers: [6,8,13,21,38,44], bonus: 12},
+      {drawNo: 1076, numbers: [15,16,17,23,31,41], bonus: 24},
+      {drawNo: 1077, numbers: [14,17,18,21,27,45], bonus: 43},
+      {drawNo: 1078, numbers: [13,14,21,28,30,35], bonus: 2],
+      {drawNo: 1079, numbers: [15,22,25,27,30,45], bonus: 37},
+      {drawNo: 1080, numbers: [7,15,25,32,33,37], bonus: 13},
+      {drawNo: 1081, numbers: [10,14,24,30,32,39], bonus: 27},
+      {drawNo: 1082, numbers: [15,16,17,21,31,44], bonus: 5},
+      {drawNo: 1083, numbers: [4,13,26,35,37,45], bonus: 33},
+      {drawNo: 1084, numbers: [1,11,18,22,24,30], bonus: 33},
+      {drawNo: 1085, numbers: [5,10,12,18,30,32], bonus: 45},
+      {drawNo: 1086, numbers: [1,2,5,9,17,45], bonus: 16},
+      {drawNo: 1087, numbers: [11,15,17,21,22,35], bonus: 39},
+      {drawNo: 1088, numbers: [4,9,11,12,38,44], bonus: 13},
+      {drawNo: 1089, numbers: [1,2,9,20,24,37], bonus: 27},
+      {drawNo: 1090, numbers: [1,12,15,18,20,42], bonus: 34},
+      {drawNo: 1091, numbers: [14,16,17,20,29,38], bonus: 27},
+      {drawNo: 1092, numbers: [11,18,22,27,33,38], bonus: 40},
+      {drawNo: 1093, numbers: [12,16,21,24,41,43], bonus: 32},
+      {drawNo: 1094, numbers: [3,14,24,35,38,43], bonus: 21},
+      {drawNo: 1095, numbers: [1,2,11,27,33,35], bonus: 42},
+      {drawNo: 1096, numbers: [3,10,23,26,30,33], bonus: 17},
+      {drawNo: 1097, numbers: [7,17,18,23,27,36], bonus: 28},
+      {drawNo: 1098, numbers: [1,8,12,23,30,34], bonus: 41},
+      {drawNo: 1099, numbers: [3,8,17,20,38,43], bonus: 30},
+      {drawNo: 1100, numbers: [10,13,22,28,34,40], bonus: 15},
+      {drawNo: 1101, numbers: [1,8,13,24,25,32], bonus: 20},
+      {drawNo: 1102, numbers: [7,15,30,34,36,37], bonus: 43},
+      {drawNo: 1103, numbers: [1,13,21,26,31,44], bonus: 9},
+      {drawNo: 1104, numbers: [6,18,24,31,32,45], bonus: 38},
+      {drawNo: 1105, numbers: [11,15,22,29,37,42], bonus: 18},
+      {drawNo: 1106, numbers: [1,8,10,13,24,43], bonus: 20},
+      {drawNo: 1107, numbers: [12,14,18,24,26,42], bonus: 16},
+      {drawNo: 1108, numbers: [1,7,12,25,37,41], bonus: 43},
+      {drawNo: 1109, numbers: [2,8,16,22,34,38], bonus: 36},
+      {drawNo: 1110, numbers: [12,19,25,26,31,42], bonus: 37},
+      {drawNo: 1111, numbers: [1,6,10,15,31,33], bonus: 34},
+      {drawNo: 1112, numbers: [13,15,19,24,26,36], bonus: 45},
+      {drawNo: 1113, numbers: [10,14,16,29,32,45], bonus: 43},
+      {drawNo: 1114, numbers: [3,13,15,21,29,42], bonus: 10},
+      {drawNo: 1115, numbers: [1,15,16,21,37,43], bonus: 23},
+      {drawNo: 1116, numbers: [5,16,21,27,37,41], bonus: 34},
+      {drawNo: 1117, numbers: [4,10,11,18,26,45], bonus: 13},
+      {drawNo: 1118, numbers: [1,12,18,20,29,44], bonus: 32},
+      {drawNo: 1119, numbers: [1,3,9,16,20,25], bonus: 21},
+      {drawNo: 1120, numbers: [5,10,18,34,37,42], bonus: 43},
+      {drawNo: 1121, numbers: [17,26,29,34,36,37], bonus: 11},
+      {drawNo: 1122, numbers: [11,12,14,16,42,44], bonus: 17},
+      {drawNo: 1123, numbers: [1,3,17,21,32,42], bonus: 30},
+      {drawNo: 1124, numbers: [12,17,28,41,43,45], bonus: 10},
+      {drawNo: 1125, numbers: [2,10,15,27,33,40], bonus: 8},
+      {drawNo: 1126, numbers: [1,6,11,30,34,35], bonus: 42},
+      {drawNo: 1127, numbers: [6,18,20,33,40,41], bonus: 37},
+      {drawNo: 1128, numbers: [10,13,14,19,30,33], bonus: 4],
+      {drawNo: 1129, numbers: [7,15,30,35,42,43], bonus: 17},
+      {drawNo: 1130, numbers: [10,17,22,30,34,37], bonus: 6},
+      {drawNo: 1131, numbers: [4,11,14,16,29,41], bonus: 44},
+      {drawNo: 1132, numbers: [5,11,17,20,37,43], bonus: 23},
+      {drawNo: 1133, numbers: [6,15,25,30,32,41], bonus: 42},
+      {drawNo: 1134, numbers: [3,10,19,25,28,41], bonus: 40},
+      {drawNo: 1135, numbers: [1,11,21,29,35,39], bonus: 20},
+      {drawNo: 1136, numbers: [11,17,20,24,28,30], bonus: 43},
+      {drawNo: 1137, numbers: [5,13,17,26,42,44], bonus: 12},
+      {drawNo: 1138, numbers: [2,8,12,18,22,34], bonus: 20},
+      {drawNo: 1139, numbers: [12,14,24,35,40,43], bonus: 27},
+      {drawNo: 1140, numbers: [15,19,20,28,30,42], bonus: 11},
+      {drawNo: 1141, numbers: [6,18,22,23,28,42], bonus: 39},
+      {drawNo: 1142, numbers: [12,19,21,29,32,44], bonus: 33},
+      {drawNo: 1143, numbers: [12,14,21,29,39,43], bonus: 15},
+      {drawNo: 1144, numbers: [11,13,16,21,32,39], bonus: 35},
+      {drawNo: 1145, numbers: [14,25,27,29,34,44], bonus: 13},
+      {drawNo: 1146, numbers: [8,15,19,22,29,37], bonus: 18},
+      {drawNo: 1147, numbers: [1,3,9,16,27,31], bonus: 38},
+      {drawNo: 1148, numbers: [1,5,10,15,27,33], bonus: 38},
+      {drawNo: 1149, numbers: [15,16,23,25,29,37], bonus: 10},
+      {drawNo: 1150, numbers: [14,18,25,27,38,44], bonus: 28},
+      {drawNo: 1151, numbers: [2,24,29,40,41,42], bonus: 43},
+      {drawNo: 1152, numbers: [7,16,21,29,31,42], bonus: 25},
+      {drawNo: 1153, numbers: [15,23,25,29,40,41], bonus: 18},
+      {drawNo: 1154, numbers: [10,12,17,21,26,40], bonus: 15},
+      {drawNo: 1155, numbers: [4,10,21,26,41,42], bonus: 36},
+      {drawNo: 1156, numbers: [5,13,14,17,37,42], bonus: 19},
+      {drawNo: 1157, numbers: [4,10,17,20,38,44], bonus: 24},
+      {drawNo: 1158, numbers: [16,23,24,33,38,40], bonus: 17},
+      {drawNo: 1159, numbers: [3,10,29,33,40,42], bonus: 34},
+      {drawNo: 1160, numbers: [12,14,18,20,25,32], bonus: 34},
+      {drawNo: 1161, numbers: [15,16,17,27,30,45], bonus: 28},
+      {drawNo: 1162, numbers: [12,14,18,22,23,40], bonus: 28},
+      {drawNo: 1163, numbers: [3,12,13,27,31,34], bonus: 8],
+      {drawNo: 1164, numbers: [14,17,19,22,24,38], bonus: 9],
+      {drawNo: 1165, numbers: [1,11,15,21,22,23], bonus: 19},
+      {drawNo: 1166, numbers: [3,10,13,22,29,31], bonus: 28},
+      {drawNo: 1167, numbers: [1,13,20,24,39,43], bonus: 45},
+      {drawNo: 1168, numbers: [4,13,23,25,33,39], bonus: 20},
+      {drawNo: 1169, numbers: [5,14,21,30,38,43], bonus: 35},
+      {drawNo: 1170, numbers: [1,2,9,18,20,29], bonus: 12},
+      {drawNo: 1171, numbers: [6,7,12,22,26,35], bonus: 41},
+      {drawNo: 1172, numbers: [1,2,5,18,25,38], bonus: 29},
+      {drawNo: 1173, numbers: [3,4,9,30,33,36], bonus: 17},
+      {drawNo: 1174, numbers: [1,11,21,32,41,43], bonus: 23},
+      {drawNo: 1175, numbers: [2,8,13,27,32,44], bonus: 45},
+      {drawNo: 1176, numbers: [5,12,16,17,28,34], bonus: 31},
+      {drawNo: 1177, numbers: [1,3,4,16,18,28], bonus: 29},
+      {drawNo: 1178, numbers: [13,16,23,37,42,43], bonus: 34},
+      {drawNo: 1179, numbers: [1,2,11,21,30,35], bonus: 39},
+      {drawNo: 1180, numbers: [11,13,20,21,35,42], bonus: 14},
+      {drawNo: 1181, numbers: [11,17,19,21,22,34], bonus: 30},
+      {drawNo: 1182, numbers: [14,20,28,32,33,34], bonus: 12},
+      {drawNo: 1183, numbers: [2,4,7,14,35,37], bonus: 10},
+      {drawNo: 1184, numbers: [1,10,17,22,25,43], bonus: 35},
+      {drawNo: 1185, numbers: [10,15,19,21,27,42], bonus: 31},
+      {drawNo: 1186, numbers: [3,13,22,37,39,44], bonus: 8],
+      // 여기에 새로운 회차 데이터가 추가될 수 있습니다.
+    ];
 
-    const LOTTO_MAX_NUMBER = 45;
-    const LOTTO_PICK_COUNT = 6;
-    // localStorage에 저장된 조합 내역
-    let combinationHistory = JSON.parse(localStorage.getItem('lottoCombinations')) || [];
-
-    // 'lottoHistory' 전체 데이터 사용 (필터 분석용)
-    const allNumbers = lottoHistory.flatMap(draw => draw.numbers);
-    const frequencyMap = {};
-    allNumbers.forEach(num => frequencyMap[num] = (frequencyMap[num] || 0) + 1);
-
-    // 핫/콜드 넘버 계산 (전체 데이터 기준)
-    const sortedFrequencies = Object.entries(frequencyMap).sort(([,a], [,b]) => b - a);
-    const hotNumbers = sortedFrequencies.slice(0, 10).map(([num]) => parseInt(num));
-    const coldNumbers = sortedFrequencies.slice(-10).map(([num]) => parseInt(num));
-
-    // 소수 번호 (Prime Number) 리스트
-    const primeNumbers = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43];
+    let savedCombinations = loadCombinations();
     
-    // 최소 1개는 반드시 핫/콜드 넘버가 포함되도록 함
-    // 핫/콜드 넘버가 나올 확률 계산 (전체 데이터 기준)
-    const hotColdCount = allNumbers.filter(num => hotNumbers.includes(num) || coldNumbers.includes(num)).length;
-    const totalCount = allNumbers.length;
-    const hotColdProbability = hotColdCount / totalCount;
+    // 로또 번호 공 색상 지정 함수 (getNumberClass)는 유지됩니다.
+    function getNumberClass(number) {
+      if (number >= 1 && number <= 10) return 'n1';
+      if (number >= 11 && number <= 20) return 'n2';
+      if (number >= 21 && number <= 30) return 'n3';
+      if (number >= 31 && number <= 40) return 'n4';
+      if (number >= 41 && number <= 45) return 'n5';
+      return '';
+    }
 
-    // 소수 번호가 나올 확률 계산 (전체 데이터 기준)
-    const primeCount = allNumbers.filter(num => primeNumbers.includes(num)).length;
-    const primeProbability = primeCount / totalCount;
+    // 가장 최근 회차의 당첨 번호(본번호 6개 + 보너스번호 1개)를 가져옵니다. (유지)
+    function getLastWinningNumbers() {
+      if (lottoHistory.length === 0) return null;
+      const lastDraw = lottoHistory[lottoHistory.length - 1];
+      const allNumbers = [...lastDraw.numbers, lastDraw.bonus];
+      return allNumbers;
+    }
 
-    // 로딩 스피너 제어
+    // ********* [변경됨] 통계 계산 함수: lottoHistory 전체 데이터를 기준으로 핫/콜드 번호 계산 *********
+    function calculateStats() {
+      const allNumbers = lottoHistory.flatMap(draw => draw.numbers); // lottoHistory 전체 사용
+      const numberCounts = {};
+      
+      for (let i = 1; i <= 45; i++) {
+        numberCounts[i] = 0;
+      }
+      allNumbers.forEach(num => {
+        numberCounts[num]++;
+      });
+
+      // 핫 넘버 (전체 회차 기준 최다 출현 6개)
+      const sortedCounts = Object.entries(numberCounts)
+        .sort(([, a], [, b]) => b - a)
+        .slice(0, 6);
+      const hotNumbers = sortedCounts.map(([num]) => parseInt(num));
+
+      // 콜드 넘버 (전체 회차 기준 최소 출현 6개)
+      const coldNumbers = Object.entries(numberCounts)
+        .sort(([, a], [, b]) => a - b)
+        .slice(0, 6)
+        .map(([num]) => parseInt(num));
+
+      return { hotNumbers, coldNumbers };
+    }
+
+    const { hotNumbers, coldNumbers } = calculateStats(); // 전체 회차 기준으로 계산
+    const lastWinningNumbers = getLastWinningNumbers(); // 최신 당첨 번호 7개
+
+    updateHistoryCount(); // 통계 계산 후 히스토리 업데이트
+
+    // 로딩 스피너 제어 (유지)
     function showLoading() {
       document.getElementById('loadingSpinner').style.display = 'flex';
     }
@@ -1312,558 +1317,519 @@
       document.getElementById('loadingSpinner').style.display = 'none';
     }
 
-    // 유틸리티 함수
-    function generateRandomNumber(min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    // 기본 조합 생성 (6개), 1개 번호 반드시 포함
-    function generateRandomCombo(mustIncludeNumber) {
-      const numbers = new Set();
-      if (mustIncludeNumber) {
-        numbers.add(mustIncludeNumber);
+    // ********* [변경됨] 메인 로직: 최신 번호 1개 포함 및 AI 기반 로또 번호 생성 *********
+    function generateLottoCombination() {
+      // 1. 항상 포함될 최신 회차 번호 7개 중 1개 랜덤 선택 (lastWinningNumbers 사용)
+      if (!lastWinningNumbers || lastWinningNumbers.length === 0) {
+          // 안전 장치: 최신 당첨 번호가 없으면 일반 랜덤 조합 생성
+          let fallback = [];
+          while (fallback.length < 6) {
+              const num = Math.floor(Math.random() * 45) + 1;
+              if (!fallback.includes(num)) {
+                  fallback.push(num);
+              }
+          }
+          return fallback.sort((a, b) => a - b);
       }
+      const guaranteedNum = lastWinningNumbers[Math.floor(Math.random() * lastWinningNumbers.length)];
 
-      while (numbers.size < LOTTO_PICK_COUNT) {
-        let num;
-        do {
-            num = generateRandomNumber(1, LOTTO_MAX_NUMBER);
-        } while (numbers.has(num)); // Ensure no duplicates
-        numbers.add(num);
-      }
-      return Array.from(numbers).sort((a, b) => a - b);
-    }
-
-    // 1. 핫/콜드 넘버 필터 (유지)
-    // 최소 1개, 최대 4개가 핫/콜드 넘버에 포함되도록 조정
-    function applyHotColdFilter(numbers) {
-      let combo = [...numbers];
-      let hotColdCount = combo.filter(n => hotNumbers.includes(n) || coldNumbers.includes(n)).length;
+      const allPossibleNumbers = Array.from({ length: 45 }, (_, i) => i + 1);
+      const MAX_ATTEMPTS = 500;
       let attempts = 0;
 
-      // 핫/콜드 넘버의 개수가 1개 미만이거나 4개를 초과하면 재조정
-      while ((hotColdCount < 1 || hotColdCount > 4) && attempts < 100) {
-        // 기준에 맞지 않는 번호 1개를 교체
-        let numToReplace = -1;
-        if (hotColdCount < 1) { // 핫/콜드가 너무 적으면
-            numToReplace = combo.find(n => !hotNumbers.includes(n) && !coldNumbers.includes(n));
-        } else { // 핫/콜드가 너무 많으면
-            numToReplace = combo.find(n => hotNumbers.includes(n) || coldNumbers.includes(n));
+      while (attempts < MAX_ATTEMPTS) {
+        let combination = new Set([guaranteedNum]); // 1. guaranteedNum으로 조합 시작
+        
+        // 2. 핫/콜드 번호 풀 준비 (guaranteedNum을 제외)
+        let availableHot = hotNumbers.filter(num => num !== guaranteedNum);
+        let availableCold = coldNumbers.filter(num => num !== guaranteedNum);
+        
+        // guaranteedNum이 이미 핫/콜드 번호에 포함되었는지 확인
+        let hotCount = hotNumbers.includes(guaranteedNum) ? 1 : 0;
+        let coldCount = coldNumbers.includes(guaranteedNum) ? 1 : 0;
+        
+        // 3. 핫 넘버 추가 선정 (2~3개 목표)
+        while (hotCount < 2 && combination.size < 6 && availableHot.length > 0) {
+          if (Math.random() < 0.6 && hotCount < 3) {
+            const num = availableHot.splice(Math.floor(Math.random() * availableHot.length), 1)[0];
+            combination.add(num);
+            hotCount++;
+          } else {
+             break;
+          }
         }
         
-        if (numToReplace === -1) numToReplace = combo[0]; // 예외 처리
+        // 4. 콜드 넘버 추가 선정 (1~2개 목표)
+        while (coldCount < 1 && combination.size < 6 && availableCold.length > 0) {
+          if (Math.random() < 0.4 && coldCount < 2) {
+            const num = availableCold.splice(Math.floor(Math.random() * availableCold.length), 1)[0];
+            combination.add(num);
+            coldCount++;
+          } else {
+             break;
+          }
+        }
 
-        // 새로운 번호로 교체
-        let newNum;
-        do {
-            newNum = generateRandomNumber(1, LOTTO_MAX_NUMBER);
-        } while (combo.includes(newNum));
+        // 5. 남은 번호 채우기
+        let pool = [...allPossibleNumbers].filter(num => !combination.has(num));
+        while (combination.size < 6 && pool.length > 0) {
+          const randomIndex = Math.floor(Math.random() * pool.length);
+          const num = pool.splice(randomIndex, 1)[0];
+          combination.add(num);
+        }
         
-        combo = combo.map(n => n === numToReplace ? newNum : n);
+        if (combination.size < 6) {
+             attempts++;
+             continue;
+        }
+
+        const numbers = Array.from(combination).sort((a, b) => a - b);
         
-        combo.sort((a, b) => a - b);
-        hotColdCount = combo.filter(n => hotNumbers.includes(n) || coldNumbers.includes(n)).length;
-        attempts++;
+        // 6. 필터링 (번호대 균형, 합계 범위, 끝자리 패턴, 소수 번호) - 기존 로직 유지
+
+        // 번호대 균형 조정 (1~10, 11~20, 21~30, 31~40, 41~45)
+        const counts = [0, 0, 0, 0, 0]; 
+        numbers.forEach(num => {
+          if (num <= 10) counts[0]++;
+          else if (num <= 20) counts[1]++;
+          else if (num <= 30) counts[2]++;
+          else if (num <= 40) counts[3]++;
+          else counts[4]++;
+        });
+        const zeroCount = counts.filter(c => c === 0).length;
+        if (zeroCount >= 3) {
+          attempts++;
+          continue;
+        }
+
+        // 동적 합계 범위 (100~170)
+        const sum = numbers.reduce((a, b) => a + b, 0);
+        if (sum < 100 || sum > 170) {
+          attempts++;
+          continue;
+        }
+
+        // 끝자리 패턴 분석 (4개 이상 동일 끝자리 제외)
+        const lastDigits = numbers.map(num => num % 10);
+        const lastDigitCounts = {};
+        lastDigits.forEach(digit => {
+          lastDigitCounts[digit] = (lastDigitCounts[digit] || 0) + 1;
+        });
+        const maxLastDigitCount = Math.max(...Object.values(lastDigitCounts));
+        if (maxLastDigitCount >= 4) {
+          attempts++;
+          continue;
+        }
+        
+        // 소수 번호 필터 (4개 이상 제외)
+        const primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43];
+        const primeCount = numbers.filter(num => primes.includes(num)).length;
+        if (primeCount >= 4) {
+             attempts++;
+             continue;
+        }
+
+        return numbers; 
       }
       
-      // 100회 시도 후에도 실패하면 그냥 초기 조합 생성
-      if (attempts >= 100) {
-          combo = generateRandomCombo(numbers[0]); // 기존 포함 번호는 유지
-          hotColdCount = combo.filter(n => hotNumbers.includes(n) || coldNumbers.includes(n)).length;
-          // 그래도 안되면 그냥 반환
-          if (hotColdCount < 1 || hotColdCount > 4) {
-             // console.log("핫/콜드 필터 실패, 원본 반환");
+      // 최대 시도 횟수 초과 시, 보장된 번호를 포함한 일반 랜덤 조합 반환.
+      let fallbackCombination = [guaranteedNum];
+      while (fallbackCombination.length < 6) {
+          const num = Math.floor(Math.random() * 45) + 1;
+          if (!fallbackCombination.includes(num)) {
+              fallbackCombination.push(num);
           }
       }
-
-      return combo;
+      return fallbackCombination.sort((a, b) => a - b);
     }
-
-    // 5. 소수 번호 필터 (유지)
-    // 6개 중 소수 번호가 1개 이상 4개 이하가 되도록 조정
-    function applyPrimeNumberFilter(numbers) {
-      let combo = [...numbers];
-      let attempts = 0;
-      let primeCount = combo.filter(n => primeNumbers.includes(n)).length;
-
-      while ((primeCount < 1 || primeCount > 4) && attempts < 100) {
-        // 소수 개수가 맞지 않으면, 해당 번호를 임의의 새로운 번호로 대체
-        for (let i = 0; i < LOTTO_PICK_COUNT; i++) {
-          let num = combo[i];
-          let isPrime = primeNumbers.includes(num);
-
-          if (primeCount < 1 && !isPrime) {
-            // 소수가 너무 적으면 비소수를 소수로 교체 시도
-            let newNum;
-            do {
-              newNum = primeNumbers[generateRandomNumber(0, primeNumbers.length - 1)];
-            } while (combo.includes(newNum));
-            combo[i] = newNum;
-            primeCount = combo.filter(n => primeNumbers.includes(n)).length;
-            break; 
-          } else if (primeCount > 4 && isPrime) {
-            // 소수가 너무 많으면 소수를 비소수로 교체 시도
-            let newNum;
-            do {
-              newNum = generateRandomNumber(1, LOTTO_MAX_NUMBER);
-            } while (combo.includes(newNum) || primeNumbers.includes(newNum));
-            combo[i] = newNum;
-            primeCount = combo.filter(n => primeNumbers.includes(n)).length;
-            break;
-          }
-        }
-        
-        // 중복 제거 후 정렬
-        combo = Array.from(new Set(combo)).sort((a, b) => a - b);
-        
-        // 혹시 번호 개수가 6개가 안 되면 다시 채우기 (안정성 강화)
-        while (combo.length < LOTTO_PICK_COUNT) {
-          let newNum = generateRandomNumber(1, LOTTO_MAX_NUMBER);
-          if (!combo.includes(newNum)) {
-            combo.push(newNum);
-            combo.sort((a, b) => a - b);
-          }
-        }
-        
-        primeCount = combo.filter(n => primeNumbers.includes(n)).length;
-        attempts++;
-      }
-
-      return combo;
-    }
-
-    // 메인 번호 생성 함수
+    
+    // 추천 번호 생성 및 화면 출력 (유지)
     async function generateNumbers() {
       showLoading();
       
-      // 비동기 처리(로딩 스피너를 보여주기 위함)
-      await new Promise(resolve => setTimeout(resolve, 500)); 
-      
-      const comboCount = parseInt(document.getElementById('comboCount').value);
+      // 비동기 처리를 위해 setTimeout 사용
+      await new Promise(resolve => setTimeout(resolve, 50)); 
+
+      const count = parseInt(document.getElementById('comboCount').value);
       const resultsDiv = document.getElementById('results');
       resultsDiv.innerHTML = '';
       
-      // 최신 회차 당첨번호 + 보너스 번호
-      const lastDraw = lottoHistory[0];
-      const winningNumbers = [...lastDraw.numbers, lastDraw.bonus];
-      
-      const newCombinations = [];
-
-      for (let i = 0; i < comboCount; i++) {
-        // 1. 최신 7개 번호 중 1개 랜덤 선택
-        const mustIncludeNumber = winningNumbers[generateRandomNumber(0, winningNumbers.length - 1)];
-
-        // 2. 해당 번호를 포함하여 초기 조합 생성
-        let combo = generateRandomCombo(mustIncludeNumber);
-        
-        // 3. 핫/콜드 필터 적용
-        combo = applyHotColdFilter(combo);
-
-        // 4. (삭제된 필터 기능) 번호대 균형 조정, 동적 합계 범위, 끝자리 패턴 분석은 적용하지 않음.
-
-        // 5. 소수 번호 필터 적용
-        combo = applyPrimeNumberFilter(combo);
-
-        // 6. 'includeBonusNumber' 함수는 이제 필요 없음 (시작 시 포함)
-
-        newCombinations.push({
-          id: Date.now() + i,
-          numbers: combo,
-          mustInclude: mustIncludeNumber, // 강조 표시를 위해 포함된 번호 저장
-          timestamp: new Date().toLocaleString('ko-KR', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: false
-          })
-        });
+      // 조합 생성
+      const combinations = [];
+      for (let i = 0; i < count; i++) {
+        combinations.push(generateLottoCombination());
       }
-
-      newCombinations.forEach((combo, index) => {
-        resultsDiv.appendChild(createComboCard(combo, index + 1));
-      });
-
+      
+      // 확률 분석
+      const analysis = analyzeCombinations(combinations);
+      
+      // 결과 출력
+      resultsDiv.innerHTML = renderAnalysis(analysis) + combinations.map((numbers, index) => renderCombinationCard(numbers, index + 1, hotNumbers)).join('');
+      
       hideLoading();
     }
-
-    // 카드 생성 HTML
-    function createComboCard(comboData, index) {
-      const card = document.createElement('div');
-      card.className = 'combo-card';
+    
+    // 조합 카드 HTML 렌더링 (유지)
+    function renderCombinationCard(numbers, index, hotNumbers) {
+      const balls = numbers.map(num => 
+        `<span class="number-ball ${getNumberClass(num)} ${hotNumbers.includes(num) ? 'hot-ball' : ''}">${num}</span>`
+      ).join('');
       
-      // 핫/콜드 넘버 포함 개수 계산
-      const hotColdCount = comboData.numbers.filter(n => hotNumbers.includes(n) || coldNumbers.includes(n)).length;
-      const hotColdTag = `<span class="hot-number-tag">Hot/Cold ${hotColdCount}개</span>`;
-
-      // 소수 번호 포함 개수 계산
-      const primeCount = comboData.numbers.filter(n => primeNumbers.includes(n)).length;
-      const primeTag = `<span class="filter-item" style="border-color:#4caf50; color:#4caf50; background:rgba(76, 175, 80, 0.1);">소수 ${primeCount}개</span>`;
-
-      // 볼 색상 결정
-      function getColorClass(number) {
-        if (number <= 10) return 'n1';
-        if (number <= 20) return 'n2';
-        if (number <= 30) return 'n3';
-        if (number <= 40) return 'n4';
-        return 'n5';
-      }
-
-      const ballsHtml = comboData.numbers.map(num => {
-        const colorClass = getColorClass(num);
-        // 'hot-ball' class는 최신 회차에서 포함된 번호에만 적용
-        const isHot = (num === comboData.mustInclude) ? ' hot-ball' : '';
-        return `<div class="number-ball ${colorClass}${isHot}">${num}</div>`;
-      }).join('');
-
-      // 확률 정보 표시 HTML
-      const probabilityHtml = `
-        <div class="probability-info">
-          <div class="probability-title">
-            <i>📈</i> 조합 통계 분석
+      return `
+        <div class="combo-card">
+          <div class="combo-card-title">
+            <i>#</i> 조합 ${index}
           </div>
-          <div class="probability-bars">
-            <div class="probability-bar">
-              <div class="bar-label">핫/콜드</div>
-              <div class="bar-container">
-                <div class="bar-fill" style="width: ${Math.round(hotColdCount / 4 * 100)}%; max-width: 100%; background: linear-gradient(90deg, #ffc107, #ff9800);"></div>
-                <div class="bar-value">${hotColdCount}/4</div>
-              </div>
-            </div>
-            <div class="probability-bar">
-              <div class="bar-label">소수</div>
-              <div class="bar-container">
-                <div class="bar-fill" style="width: ${Math.round(primeCount / 4 * 100)}%; max-width: 100%; background: linear-gradient(90deg, #4caf50, #8bc34a);"></div>
-                <div class="bar-value">${primeCount}/4</div>
-              </div>
-            </div>
-          </div>
-          <div class="stats-box">
-            <div class="stat-item"><span>합계</span><span>${comboData.numbers.reduce((sum, n) => sum + n, 0)}</span></div>
-            <div class="stat-item"><span>AC 값</span><span>${calculateAC(comboData.numbers)}</span></div>
+          <div class="numbers">
+            ${balls}
           </div>
         </div>
       `;
-
-
-      card.innerHTML = `
-        <div class="combo-card-title">
-          <i>✨</i> ${index}번째 추천 조합
-        </div>
-        <div class="numbers">${ballsHtml}</div>
-        <div class="action-buttons">
-            ${hotColdTag}
-            ${primeTag}
-        </div>
-        ${probabilityHtml}
-      `;
-      return card;
     }
 
-    // AC (Adjacent Consecutive) 값 계산 (유지)
-    function calculateAC(numbers) {
-      const diffs = new Set();
-      for (let i = 0; i < LOTTO_PICK_COUNT; i++) {
-        for (let j = i + 1; j < LOTTO_PICK_COUNT; j++) {
-          diffs.add(numbers[j] - numbers[i]);
-        }
-      }
-      return diffs.size - (LOTTO_PICK_COUNT - 1); // (서로 다른 차이의 개수) - 5
+    // 조합 분석 및 확률 계산 (간단화된 로직) - 핫넘버는 전체 회차 기준으로 계산된 hotNumbers를 사용
+    function analyzeCombinations(combinations) {
+        const stats = {
+            hotNumberMatch: 0,
+            primeNumberCount: 0,
+            sumRangeCount: 0,
+        };
+        
+        let minSum = 999;
+        let maxSum = 0;
+        
+        const primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43];
+        const hotSet = new Set(hotNumbers); // 전체 회차 기준 핫 넘버 사용
+        const targetSumMin = 100;
+        const targetSumMax = 170;
+
+        combinations.forEach(combo => {
+            const sum = combo.reduce((a, b) => a + b, 0);
+            minSum = Math.min(minSum, sum);
+            maxSum = Math.max(maxSum, sum);
+            
+            // 핫 넘버 일치 개수
+            const comboHotCount = combo.filter(num => hotSet.has(num)).length;
+            stats.hotNumberMatch += comboHotCount;
+            
+            // 소수 번호 개수
+            const comboPrimeCount = combo.filter(num => primes.includes(num)).length;
+            stats.primeNumberCount += comboPrimeCount;
+
+            // 합계 범위 일치
+            if (sum >= targetSumMin && sum <= targetSumMax) {
+                stats.sumRangeCount++;
+            }
+        });
+        
+        const totalNumbers = combinations.length * 6;
+        
+        return {
+            totalCombinations: combinations.length,
+            avgHotMatch: (stats.hotNumberMatch / combinations.length).toFixed(1),
+            avgPrimeCount: (stats.primeNumberCount / combinations.length).toFixed(1),
+            sumRangeRatio: (stats.sumRangeCount / combinations.length * 100).toFixed(0),
+            minSum,
+            maxSum,
+        };
+    }
+    
+    // 분석 결과 HTML 렌더링 (유지)
+    function renderAnalysis(analysis) {
+        return `
+            <div class="box" style="grid-column: 1 / -1;">
+                <h3 class="section-title" style="margin-top: 0; margin-bottom: 20px;">
+                    📈 생성된 조합 분석 결과
+                </h3>
+                <div class="probability-info">
+                    <div class="probability-title">
+                        ✅ AI 필터 적용 효율 분석 (전체 회차 통계 기준)
+                    </div>
+                    <div class="stats-box">
+                        <div class="stat-item">
+                            <span>평균 핫 넘버 포함 개수 (목표: 2~3개)</span>
+                            <strong>${analysis.avgHotMatch} 개</strong>
+                        </div>
+                        <div class="stat-item">
+                            <span>평균 소수 번호 포함 개수 (권장: 3개 이하)</span>
+                            <strong>${analysis.avgPrimeCount} 개</strong>
+                        </div>
+                        <div class="stat-item">
+                            <span>합계 범위 (100~170) 일치율</span>
+                            <strong>${analysis.sumRangeRatio}%</strong>
+                        </div>
+                        <div class="stat-item">
+                            <span>최소/최대 합계</span>
+                            <strong>${analysis.minSum} / ${analysis.maxSum}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
     }
 
-    // 조합 저장
+    // 조합 저장 (유지)
     function saveCombinations() {
       const resultsDiv = document.getElementById('results');
-      if (resultsDiv.children.length === 0) {
-        alert('추천된 조합이 없습니다. 먼저 PREMIUM 추천 버튼을 눌러주세요.');
-        return;
-      }
-      
-      const newCombinations = [];
-      
-      // 결과를 DOM에서 파싱하여 가져오기
       const comboCards = resultsDiv.querySelectorAll('.combo-card');
       
-      comboCards.forEach((card, i) => {
-        // 번호 추출 로직
-        const numberBalls = card.querySelector('.numbers').querySelectorAll('.number-ball');
-        const numbers = Array.from(numberBalls).map(ball => parseInt(ball.textContent));
-        
-        // 펄스 애니메이션(hot-ball)이 적용된 번호 찾기
-        const hotBall = card.querySelector('.hot-ball');
-        const mustInclude = hotBall ? parseInt(hotBall.textContent) : null;
+      if (comboCards.length === 0) {
+        alert('먼저 PREMIUM 추천 버튼을 눌러 조합을 생성해주세요.');
+        return;
+      }
 
-        newCombinations.push({
-          id: Date.now() + i,
-          numbers: numbers,
-          mustInclude: mustInclude,
-          timestamp: new Date().toLocaleString('ko-KR', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: false
-          })
-        });
+      const combinationsToSave = [];
+      comboCards.forEach(card => {
+          const balls = card.querySelectorAll('.number-ball');
+          if (balls.length === 0) return; 
+          
+          const numbers = Array.from(balls).map(ball => parseInt(ball.textContent));
+          combinationsToSave.push({
+              numbers: numbers,
+              drawNo: lottoHistory.length + 1, 
+              date: new Date().toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })
+          });
       });
-
-
-      combinationHistory = [...newCombinations, ...combinationHistory];
-      localStorage.setItem('lottoCombinations', JSON.stringify(combinationHistory));
-      alert(`${newCombinations.length}개의 조합이 저장되었습니다.`);
-      updateHistoryCount();
-    }
-
-    // 전체 삭제
-    function clearAll() {
-      if (confirm('저장된 조합 내역과 화면의 추천 조합을 모두 삭제하시겠습니까?')) {
-        combinationHistory = [];
-        localStorage.removeItem('lottoCombinations');
-        document.getElementById('results').innerHTML = '';
-        document.getElementById('history').innerHTML = '';
-        updateHistoryCount();
-        alert('모든 내역이 삭제되었습니다.');
+      
+      if (combinationsToSave.length === 0) {
+          alert('저장할 유효한 조합이 없습니다.');
+          return;
       }
+      
+      let existingCombinations = loadCombinations();
+      existingCombinations = [...existingCombinations, ...combinationsToSave];
+      
+      localStorage.setItem('lottoCombinations', JSON.stringify(existingCombinations));
+      savedCombinations = existingCombinations;
+      updateHistoryCount();
+      alert(`${combinationsToSave.length}개의 조합이 저장되었습니다!`);
     }
 
-    // 저장된 조합 개수 업데이트
+    // 저장된 조합 불러오기 (유지)
+    function loadCombinations() {
+      const stored = localStorage.getItem('lottoCombinations');
+      return stored ? JSON.parse(stored) : [];
+    }
+
+    // 저장된 조합 수 업데이트 (유지)
     function updateHistoryCount() {
-      document.getElementById('historyCount').textContent = combinationHistory.length;
-      document.getElementById('history').innerHTML = combinationHistory.slice(0, 3).map((combo, index) => 
-        createHistorySummaryCard(combo, index + 1)
-      ).join('');
-      if (combinationHistory.length > 3) {
-        document.getElementById('history').innerHTML += `<p style="margin-top: 15px; color: #5f6368;">... ${combinationHistory.length - 3}개의 조합이 더 있습니다. '조합내역보기'를 눌러 확인하세요.</p>`;
-      }
+      document.getElementById('historyCount').textContent = savedCombinations.length;
+      renderHistoryBox(savedCombinations);
     }
-
-    // 저장된 조합 요약 카드 생성
-    function createHistorySummaryCard(comboData, index) {
-      const ballsHtml = comboData.numbers.map(num => {
-        let colorClass = '';
-        if (num <= 10) colorClass = 'n1';
-        else if (num <= 20) colorClass = 'n2';
-        else if (num <= 30) colorClass = 'n3';
-        else if (num <= 40) colorClass = 'n4';
-        else colorClass = 'n5';
+    
+    // 메인 화면의 저장된 조합 카드 렌더링 (유지)
+    function renderHistoryBox(combinations) {
+        const historyDiv = document.getElementById('history');
+        if (combinations.length === 0) {
+             historyDiv.innerHTML = `<p style="color: #5f6368; padding: 20px;">저장된 조합이 없습니다.</p>`;
+             return;
+        }
         
-        // 저장된 mustInclude 번호에도 hot-ball 적용
-        const isHot = (num === comboData.mustInclude) ? ' hot-ball' : '';
-        return `<div class="number-ball ${colorClass} ${isHot}">${num}</div>`;
-      }).join('');
+        const recentCombinations = combinations.slice(-5).reverse();
 
-      return `
-        <div class="combo-card" style="margin-bottom: 10px;">
-          <div class="combo-card-title" style="justify-content: space-between; font-size: 1.1rem;">
-            <span>${index}번째 저장 (${comboData.timestamp.split(',')[0].trim()})</span>
-            <button onclick="deleteCombination(${comboData.id})" class="delete-btn" style="margin: 0; padding: 5px 10px;">삭제</button>
-          </div>
-          <div class="numbers" style="margin-bottom: 0;">${ballsHtml}</div>
-        </div>
-      `;
+        historyDiv.innerHTML = recentCombinations.map((combo, index) => {
+             const balls = combo.numbers.map(num => 
+                `<span class="number-ball ${getNumberClass(num)}">${num}</span>`
+             ).join('');
+
+             return `
+                 <div class="combo-card">
+                     <div class="combo-card-title" style="font-size: 1.1rem;">
+                         저장일: ${combo.date.split(',')[0]}
+                     </div>
+                     <div class="numbers">
+                         ${balls}
+                     </div>
+                 </div>
+             `;
+        }).join('');
     }
 
-    // 개별 조합 삭제
-    function deleteCombination(id) {
-      combinationHistory = combinationHistory.filter(combo => combo.id !== id);
-      localStorage.setItem('lottoCombinations', JSON.stringify(combinationHistory));
-      updateHistoryCount();
-      // 모달이 열려있으면 모달 내용 업데이트
-      if (document.getElementById('historyModal').style.display === 'flex') {
-        showCombinationHistory(true);
+    // 전체 삭제 (유지)
+    function clearAll() {
+      if (confirm('저장된 모든 로또 조합을 삭제하시겠습니까?')) {
+        localStorage.removeItem('lottoCombinations');
+        savedCombinations = [];
+        updateHistoryCount();
+        document.getElementById('results').innerHTML = ''; 
+        alert('모든 조합이 삭제되었습니다.');
       }
     }
-
-    // 조합 내역 보기 (모달)
-    function showCombinationHistory(forceRefresh = false) {
-      const modal = document.getElementById('historyModal');
+    
+    // 조합 내역 보기 모달 열기 (유지)
+    function showCombinationHistory() {
+      document.getElementById('historyModal').style.display = 'flex';
+      renderModalHistory();
+    }
+    
+    // 모달 내부 히스토리 내용 렌더링 (유지)
+    function renderModalHistory(winningNumbers = null) {
       const historyContent = document.getElementById('historyContent');
       
-      modal.style.display = 'flex';
+      if (savedCombinations.length > 0) {
+          historyContent.innerHTML = `
+              <h3 class="section-title">총 ${savedCombinations.length}개의 저장된 조합</h3>
+              ${savedCombinations.map((combo, index) => {
+                  
+                  let matchInfo = '';
+                  let rankHtml = '';
+                  
+                  if (winningNumbers) {
+                      const { mainNumbers, bonusNumber } = winningNumbers;
+                      const { rank, matchCount, bonusMatch } = checkMatch(combo.numbers, mainNumbers, bonusNumber);
+                      
+                      const rankClass = getRankClass(rank);
+                      const rankText = getRankText(rank);
+                      
+                      rankHtml = `<span class="prize-rank ${rankClass}">${rankText}</span>`;
+                      
+                      matchInfo = `
+                          <div class="draw-info">
+                              <span class="match-count">본 번호 ${matchCount}개 일치</span>
+                              ${rank === 2 || rank === 5 ? `<span class="bonus-info">보너스 번호 ${bonusMatch ? '일치' : '불일치'}</span>` : ''}
+                          </div>
+                      `;
+                  }
+                  
+                  const balls = combo.numbers.map(num => 
+                      `<span class="number-ball ${getNumberClass(num)}">${num}</span>`
+                  ).join('');
 
-      if (combinationHistory.length > 0) {
-        historyContent.innerHTML = combinationHistory.map(combo => createModalHistoryItem(combo)).join('');
+                  return `
+                      <div class="history-item">
+                          <div class="history-header">
+                              <span style="font-weight: 700;">#${index + 1} (${combo.date.split(',')[0]})</span>
+                              ${rankHtml}
+                          </div>
+                          <div class="numbers">
+                              ${balls}
+                          </div>
+                          ${matchInfo}
+                      </div>
+                  `;
+              }).reverse().join('')} 
+          `;
       } else {
         historyContent.innerHTML = `
+          <h3 class="section-title">저장된 조합이 없습니다.</h3>
           <div class="current-draw">
-            <p style="color: #5f6368;">저장된 조합 내역이 없습니다.</p>
+            <p style="color: #5f6368;">최신 회차 당첨 번호를 입력하시면 저장된 조합들의 당첨 여부를 확인할 수 있습니다.</p>
           </div>
         `;
       }
     }
-
-    // 모달 내 개별 조합 카드 생성
-    function createModalHistoryItem(comboData) {
-      const ballsHtml = comboData.numbers.map(num => {
-        let colorClass = '';
-        if (num <= 10) colorClass = 'n1';
-        else if (num <= 20) colorClass = 'n2';
-        else if (num <= 30) colorClass = 'n3';
-        else if (num <= 40) colorClass = 'n4';
-        else colorClass = 'n5';
-        
-        // 저장된 mustInclude 번호에도 hot-ball 적용
-        const isHot = (num === comboData.mustInclude) ? ' hot-ball' : '';
-        
-        return `<div class="number-ball ${colorClass} ${isHot}" style="width: 35px; height: 35px; font-size: 1rem;">${num}</div>`;
-      }).join('');
-
-      return `
-        <div class="history-item" data-id="${comboData.id}">
-          <div class="history-header">
-            <div style="font-size: 1.2rem; font-weight: 700; color: #333;">저장 일시: ${comboData.timestamp}</div>
-            <button onclick="deleteCombination(${comboData.id})" class="delete-btn">이 조합 삭제</button>
-          </div>
-          <div class="numbers">${ballsHtml}</div>
-          <div class="draw-info" id="match-info-${comboData.id}">
-            <p style="color: #d81b60; font-weight: 700;">당첨 확인을 해주세요.</p>
-          </div>
-        </div>
-      `;
-    }
     
-    // 모달 닫기
+    // 모달 닫기 (유지)
     function closeModal() {
       document.getElementById('historyModal').style.display = 'none';
-      document.getElementById('checkResult').innerHTML = ''; // 당첨 확인 결과 초기화
-      // 입력 필드 초기화
-      Array.from(document.querySelectorAll('.winning-input')).forEach(input => input.value = '');
-      document.getElementById('bonus').value = '';
     }
 
-    // 입력된 당첨 번호 유효성 검사
+    // 입력된 당첨 번호 유효성 검사 (유지)
     function validateWinningInput() {
       const winningInputs = Array.from(document.querySelectorAll('.winning-input')).map(input => parseInt(input.value));
       const bonusInputVal = parseInt(document.getElementById('bonus').value);
 
       const allInputs = [...winningInputs, bonusInputVal];
 
-      // 모든 필드가 1~45 범위 내의 유효한 숫자인지 확인
       if (allInputs.some(val => isNaN(val) || val < 1 || val > 45)) {
-        document.getElementById('checkResult').innerHTML = '<p style="color: red; margin-top: 10px;">모든 번호는 1부터 45까지의 유효한 숫자로 입력해야 합니다.</p>';
+        alert('모든 번호는 1부터 45까지의 유효한 숫자로 입력해야 합니다.');
         return null;
       }
 
-      // 본 번호 6개 추출
       const mainNumbers = winningInputs.sort((a,b) => a-b);
       
-      // 본 번호 중복 확인
       const uniqueMainNumbers = new Set(mainNumbers);
       if (uniqueMainNumbers.size !== 6) {
-        document.getElementById('checkResult').innerHTML = '<p style="color: red; margin-top: 10px;">본 번호에 중복된 숫자가 있습니다.</p>';
+        alert('본 번호에 중복된 숫자가 있습니다.');
         return null;
       }
-
-      // 보너스 번호와 본 번호 중복 확인
+      
       if (mainNumbers.includes(bonusInputVal)) {
-        document.getElementById('checkResult').innerHTML = '<p style="color: red; margin-top: 10px;">보너스 번호는 본 번호와 중복될 수 없습니다.</p>';
-        return null;
-      }
-
-      document.getElementById('checkResult').innerHTML = '';
-      return { main: mainNumbers, bonus: bonusInputVal };
-    }
-
-
-    // 당첨 확인 버튼 클릭
-    function checkWinning() {
-      const winningDraw = validateWinningInput();
-      if (!winningDraw) return;
-      
-      const { main: winningNumbers, bonus: bonusNumber } = winningDraw;
-      let totalMatch = 0;
-      let totalRank = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, none: 0 };
-
-      combinationHistory.forEach(combo => {
-        const result = checkMatch(combo.numbers, winningNumbers, bonusNumber);
-        updateMatchInfo(combo.id, result);
-        totalRank[result.rank] += 1;
-        if (result.rank !== 'none') totalMatch++;
-      });
-      
-      // 총 당첨 결과 표시
-      document.getElementById('checkResult').innerHTML = `
-        <div style="margin-top: 15px; padding: 15px; border: 2px solid #0288d1; border-radius: 10px; background: #e3f2fd;">
-          <h4 style="color: #0288d1; margin-bottom: 10px;">🎯 총 당첨 결과</h4>
-          <p style="font-weight: 600;">총 당첨 조합: ${totalMatch}개</p>
-          <p>1등: ${totalRank[1]}개 | 2등: ${totalRank[2]}개 | 3등: ${totalRank[3]}개</p>
-          <p>4등: ${totalRank[4]}개 | 5등: ${totalRank[5]}개 | 낙첨: ${totalRank['none']}개</p>
-        </div>
-      `;
-    }
-
-    // 당첨 여부 판별 로직
-    function checkMatch(myNumbers, winningNumbers, bonusNumber) {
-      const matchCount = myNumbers.filter(n => winningNumbers.includes(n)).length;
-      const bonusMatch = myNumbers.includes(bonusNumber);
-
-      let rank = 'none';
-      let prizeText = '낙첨 (다음 기회에!)';
-      let prizeClass = 'no-prize';
-
-      if (matchCount === 6) {
-        rank = 1;
-        prizeText = '1등 당첨! 🎉';
-        prizeClass = 'first-prize';
-      } else if (matchCount === 5 && bonusMatch) {
-        rank = 2;
-        prizeText = '2등 당첨! 💰';
-        prizeClass = 'second-prize';
-      } else if (matchCount === 5) {
-        rank = 3;
-        prizeText = '3등 당첨!';
-        prizeClass = 'third-prize';
-      } else if (matchCount === 4) {
-        rank = 4;
-        prizeText = '4등 당첨';
-        prizeClass = 'fourth-prize';
-      } else if (matchCount === 3) {
-        rank = 5;
-        prizeText = '5등 당첨';
-        prizeClass = 'fifth-prize';
+           alert('보너스 번호는 본 번호와 중복될 수 없습니다.');
+           return null;
       }
 
       return {
-        matchCount,
-        bonusMatch,
-        rank,
-        prizeText,
-        prizeClass
+        mainNumbers,
+        bonusNumber: bonusInputVal
       };
     }
-
-    // 당첨 정보 업데이트
-    function updateMatchInfo(id, result) {
-      const matchInfoDiv = document.getElementById(`match-info-${id}`);
-      if (matchInfoDiv) {
-        let bonusHtml = '';
-        if (result.matchCount === 5) {
-            bonusHtml = `<span style="color: ${result.bonusMatch ? '#d81b60' : '#424242'}; font-weight: 700;">보너스 번호: ${result.bonusMatch ? 'O' : 'X'}</span>`;
+    
+    // 당첨 확인 버튼 클릭 시 (유지)
+    function checkWinning() {
+        const winningNumbers = validateWinningInput();
+        
+        if (!winningNumbers) return;
+        
+        if (savedCombinations.length === 0) {
+            alert('저장된 조합이 없습니다. 먼저 조합을 저장해주세요.');
+            return;
+        }
+        
+        renderModalHistory(winningNumbers);
+    }
+    
+    // 조합과 당첨 번호를 비교하여 등수 반환 (유지)
+    function checkMatch(myNumbers, winningNumbers, bonusNumber) {
+        let matchCount = 0;
+        let bonusMatch = false;
+        
+        const winningSet = new Set(winningNumbers);
+        
+        myNumbers.forEach(num => {
+            if (winningSet.has(num)) {
+                matchCount++;
+            }
+        });
+        
+        if (!winningSet.has(bonusNumber) && myNumbers.includes(bonusNumber)) {
+            bonusMatch = true;
         }
 
-        matchInfoDiv.innerHTML = `
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 5px;">
-              <span class="match-count">본 번호 ${result.matchCount}개 일치</span>
-              ${bonusHtml}
-            </div>
-            <span class="prize-rank ${result.prizeClass}">
-              ${result.prizeText}
-            </span>
-          </div>
-        `;
-      }
+        let rank = 0;
+        if (matchCount === 6) {
+            rank = 1; 
+        } else if (matchCount === 5 && bonusMatch) {
+            rank = 2; 
+        } else if (matchCount === 5) {
+            rank = 3; 
+        } else if (matchCount === 4) {
+            rank = 4; 
+        } else if (matchCount === 3) {
+            rank = 5; 
+        } else {
+            rank = 0; 
+        }
+        
+        return { rank, matchCount, bonusMatch };
+    }
+    
+    // 등수 텍스트 반환 (유지)
+    function getRankText(rank) {
+        switch(rank) {
+            case 1: return '✨ 1등 당첨 ✨';
+            case 2: return '🥈 2등 당첨';
+            case 3: return '🥉 3등 당첨';
+            case 4: return '🏅 4등 당첨';
+            case 5: return '💸 5등 당첨';
+            default: return '😭 낙첨';
+        }
+    }
+    
+    // 등수 CSS 클래스 반환 (유지)
+    function getRankClass(rank) {
+        switch(rank) {
+            case 1: return 'first-prize';
+            case 2: return 'second-prize';
+            case 3: return 'third-prize';
+            case 4: return 'fourth-prize';
+            case 5: return 'fifth-prize';
+            default: return 'no-prize';
+        }
     }
 
 
-    // 페이지 로드 시 초기화
-    document.addEventListener('DOMContentLoaded', () => {
-      updateHistoryCount();
-    });
   </script>
 </body>
 </html>
+
