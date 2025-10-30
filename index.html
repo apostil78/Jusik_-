@@ -1317,11 +1317,19 @@
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    // 기본 조합 생성 (6개)
-    function generateRandomCombo() {
+    // 기본 조합 생성 (6개), 1개 번호 반드시 포함
+    function generateRandomCombo(mustIncludeNumber) {
       const numbers = new Set();
+      if (mustIncludeNumber) {
+        numbers.add(mustIncludeNumber);
+      }
+
       while (numbers.size < LOTTO_PICK_COUNT) {
-        numbers.add(generateRandomNumber(1, LOTTO_MAX_NUMBER));
+        let num;
+        do {
+            num = generateRandomNumber(1, LOTTO_MAX_NUMBER);
+        } while (numbers.has(num)); // Ensure no duplicates
+        numbers.add(num);
       }
       return Array.from(numbers).sort((a, b) => a - b);
     }
@@ -1331,12 +1339,43 @@
     function applyHotColdFilter(numbers) {
       let combo = [...numbers];
       let hotColdCount = combo.filter(n => hotNumbers.includes(n) || coldNumbers.includes(n)).length;
+      let attempts = 0;
 
       // 핫/콜드 넘버의 개수가 1개 미만이거나 4개를 초과하면 재조정
-      while (hotColdCount < 1 || hotColdCount > 4) {
-        combo = generateRandomCombo(); // 초기화 후 다시 생성
+      while ((hotColdCount < 1 || hotColdCount > 4) && attempts < 100) {
+        // 기준에 맞지 않는 번호 1개를 교체
+        let numToReplace = -1;
+        if (hotColdCount < 1) { // 핫/콜드가 너무 적으면
+            numToReplace = combo.find(n => !hotNumbers.includes(n) && !coldNumbers.includes(n));
+        } else { // 핫/콜드가 너무 많으면
+            numToReplace = combo.find(n => hotNumbers.includes(n) || coldNumbers.includes(n));
+        }
+        
+        if (numToReplace === -1) numToReplace = combo[0]; // 예외 처리
+
+        // 새로운 번호로 교체
+        let newNum;
+        do {
+            newNum = generateRandomNumber(1, LOTTO_MAX_NUMBER);
+        } while (combo.includes(newNum));
+        
+        combo = combo.map(n => n === numToReplace ? newNum : n);
+        
+        combo.sort((a, b) => a - b);
         hotColdCount = combo.filter(n => hotNumbers.includes(n) || coldNumbers.includes(n)).length;
+        attempts++;
       }
+      
+      // 100회 시도 후에도 실패하면 그냥 초기 조합 생성
+      if (attempts >= 100) {
+          combo = generateRandomCombo(numbers[0]); // 기존 포함 번호는 유지
+          hotColdCount = combo.filter(n => hotNumbers.includes(n) || coldNumbers.includes(n)).length;
+          // 그래도 안되면 그냥 반환
+          if (hotColdCount < 1 || hotColdCount > 4) {
+             // console.log("핫/콜드 필터 실패, 원본 반환");
+          }
+      }
+
       return combo;
     }
 
@@ -1393,47 +1432,6 @@
       return combo;
     }
 
-    // 6. 보너스 번호 포함 (유지)
-    // 마지막 회차 당첨 번호(본번호, 보너스번호) 중 1개를 반드시 포함
-    function includeBonusNumber(numbers) {
-      const lastDraw = lottoHistory[0];
-      const winningNumbers = [...lastDraw.numbers, lastDraw.bonus];
-      let combo = [...numbers];
-
-      // 현재 조합에 이미 당첨 번호가 포함되어 있는지 확인
-      const intersection = combo.filter(n => winningNumbers.includes(n));
-      
-      if (intersection.length === 0) {
-        // 포함되어 있지 않다면, 조합의 임의의 번호 1개를 당첨 번호 1개로 교체
-        const numToReplace = combo[generateRandomNumber(0, LOTTO_PICK_COUNT - 1)];
-        let newNumber;
-        
-        // 조합에 없는 당첨 번호를 선택
-        const availableWinningNumbers = winningNumbers.filter(n => !combo.includes(n));
-        
-        if (availableWinningNumbers.length > 0) {
-          newNumber = availableWinningNumbers[generateRandomNumber(0, availableWinningNumbers.length - 1)];
-        } else {
-          // 모든 당첨 번호가 이미 포함되어 있으면 교체할 필요 없음 (이 경우는 intersection.length가 0일 수 없음. 예외처리)
-          return combo;
-        }
-
-        combo = combo.map(n => n === numToReplace ? newNumber : n);
-        combo = Array.from(new Set(combo)).sort((a, b) => a - b);
-      }
-      
-      // 다시 6개가 되었는지 확인 (Set을 통과해도 6개가 아닐 수 있음 - 예외적 상황 대비)
-      while (combo.length < LOTTO_PICK_COUNT) {
-          let newNum = generateRandomNumber(1, LOTTO_MAX_NUMBER);
-          if (!combo.includes(newNum)) {
-              combo.push(newNum);
-              combo.sort((a, b) => a - b);
-          }
-      }
-      
-      return combo;
-    }
-
     // 메인 번호 생성 함수
     async function generateNumbers() {
       showLoading();
@@ -1445,24 +1443,33 @@
       const resultsDiv = document.getElementById('results');
       resultsDiv.innerHTML = '';
       
+      // 최신 회차 당첨번호 + 보너스 번호
+      const lastDraw = lottoHistory[0];
+      const winningNumbers = [...lastDraw.numbers, lastDraw.bonus];
+      
       const newCombinations = [];
 
       for (let i = 0; i < comboCount; i++) {
-        // 1. 초기 조합 생성 및 핫/콜드 필터 적용
-        let combo = generateRandomCombo();
+        // 1. 최신 7개 번호 중 1개 랜덤 선택
+        const mustIncludeNumber = winningNumbers[generateRandomNumber(0, winningNumbers.length - 1)];
+
+        // 2. 해당 번호를 포함하여 초기 조합 생성
+        let combo = generateRandomCombo(mustIncludeNumber);
+        
+        // 3. 핫/콜드 필터 적용
         combo = applyHotColdFilter(combo);
 
-        // 2, 3, 4. (삭제된 필터 기능) 번호대 균형 조정, 동적 합계 범위, 끝자리 패턴 분석은 적용하지 않음.
+        // 4. (삭제된 필터 기능) 번호대 균형 조정, 동적 합계 범위, 끝자리 패턴 분석은 적용하지 않음.
 
         // 5. 소수 번호 필터 적용
         combo = applyPrimeNumberFilter(combo);
 
-        // 6. 보너스번호 포함 로직 적용
-        combo = includeBonusNumber(combo);
+        // 6. 'includeBonusNumber' 함수는 이제 필요 없음 (시작 시 포함)
 
         newCombinations.push({
           id: Date.now() + i,
           numbers: combo,
+          mustInclude: mustIncludeNumber, // 강조 표시를 위해 포함된 번호 저장
           timestamp: new Date().toLocaleString('ko-KR', {
             year: 'numeric',
             month: '2-digit',
@@ -1506,7 +1513,8 @@
 
       const ballsHtml = comboData.numbers.map(num => {
         const colorClass = getColorClass(num);
-        const isHot = hotNumbers.includes(num) ? ' hot-ball' : '';
+        // 'hot-ball' class는 최신 회차에서 포함된 번호에만 적용
+        const isHot = (num === comboData.mustInclude) ? ' hot-ball' : '';
         return `<div class="number-ball ${colorClass}${isHot}">${num}</div>`;
       }).join('');
 
@@ -1562,10 +1570,7 @@
           diffs.add(numbers[j] - numbers[i]);
         }
       }
-      // AC 값은 n(n-1)/2 - (중복된 차이의 개수) + 1 로 정의되지만, 
-      // 로또에서는 일반적으로 (총 차이의 개수) - 5 로 계산됨.
-      // 여기서는 고전적인 정의인 (서로 다른 차이의 개수) - 5를 사용.
-      return diffs.size - (LOTTO_PICK_COUNT - 1); // 15 - 5 = 10 이 최대 AC값 (6개 기준)
+      return diffs.size - (LOTTO_PICK_COUNT - 1); // (서로 다른 차이의 개수) - 5
     }
 
     // 조합 저장
@@ -1576,23 +1581,24 @@
         return;
       }
       
-      // 현재 표시된 조합을 combinationHistory에 추가
-      const comboCount = parseInt(document.getElementById('comboCount').value);
       const newCombinations = [];
       
       // 결과를 DOM에서 파싱하여 가져오기
-      for (let i = 0; i < comboCount; i++) {
-        const card = resultsDiv.children[i];
-        if (!card) break; // 조합 수보다 결과가 적을 경우 중단
-
+      const comboCards = resultsDiv.querySelectorAll('.combo-card');
+      
+      comboCards.forEach((card, i) => {
         // 번호 추출 로직
         const numberBalls = card.querySelector('.numbers').querySelectorAll('.number-ball');
         const numbers = Array.from(numberBalls).map(ball => parseInt(ball.textContent));
         
-        // 새로운 ID 생성 및 시간 기록
+        // 펄스 애니메이션(hot-ball)이 적용된 번호 찾기
+        const hotBall = card.querySelector('.hot-ball');
+        const mustInclude = hotBall ? parseInt(hotBall.textContent) : null;
+
         newCombinations.push({
           id: Date.now() + i,
           numbers: numbers,
+          mustInclude: mustInclude,
           timestamp: new Date().toLocaleString('ko-KR', {
             year: 'numeric',
             month: '2-digit',
@@ -1603,7 +1609,8 @@
             hour12: false
           })
         });
-      }
+      });
+
 
       combinationHistory = [...newCombinations, ...combinationHistory];
       localStorage.setItem('lottoCombinations', JSON.stringify(combinationHistory));
@@ -1643,7 +1650,10 @@
         else if (num <= 30) colorClass = 'n3';
         else if (num <= 40) colorClass = 'n4';
         else colorClass = 'n5';
-        return `<div class="number-ball ${colorClass}">${num}</div>`;
+        
+        // 저장된 mustInclude 번호에도 hot-ball 적용
+        const isHot = (num === comboData.mustInclude) ? ' hot-ball' : '';
+        return `<div class="number-ball ${colorClass} ${isHot}">${num}</div>`;
       }).join('');
 
       return `
@@ -1695,7 +1705,11 @@
         else if (num <= 30) colorClass = 'n3';
         else if (num <= 40) colorClass = 'n4';
         else colorClass = 'n5';
-        return `<div class="number-ball ${colorClass}" style="width: 35px; height: 35px; font-size: 1rem;">${num}</div>`;
+        
+        // 저장된 mustInclude 번호에도 hot-ball 적용
+        const isHot = (num === comboData.mustInclude) ? ' hot-ball' : '';
+        
+        return `<div class="number-ball ${colorClass} ${isHot}" style="width: 35px; height: 35px; font-size: 1rem;">${num}</div>`;
       }).join('');
 
       return `
