@@ -353,6 +353,28 @@
       70% { box-shadow: 0 0 0 10px rgba(216, 27, 96, 0); }
       100% { box-shadow: 0 0 0 0 rgba(216, 27, 96, 0); }
     }
+
+    .guaranteed-ball {
+  animation: guaranteed-pulse 1.5s infinite;
+  position: relative;
+  z-index: 10;
+  border: 2px solid #ffd700;
+}
+
+@keyframes guaranteed-pulse {
+  0% { 
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
+  }
+  50% { 
+    transform: scale(1.15);
+    box-shadow: 0 0 0 10px rgba(255, 215, 0, 0.3);
+  }
+  100% { 
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+  }
+}
     
     .n1 { background: linear-gradient(135deg, #0288d1, #01579b); }
     .n2 { background: linear-gradient(135deg, #0097a7, #006064); }
@@ -1338,6 +1360,12 @@
 
     updateHistoryCount(); 
 
+    // 최신 당첨번호 포함 여부 확인 함수
+function isGuaranteedNumber(number) {
+  if (!lastWinningNumbers) return false;
+  return lastWinningNumbers.includes(number);
+}
+
     // 로딩 스피너 제어
     function showLoading() {
       document.getElementById('loadingSpinner').style.display = 'flex';
@@ -1547,21 +1575,30 @@
     
     // 조합 카드 HTML 렌더링
     function renderCombinationCard(numbers, index, hotNumbers) {
-      const balls = numbers.map(num => 
-        `<span class="number-ball ${getNumberClass(num)} ${hotNumbers.includes(num) ? 'hot-ball' : ''}">${num}</span>`
-      ).join('');
-      
-      return `
-        <div class="combo-card">
-          <div class="combo-card-title">
-            <i>#</i> 조합 ${index}
-          </div>
-          <div class="numbers">
-            ${balls}
-          </div>
-        </div>
-      `;
-    }
+  const balls = numbers.map(num => {
+    const isHot = hotNumbers.includes(num);
+    const isGuaranteed = isGuaranteedNumber(num);
+    const ballClass = `number-ball ${getNumberClass(num)} ${isHot ? 'hot-ball' : ''} ${isGuaranteed ? 'guaranteed-ball' : ''}`;
+    
+    return `<span class="${ballClass}">${num}</span>`;
+  }).join('');
+  
+  const hasGuaranteed = numbers.some(num => isGuaranteedNumber(num));
+  
+  return `
+    <div class="combo-card">
+      <div class="combo-card-title">
+        <i>#</i> 조합 ${index}
+        ${hasGuaranteed ? 
+          '<span style="font-size: 0.8rem; color: #ffd700; margin-left: 10px;">✨ 최신번호 포함</span>' : 
+          ''}
+      </div>
+      <div class="numbers">
+        ${balls}
+      </div>
+    </div>
+  `;
+}
 
     // 조합 분석 및 확률 계산
     function analyzeCombinations(combinations) {
@@ -1724,32 +1761,34 @@
     }
     
     // 메인 화면의 저장된 조합 카드 렌더링
-    function renderHistoryBox(combinations) {
-        const historyDiv = document.getElementById('history');
-        if (combinations.length === 0) {
-             historyDiv.innerHTML = `<p style="color: #5f6368; padding: 20px;">저장된 조합이 없습니다.</p>`;
-             return;
-        }
-        
-        const recentCombinations = combinations.slice(-5).reverse();
-
-        historyDiv.innerHTML = recentCombinations.map((combo, index) => {
-             const balls = combo.numbers.map(num => 
-                `<span class="number-ball ${getNumberClass(num)}">${num}</span>`
-             ).join('');
-
-             return `
-                 <div class="combo-card">
-                     <div class="combo-card-title" style="font-size: 1.1rem;">
-                         저장일: ${combo.date.split(',')[0]}
-                     </div>
-                     <div class="numbers">
-                         ${balls}
-                     </div>
-                 </div>
-             `;
-        }).join('');
+  function renderHistoryBox(combinations) {
+    const historyDiv = document.getElementById('history');
+    if (combinations.length === 0) {
+         historyDiv.innerHTML = `<p style="color: #5f6368; padding: 20px;">저장된 조합이 없습니다.</p>`;
+         return;
     }
+    
+    const recentCombinations = combinations.slice(-5).reverse();
+
+    historyDiv.innerHTML = recentCombinations.map((combo, index) => {
+         const balls = combo.numbers.map(num => {
+            const isGuaranteed = isGuaranteedNumber(num);
+            const ballClass = `number-ball ${getNumberClass(num)} ${isGuaranteed ? 'guaranteed-ball' : ''}`;
+            return `<span class="${ballClass}">${num}</span>`;
+         }).join('');
+
+         return `
+             <div class="combo-card">
+                 <div class="combo-card-title" style="font-size: 1.1rem;">
+                     저장일: ${combo.date.split(',')[0]}
+                 </div>
+                 <div class="numbers">
+                     ${balls}
+                 </div>
+             </div>
+         `;
+    }).join('');
+}
 
     // 전체 삭제
     function clearAll() {
@@ -1975,3 +2014,4 @@
   </script>
 </body>
 </html>
+
